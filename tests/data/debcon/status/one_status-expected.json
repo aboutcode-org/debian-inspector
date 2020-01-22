@@ -1,0 +1,17 @@
+{
+  "package": "libncurses5",
+  "status": "install ok installed",
+  "priority": "optional",
+  "section": "libs",
+  "installed-size": "283",
+  "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+  "architecture": "amd64",
+  "multi-arch": "same",
+  "source": "ncurses",
+  "version": "6.1-1ubuntu1.18.04",
+  "depends": "libtinfo5 (= 6.1-1ubuntu1.18.04), libc6 (>= 2.14)",
+  "recommends": "libgpm2",
+  "description": "shared libraries for terminal handling\n The ncurses library routines are a terminal-independent method of\n updating character screens with reasonable optimization.\n .\n This package contains the shared libraries necessary to run programs\n compiled with ncurses.",
+  "homepage": "https://invisible-island.net/ncurses/",
+  "original-maintainer": "Craig Small <csmall@debian.org>"
+}

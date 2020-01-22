@@ -1,0 +1,59 @@
+{
+  "paragraphs": [
+    {
+      "format": "https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/",
+      "upstream_name": "",
+      "upstream_contact": "rpm-list@lists.rpm.org",
+      "source": "http://rpm.org",
+      "disclaimer": "",
+      "copyright": "",
+      "license": "",
+      "comment": "",
+      "files_excluded": "doc/librpm/html/*"
+    },
+    {
+      "files": "*",
+      "copyright": "1995 - 2009, Erik Troan, Marc Ewing",
+      "license": "GPL-2+",
+      "comment": ""
+    },
+    {
+      "files": "lib/*",
+      "copyright": "1995 - 2009, Erik Troan, Marc Ewing",
+      "license": "GPL-2+ or LGPL-2+",
+      "comment": ""
+    },
+    {
+      "files": "lib/header.*",
+      "copyright": "1995-2002 Red Hat Software",
+      "license": "LGPL-2+",
+      "comment": ""
+    },
+    {
+      "files": "misc/stpcpy.*\n misc/stpncpy.*\n misc/fnmatch.*",
+      "copyright": "1990 - 2001 Free Software Foundation, Inc.",
+      "license": "LGPL-2+",
+      "comment": ""
+    },
+    {
+      "files": "misc/fts.*",
+      "copyright": "1990, 1993, 1994, The Regents of the University of California",
+      "license": "BSD-3-clause\n Redistribution and use in source and binary forms, with or without\n modification, are permitted provided that the following conditions\n are met:\n 1. Redistributions of source code must retain the above copyright\n    notice, this list of conditions and the following disclaimer.\n 2. Redistributions in binary form must reproduce the above copyright\n    notice, this list of conditions and the following disclaimer in the\n    documentation and/or other materials provided with the distribution.\n 4. Neither the name of the University nor the names of its contributors\n    may be used to endorse or promote products derived from this software\n    without specific prior written permission.",
+      "comment": ""
+    },
+    {
+      "files": "debian/*",
+      "copyright": "2009-2015, Michal \u010ciha\u0159 <nijel@debian.org>",
+      "license": "GPL-2+",
+      "comment": ""
+    },
+    {
+      "license": "GPL-2+\n On Debian systems the full text of the GNU General Public\n License can be found in the `/usr/share/common-licenses/GPL-2'\n file.",
+      "comment": ""
+    },
+    {
+      "license": "LGPL-2+\n On Debian systems the full text of the GNU Lesser General Public\n License can be found in the `/usr/share/common-licenses/LGPL-2'\n file.",
+      "comment": ""
+    }
+  ]
+}
