@@ -1,0 +1,10 @@
+about_resource: version.py
+name: pydpkg
+copyright: Copyright [2017] The Climate Corporation (https://climate.com)
+
+notes: This has been substantially modified and enhanced from the original python-dpkg
+ to extract the version comparison codeoriginall in the Dpkg class.
+
+license_expression: apache-2.0
+homepage_url: https://github.com/TheClimateCorporation/python-dpkg
+download_url: https://github.com/TheClimateCorporation/python-dpkg/blob/45721a447c6b5fd638db50e685d1b8380aac7d66/pydpkg/__init__.py
