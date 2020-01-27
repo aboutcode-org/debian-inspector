@@ -1,41 +1,14 @@
+#
+# Copyright (c) nexB Inc. and others.
+# http://nexb.com and https://github.com/nexB/debut/
+
 # Copyright [2017] The Climate Corporation (https://climate.com)
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
 
 # Copyright (c) 2018 Peter Odding
-#
-# Permission is hereby granted, free of charge, to any person obtaining
-# a copy of this software and associated documentation files (the
-# "Software"), to deal in the Software without restriction, including
-# without limitation the rights to use, copy, modify, merge, publish,
-# distribute, sublicense, and/or sell copies of the Software, and to
-# permit persons to whom the Software is furnished to do so, subject to
-# the following conditions:
-#
-# The above copyright notice and this permission notice shall be
-# included in all copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-# EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-# MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-# NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-# LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-# OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-# WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+# Author: Peter Odding <peter@peterodding.com>
+# URL: https://github.com/xolox/python-deb-pkg-tools
 
-# Debian packaging tools: Version comparison.
-# Original-Author: Peter Odding <peter@peterodding.com>
-# Original-URL: https://github.com/xolox/python-deb-pkg-tools
+# SPDX-License-Identifier: Apache-2.0 AND MIT
 
 
 from __future__ import absolute_import
@@ -43,26 +16,26 @@ from __future__ import unicode_literals
 
 from functools import cmp_to_key
 
+from attr import asdict
 from attr import attrs
 from attr import attrib
-from attr import asdict
 
 
 """
 Parse, compare and sort Debian package versions.
 
 This module is an implementation of the version comparison and sorting algorithm
-described at 
+described at
 https://www.debian.org/doc/debian-policy/ch-controlfields.html#s-f-Version
 
 This has been substantially modified and enhanced from the original python-dpkg
-Dpkg class by Nathan J. Meh to extract the version comparison code from
-https://github.com/TheClimateCorporation/python-dpkg ... So much so that little
-of this code still looks like the original. This is Apache-licensed
+Dpkg class by Nathan J. Meh and team from The Climate Corporation to extract
+only the subset that does the version comparison
+https://github.com/TheClimateCorporation/python-dpkg ...
+So much so that little of this code may still looks like the original.
 
 In addition code from python-deb-pkg-tools by Peter Odding <peter@peterodding.com>
 at https://github.com/xolox/python-deb-pkg-tools has also been mixed in.
-This is MIT-licensed 
 
 
 Some examples:
@@ -131,7 +104,7 @@ class Version(object):
         else:
             template = '{upstream}'
 
-        if self.revision is not None and self.revision !='0':
+        if self.revision is not None and self.revision != '0':
             template += '-{revision}'
 
         return template.format(**self.to_dict())
@@ -198,9 +171,6 @@ def eval_constraint(version1, operator, version2):
     # Debian packaging tools: Version comparison.
     # Origial-Author: Peter Odding <peter@peterodding.com>
     # Origial-URL: https://github.com/xolox/python-deb-pkg-tools
-
-#     if operator == '=':
-#         return str(version1) == str(version2)
 
     result = compare_versions(version1, version2)
 
@@ -358,7 +328,7 @@ def compare_revisions(a, b):
     Compare two revision strings as described at
     https://www.debian.org/doc/debian-policy/ch-controlfields.html#s-f-Version
     and return cmp-like values.
-    
+
     Return 0 id a==b, 1 if a>b and -1 if a<b.
     """
     if a == b:

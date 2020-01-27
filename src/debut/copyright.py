@@ -1,16 +1,9 @@
+#
+# Copyright (c) nexB Inc. and others.
+# http://nexb.com and https://github.com/nexB/debut/
 
-# Copyright (c) nexB Inc. and others. All rights reserved.
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+# SPDX-License-Identifier: Apache-2.0
+
 
 from __future__ import absolute_import
 from __future__ import print_function
@@ -25,10 +18,9 @@ except ImportError:
     from collections import Mapping
     from collections import MutableMapping
     from collections import Sequence
+
 from email import utils as email_utils
-import io
 import itertools
-import re
 import sys
 
 if sys.version_info[:2] >= (3, 6):
@@ -40,11 +32,9 @@ from attr import attrs
 from attr import attrib
 from attr import Factory
 from attr import fields_dict
-import chardet
 
 from debut import debcon
 from debut import control
-from debut import unsign
 
 
 """

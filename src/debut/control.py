@@ -1,38 +1,18 @@
-# Debian packaging tools: Control file manipulation.
 #
-# Author: Peter Odding <peter@peterodding.com>
-# Last Change: February 25, 2018
-# URL: https://github.com/xolox/python-deb-pkg-tools
+# Copyright (c) nexB Inc. and others.
+# http://nexb.com and https://github.com/nexB/debut/
 
 # Copyright (c) 2018 Peter Odding
-#
-# Permission is hereby granted, free of charge, to any person obtaining
-# a copy of this software and associated documentation files (the
-# "Software"), to deal in the Software without restriction, including
-# without limitation the rights to use, copy, modify, merge, publish,
-# distribute, sublicense, and/or sell copies of the Software, and to
-# permit persons to whom the Software is furnished to do so, subject to
-# the following conditions:
-#
-# The above copyright notice and this permission notice shall be
-# included in all copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-# EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-# MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-# NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-# LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-# OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-# WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+# Author: Peter Odding <peter@peterodding.com>
+# URL: https://github.com/xolox/python-deb-pkg-tools
+
+# SPDX-License-Identifier: Apache-2.0 AND MIT
 
 
 """
 Functions to manipulate Debian control files.
-
-The functions in the :mod:`debut.control` module can be used to
-manipulate Debian control files. It was developed specifically for control
-files of binary packages, however the code is very generic.
 """
+
 from __future__ import absolute_import
 from __future__ import print_function
 from __future__ import unicode_literals

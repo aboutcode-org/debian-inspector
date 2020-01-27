@@ -1,35 +1,13 @@
-# Debian packaging tools: Package manipulation.
 #
-# Author: Peter Odding <peter@peterodding.com>
-# Last Change: February 25, 2018
-# URL: https://github.com/xolox/python-deb-pkg-tools
-#
-# Copyright (c) 2018 Peter Odding
-#
-# Permission is hereby granted, free of charge, to any person obtaining
-# a copy of this software and associated documentation files (the
-# "Software"), to deal in the Software without restriction, including
-# without limitation the rights to use, copy, modify, merge, publish,
-# distribute, sublicense, and/or sell copies of the Software, and to
-# permit persons to whom the Software is furnished to do so, subject to
-# the following conditions:
-#
-# The above copyright notice and this permission notice shall be
-# included in all copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-# EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-# MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-# NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-# LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-# OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-# WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-# Debian packaging tools: Relationship parsing and evaluation.
-#
+# Copyright (c) nexB Inc. and others.
+# http://nexb.com and https://github.com/nexB/debut/
 
-"""
-Functions to build and inspect Debian binary package archives (``*.deb``
-files)."""
+# Copyright (c) 2018 Peter Odding
+# Author: Peter Odding <peter@peterodding.com>
+# URL: https://github.com/xolox/python-deb-pkg-tools
+
+# SPDX-License-Identifier: Apache-2.0 AND MIT
+
 
 from __future__ import absolute_import
 from __future__ import print_function
@@ -38,7 +16,6 @@ from __future__ import unicode_literals
 import itertools
 from os import path
 import sys
-
 if sys.version_info[:2] >= (3, 6):
     OrderedDict = dict
 else:
@@ -46,9 +23,13 @@ else:
 
 from attr import attrs
 from attr import attrib
-from attr import Factory
 
 from debut.version import Version
+
+
+"""
+Functions to build and inspect Debian binary package archives (``*.deb``
+files)."""
 
 
 # The names of control file fields that specify dependencies.

@@ -1,29 +1,27 @@
-# Author: Peter Odding <peter@peterodding.com>
-# Last Change: February 2, 2017
-# URL: https://github.com/xolox/python-deb-pkg-tools
 #
+# Copyright (c) nexB Inc. and others.
+# http://nexb.com and https://github.com/nexB/debut/
+
 # Copyright (c) 2018 Peter Odding
-#
-# Permission is hereby granted, free of charge, to any person obtaining
-# a copy of this software and associated documentation files (the
-# "Software"), to deal in the Software without restriction, including
-# without limitation the rights to use, copy, modify, merge, publish,
-# distribute, sublicense, and/or sell copies of the Software, and to
-# permit persons to whom the Software is furnished to do so, subject to
-# the following conditions:
-#
-# The above copyright notice and this permission notice shall be
-# included in all copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-# EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-# MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-# NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-# LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-# OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-# WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-# Debian packaging tools: Relationship parsing and evaluation.
-#
+# Author: Peter Odding <peter@peterodding.com>
+# URL: https://github.com/xolox/python-deb-pkg-tools
+
+# SPDX-License-Identifier: Apache-2.0 AND MIT
+
+
+from __future__ import absolute_import
+from __future__ import print_function
+from __future__ import unicode_literals
+
+import re
+
+from attr import asdict
+from attr import attrs
+from attr import attrib
+
+from debut import version as dversion
+
+
 
 """
 Parse and evaluate Debian package relationship aka. dependencies.
@@ -32,10 +30,6 @@ This module provides functions to parse and evaluate Debian package relationship
 declarations as defined in `chapter 7` of the Debian policy manual.
 http://www.debian.org/doc/debian-policy/ch-relationships.html#s-depsyntax
 
-The main function is :func:`parse_depends()` that builds a
-:class:`AndRelationships` object. The :func:`AndRelationships.matches()` evaluates
-relationship expressions. Relationship evaluation uses the debut.version module
-to handle Debian's package version comparison algorithm.
 
 Examples:
 
@@ -60,17 +54,6 @@ As you can see the :func:`repr()` output of the relationship set shows the
 object tree and the :class:`str` output is the dependency line.
 """
 
-from __future__ import absolute_import
-from __future__ import print_function
-from __future__ import unicode_literals
-
-import re
-
-from attr import asdict
-from attr import attrs
-from attr import attrib
-
-from debut import version as dversion
 
 
 # Define a compiled regular expression pattern that we will use to match
@@ -91,9 +74,7 @@ parse_package_relationship_expression = re.compile(r'''
 ''', re.VERBOSE).match
 
 
-ARCHITECTURE_RESTRICTIONS_MESSAGE = """
-Evaluation of architecture restrictions is not implemented.
-"""
+ARCHITECTURE_RESTRICTIONS_MESSAGE = "Architecture constraint is not implemented."
 
 
 def parse_depends(relationships):

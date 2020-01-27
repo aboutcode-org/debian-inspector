@@ -1,16 +1,8 @@
+#
+# Copyright (c) nexB Inc. and others.
+# http://nexb.com and https://github.com/nexB/debut/
 
-# Copyright (c) nexB Inc. and others. All rights reserved.
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+# SPDX-License-Identifier: Apache-2.0
 
 from __future__ import absolute_import
 from __future__ import print_function
@@ -27,7 +19,6 @@ except ImportError:
     from collections import Sequence
 import email
 import io
-import itertools
 import re
 import sys
 
@@ -380,7 +371,7 @@ class MaintainerField(FieldMixin):
         name = email_address = None
         if value:
             value = value.strip()
-            name, email_address = email.utils.parseaddr(value)
+            name, email_address = email.utils.parseaddr(value)  # NOQA
             if not name:
                 name = value
                 email_address = None
