@@ -11,53 +11,50 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 import fnmatch
 import os
-from os.path import join, normpath, abspath, relpath, basename, dirname
-from dlt import utils
+from os import path
+from debut.copyright import CopyrightFilesParagraph
 
 
 class Coverage(object):
+    """
+    Helper to compute the "coverage" of a copyright file "files" paragraph. This
+    is used to check if all files in a directory are referenced by a one of the
+    patterns in a "files" field.
+    """
+
+    # TODO: add support for excludes!!!
     def __init__(self, paragraphs, directory):
-        self._paragraphs = paragraphs
-        self._directory = directory
-        self._unmatch = set()
-        self._match = {}
+        self.paragraphs = paragraphs
+        self.directory = directory
+        self.unmatched = set()
+        self.matched = {}
 
-    def show_msg(self):
-        if len(self._unmatch) > 0:
-            print('The files listed below are not associated with any license')
-        for filename_unmatch in self._unmatch:
-            print('\t{}'.format(filename_unmatch))
+    def is_perfect(self):
+        matched, unmatched = self.compute()
+        return matched and not unmatched
 
-    def get_rule_associated(self, filename):
-        filename = abspath(normpath(filename))
-        root = relpath(dirname(filename), self._directory)
-        filename = join(root, basename(filename))
-        match = fnmatch.filter(self._match.keys(), filename)
-        if match:
-            return self._match[match[0]]
-        return None
-
-
-    def apply(self):
-        self._get_matches()
-        return not bool(len(self._unmatch))
-
-    def _get_matches(self):
-        paragraphs = []
-        for paragraph in utils.get_by_type(self._paragraphs, "files"):
-            paragraphs.append((paragraph, paragraph.patterns))
-        for root, dirs, files in os.walk(self._directory, topdown=True):
-            root = relpath(root, self._directory)
-            paths = [join(root, filename) for filename in files]
-            self._unmatch |= set(paths)
-            for paragraph, patterns in paragraphs:
-                for pattern in patterns:
+    def compute(self):
+        """
+        Compute the coverage and update self.
+        """
+        paragraphs = [p for p in self.paragraphs 
+                      if isinstance(p, CopyrightFilesParagraph)]
+        
+        for root, _dirs, files in os.walk(self.directory, topdown=True):
+            root = path.relpath(root, self.directory)
+            paths = [path.join(root, filename) for filename in files]
+            self.unmatch |= set(paths)
+            for paragraph in paragraphs:
+                for pattern in paragraph.files:
                     goodfiles = []
-                    if pattern.find(os.path.sep) == -1:
-                        pattern_norm = os.path.join(os.path.curdir, pattern)
+                    if pattern.find(path.sep) == -1:
+                        pattern_norm = path.join(path.curdir, pattern)
                         goodfiles.extend(fnmatch.filter(paths, pattern_norm))
                     goodfiles.extend(fnmatch.filter(paths, pattern))
-                    self._unmatch -= set(goodfiles)
-                    self._match.update({f: paragraph for f in goodfiles})
+                    self.unmatched -= set(goodfiles)
+                    self.matched.update({f: paragraph for f in goodfiles})
+
+        return self.matched, self.unmatched
