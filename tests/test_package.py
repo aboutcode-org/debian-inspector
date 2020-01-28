@@ -16,7 +16,6 @@ from __future__ import unicode_literals
 from os import path
 import unittest
 
-from debut import control
 from debut import debcon
 from debut import deps
 from debut import package
@@ -117,7 +116,7 @@ class ControlTestCase(unittest.TestCase):
             ('Depends', 'python-deb-pkg-tools, python-pip, python-pip-accel'),
             ('Installed-Size', '42'),
         ])
-        parsed_info = control.parse_control_fields(deb822_package)
+        parsed_info = debcon.parse_control_fields(deb822_package)
         expected = {
             'Package': 'python-py2deb',
             'Depends': deps.AndRelationships((
@@ -130,7 +129,7 @@ class ControlTestCase(unittest.TestCase):
         assert expected == parsed_info
 
     def test_parse_control_fields_2(self):
-        unparsed_fields = control.deb822_from_string('''
+        unparsed_fields = debcon.deb822_from_string('''
 Package: python3.4-minimal
 Version: 3.4.0-1+precise1
 Architecture: amd64
@@ -158,7 +157,7 @@ Conflicts: binfmt-support (<< 1.1.2)
 
         assert expected == unparsed_fields.to_dict(normalize_names=True)
 
-        parsed_fields = tuple(control.parse_control_fields(unparsed_fields).items())
+        parsed_fields = tuple(debcon.parse_control_fields(unparsed_fields).items())
 
         expected = (
             ('Package', 'python3.4-minimal'),
