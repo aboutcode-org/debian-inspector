@@ -621,6 +621,12 @@ class Debian822(MutableMapping):
             if isinstance(data, Mapping):
                     paragraph = OrderedDict((k.lower(), v) for k, v in data.items())
 
+            elif isinstance(data, str):
+                text = data
+
+            elif hasattr(data, 'read'):
+                text = data.read()
+
             elif isinstance(data, Sequence):
                 # a sequence should be a sequence of items or sequence of string
                 # (before the : split)
@@ -628,16 +634,10 @@ class Debian822(MutableMapping):
                 first = seq[0]
                 if isinstance(first, str):
                     seq = (s.partition(': ') for s in seq)
-                    paragraph = OrderedDict([(k.lower(), v) for v, _, v in seq])
+                    paragraph = OrderedDict([(k.lower(), v) for k, _, v in seq])
                 else:
                     # seq of (k, v) items
                     paragraph = OrderedDict((k.lower(), v) for k, v in data)
-
-            elif hasattr(data, 'read'):
-                text = data.read()
-
-            elif isinstance(data, str):
-                text = data
 
             else:
                 raise TypeError(
@@ -675,8 +675,15 @@ class Debian822(MutableMapping):
             raise ValueError('Location has no parsable data: {}'.format(location))
         return Debian822(data)
 
-    def to_dict(self):
-        return dict(self.data)
+    def to_dict(self, normalize_names=False):
+        if normalize_names:
+            return OrderedDict((control.normalize_control_field_name(key), value)
+                for key, value in self.data.items())
+        else:
+            return OrderedDict(self.data)
+
+    def __repr__(self):
+        return self.dumps()
 
     def dumps(self):
         """
@@ -684,11 +691,11 @@ class Debian822(MutableMapping):
         meant to be a high fidelity rendering and not meant to be used as-is in
         control files.
         """
-        text = []
+        lines = []
         for key, value in self.items():
             key = control.normalize_control_field_name(key)
-            text.append('{}: {}'.format(key, value))
-        text = '\n'.join(text) + '\n'
+            lines.append('{}: {}'.format(key, value))
+        text = '\n'.join(lines) + '\n'
         return text
 
     def dump(self, file_like=None):

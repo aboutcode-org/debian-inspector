@@ -40,9 +40,9 @@ class Coverage(object):
         """
         Compute the coverage and update self.
         """
-        paragraphs = [p for p in self.paragraphs 
+        paragraphs = [p for p in self.paragraphs
                       if isinstance(p, CopyrightFilesParagraph)]
-        
+
         for root, _dirs, files in os.walk(self.directory, topdown=True):
             root = path.relpath(root, self.directory)
             paths = [path.join(root, filename) for filename in files]

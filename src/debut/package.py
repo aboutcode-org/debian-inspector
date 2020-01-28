@@ -51,17 +51,6 @@ class DebArchive(object):
         """
         Parse the filename of a Debian binary package archive and return a DebArchive instance.
         Raise ValueError if the `filename` is not valid.
-
-        For example::
-
-        >>> from debut import package
-        >>> components = packageDevArchive.from_filename('/var/cache/apt/archives/python2.7_2.7.3-0ubuntu3.4_amd64.deb')
-        >>> print(repr(components))
-        DebArchive(name='python2.7',
-                   version='2.7.3-0ubuntu3.4',
-                   architecture='amd64',
-                   original_filename='/var/cache/apt/archives/python2.7_2.7.3-0ubuntu3.4_amd64.deb')
-
         """
         if isinstance(filename, DebArchive):
             return filename

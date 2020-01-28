@@ -17,6 +17,11 @@ from __future__ import absolute_import
 from __future__ import print_function
 from __future__ import unicode_literals
 
+import sys
+if sys.version_info[:2] >= (3, 6):
+    OrderedDict = dict
+else:
+    from collections import OrderedDict
 import textwrap
 
 from debut import debcon
@@ -74,56 +79,8 @@ def parse_control_fields(input_fields, deps_fields=DEPS_FIELDS):
     - The value of some fields such as `Installed-Size` from a string to a
     native type (here an integer).
 
-    Let's look at an example. We start with the raw control file contents so
-    you can see the complete input:
-
-    >>> from debut.control import deb822_from_string
-    >>> unparsed_fields = deb822_from_string('''
-    ... Package: python3.4-minimal
-    ... Version: 3.4.0-1+precise1
-    ... Architecture: amd64
-    ... Installed-Size: 3586
-    ... Pre-Depends: libc6 (>= 2.15)
-    ... Depends: libpython3.4-minimal (= 3.4.0-1+precise1), libexpat1 (>= 1.95.8), libgcc1 (>= 1:4.1.1), zlib1g (>= 1:1.2.0), foo | bar
-    ... Recommends: python3.4
-    ... Suggests: binfmt-support
-    ... Conflicts: binfmt-support (<< 1.1.2)
-    ... ''')
-
-    Here are the control file fields as parsed in dictionary:
-
-    >>> print(repr(unparsed_fields))
-    {'Architecture': u'amd64',
-     'Conflicts': u'binfmt-support (<< 1.1.2)',
-     'Depends': u'libpython3.4-minimal (= 3.4.0-1+precise1), libexpat1 (>= 1.95.8), libgcc1 (>= 1:4.1.1), zlib1g (>= 1:1.2.0), foo | bar',
-     'Installed-Size': u'3586',
-     'Package': u'python3.4-minimal',
-     'Pre-Depends': u'libc6 (>= 2.15)',
-     'Recommends': u'python3.4',
-     'Suggests': u'binfmt-support',
-     'Version': u'3.4.0-1+precise1'}
-
-    Notice the value of the `Depends` line is a comma separated string, i.e. it
-    hasn't been parsed. Now here are the control file fields parsed:
-
-    >>> from debut.control import parse_control_fields
-    >>> parsed_fields = parse_control_fields(unparsed_fields)
-    >>> print(repr(parsed_fields))
-    {'Architecture': u'amd64',
-     'Conflicts': RelationshipSet(VersionedRelationship(name=u'binfmt-support', operator=u'<<', version=u'1.1.2')),
-     'Depends': RelationshipSet(VersionedRelationship(name=u'libpython3.4-minimal', operator=u'=', version=u'3.4.0-1+precise1'),
-                                VersionedRelationship(name=u'libexpat1', operator=u'>=', version=u'1.95.8'),
-                                VersionedRelationship(name=u'libgcc1', operator=u'>=', version=u'1:4.1.1'),
-                                VersionedRelationship(name=u'zlib1g', operator=u'>=', version=u'1:1.2.0'),
-                                OrRelationships((Relationship(name=u'foo'), Relationship(name=u'bar')))),
-     'Installed-Size': 3586,
-     'Package': u'python3.4-minimal',
-     'Pre-Depends': AndRelationships((VersionedRelationship(name=u'libc6', operator=u'>=', version=u'2.15'))),
-     'Recommends': u'python3.4',
-     'Suggests': AndRelationshipSet((Relationship(name=u'binfmt-support'))),
-     'Version': u'3.4.0-1+precise1'}
     """
-    output_fields = {}
+    output_fields = OrderedDict()
     for name, unparsed_value in input_fields.items():
         name = normalize_control_field_name(name)
         if name in deps_fields:

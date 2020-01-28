@@ -96,10 +96,22 @@ class VersionTestCase(unittest.TestCase):
         assert not V('0.5') != V('0:0.5')  # unusual semantics
 
 
+class DebArchiveTestCase(unittest.TestCase):
+
+    def test_DebArchive_from_filename(self):
+        fn = '/var/cache/apt/archives/python2.7_2.7.3-0ubuntu3.4_amd64.deb'
+        debarch = package.DebArchive.from_filename(fn)
+        expected = package.DebArchive(
+            name='python2.7',
+            version=version.Version(epoch=0, upstream='2.7.3', revision='0ubuntu3.4'),
+            architecture='amd64',
+            original_filename=fn)
+        assert expected == debarch
+
+
 class ControlTestCase(unittest.TestCase):
 
-    def test_control_field_parsing(self):
-        """Test the parsing of control file fields."""
+    def test_parse_control_fields_1(self):
         deb822_package = debcon.Debian822([
             ('Package', 'python-py2deb'),
             ('Depends', 'python-deb-pkg-tools, python-pip, python-pip-accel'),
@@ -117,3 +129,57 @@ class ControlTestCase(unittest.TestCase):
         }
         assert expected == parsed_info
 
+    def test_parse_control_fields_2(self):
+        unparsed_fields = control.deb822_from_string('''
+Package: python3.4-minimal
+Version: 3.4.0-1+precise1
+Architecture: amd64
+Installed-Size: 3586
+Pre-Depends: libc6 (>= 2.15)
+Depends: libpython3.4-minimal (= 3.4.0-1+precise1), libexpat1 (>= 1.95.8), libgcc1 (>= 1:4.1.1), zlib1g (>= 1:1.2.0), foo | bar
+Recommends: python3.4
+Suggests: binfmt-support
+Conflicts: binfmt-support (<< 1.1.2)
+''')
+
+        expected = {
+            'Architecture': 'amd64',
+            'Conflicts': 'binfmt-support (<< 1.1.2)',
+            'Depends': 'libpython3.4-minimal (= 3.4.0-1+precise1), libexpat1 (>= 1.95.8), '
+                       'libgcc1 (>= 1:4.1.1), zlib1g (>= 1:1.2.0), foo | bar',
+            'Installed-Size': '3586',
+            'Package': 'python3.4-minimal',
+            'Pre-Depends': 'libc6 (>= 2.15)',
+            'Recommends': 'python3.4',
+            'Suggests': 'binfmt-support',
+            'Version': '3.4.0-1+precise1',
+        }
+
+
+        assert expected == unparsed_fields.to_dict(normalize_names=True)
+
+        parsed_fields = tuple(control.parse_control_fields(unparsed_fields).items())
+
+        expected = (
+            ('Package', 'python3.4-minimal'),
+            ('Version', '3.4.0-1+precise1'),
+            ('Architecture', 'amd64'),
+            ('Installed-Size', 3586),
+            ('Pre-Depends', deps.AndRelationships(relationships=(
+                deps.VersionedRelationship(name='libc6', operator='>=', version='2.15'),))),
+            ('Depends', deps.AndRelationships(relationships=(
+                deps.VersionedRelationship(name='libpython3.4-minimal', operator='=', version='3.4.0-1+precise1'),
+                deps.VersionedRelationship(name='libexpat1', operator='>=', version='1.95.8'),
+                deps.VersionedRelationship(name='libgcc1', operator='>=', version='1:4.1.1'),
+                deps.VersionedRelationship(name='zlib1g', operator='>=', version='1:1.2.0'),
+                deps.OrRelationships(relationships=(
+                    deps.Relationship(name='foo'),
+                    deps.Relationship(name='bar')))))),
+            ('Recommends', deps.AndRelationships(relationships=(
+                deps.Relationship(name='python3.4'),))),
+            ('Suggests', deps.AndRelationships(relationships=(
+                deps.Relationship(name='binfmt-support'),))),
+            ('Conflicts', deps.AndRelationships(relationships=(
+                deps.VersionedRelationship(name='binfmt-support', operator='<<', version='1.1.2'),))),
+        )
+        assert expected == parsed_fields

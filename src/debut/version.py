@@ -79,7 +79,7 @@ class Version(object):
 
       >>> from debut.version import Version
       >>> unsorted = ['0.1', '0.5', '1.0', '2.0', '3.0', '1:0.4', '2:0.3']
-      >>> print(sorted(Version(s) for s in unsorted))
+      >>> print([str(v) for v in sorted(Version.from_string(s) for s in unsorted)])
       ['0.1', '0.5', '1.0', '2.0', '3.0', '1:0.4', '2:0.3']
 
     This example uses 'epoch' numbers (the numbers before the colons) to
@@ -108,6 +108,9 @@ class Version(object):
             template += '-{revision}'
 
         return template.format(**self.to_dict())
+
+    def __repr__(self, *args, **kwargs):
+        return str(self)
 
     def __hash__(self):
         return hash(str(self))

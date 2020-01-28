@@ -91,22 +91,8 @@ def parse_depends(relationships):
     Each expression is a package name/versions/arch constraint or a pipe-
     separated list of alternative.
 
-    Example::
-
-    >>> from debut.deps import parse_depends
-    >>> deps = parse_depends('python (>= 2.6), python (<< 3)')
-    >>> print(repr(dependencies))
-    AndRelationships((VersionedRelationship(name='python', operator='>=', version='2.6'),
-                      VersionedRelationship(name='python', operator='<<', version='3')))
-    >>> deps.matches('python', '2.5')
-    False
-    >>> deps.matches('python', '2.6')
-    True
-    >>> deps.matches('python', '2.7')
-    True
-    >>> deps.matches('python', '3.0')
-    False
     """
+
     if isinstance(relationships, str):
         relationships = (r.strip() for r in relationships.split(',') if r.strip())
 
@@ -123,15 +109,6 @@ def parse_alternatives(expression):
     tokens.
 
     Each pipe-separated sub-expression is parsed with `parse_relationship()`
-
-    An example:
-
-    >>> from debut.deps import parse_alternatives
-    >>> parse_alternatives('python2.6')
-    Relationship(name='python2.6')
-    >>> parse_alternatives('python2.6 | python2.7')
-    OrRelationships(Relationship(name='python2.6'),
-                            Relationship(name='python2.7'))
     """
     if '|' in expression:
         alternatives = (a.strip() for a in expression.split('|') if a.strip())
@@ -157,15 +134,17 @@ def parse_relationship(expression):
     This function parses relationship expressions containing a package name and
     (optionally) a version relation of the form ``python (>= 2.6)`` and/or an
     architecture restriction (refer to the Debian policy manual's documentation
-    on the `syntax of relationship fields`_ for details). Here's an example:
+    on the syntax of relationship fields for details).
+    https://www.debian.org/doc/debian-policy/ch-relationships.html
+
+    Here's an example:
 
     >>> from debut.deps import parse_relationship
     >>> parse_relationship('python')
-    Relationship(name='python')
+    Relationship(name='python', architectures=())
     >>> parse_relationship('python (<< 3)')
-    VersionedRelationship(name='python', operator='<<', version='3')
+    VersionedRelationship(name='python', operator='<<', version='3', architectures=())
 
-    .. _syntax of relationship fields: https://www.debian.org/doc/debian-policy/ch-relationships.html
     """
     pre = parse_package_relationship_expression(expression)
     name = pre.group('name')

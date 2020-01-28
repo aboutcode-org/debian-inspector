@@ -39,6 +39,30 @@ class DepsTestCase(unittest.TestCase):
         self.assertRaises(ValueError, deps.parse_depends, 'foo (bar) (baz)')
         self.assertRaises(ValueError, deps.parse_depends, 'foo (bar baz qux)')
 
+    def test_parse_depends(self):
+        depends = deps.parse_depends('python (>= 2.6), python (<< 3)')
+        expected = deps.AndRelationships(relationships=(
+            deps.VersionedRelationship(name='python', operator='>=', version='2.6'),
+            deps.VersionedRelationship(name='python', operator='<<', version='3'))
+        )
+        assert expected == depends
+        assert not depends.matches('python', '2.5')
+        assert depends.matches('python', '2.6')
+        assert depends.matches('python', '2.7')
+
+    def test_parse_alternatives_with_no_alternative(self):
+        depends = deps.parse_alternatives('python2.6')
+        expected = deps.Relationship(name='python2.6')
+        assert expected == depends
+
+    def test_parse_alternatives(self):
+        depends = deps.parse_alternatives('python2.6 | python2.7')
+        expected = deps.OrRelationships(relationships=(
+            deps.Relationship(name='python2.6'),
+            deps.Relationship(name='python2.7'))
+        )
+        assert expected == depends
+
     def test_architecture_restriction_parsing(self):
         """Test the parsing of architecture restrictions."""
         relationship_set = deps.parse_depends('qux [i386 amd64]')
