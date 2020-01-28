@@ -12,15 +12,6 @@ from __future__ import unicode_literals
 import os.path
 import json
 import shutil
-import sys
-
-if sys.version_info[:2] >= (3, 6):
-    OrderedDict = dict
-else:
-    from collections import OrderedDict
-
-from commoncode.system import py2
-from commoncode.system import py3
 from commoncode import testcase
 
 
@@ -36,11 +27,7 @@ class JsonTester(testcase.FileBasedTesting):
 
         if regen:
             regened_exp_loc = self.get_temp_file()
-            if py2:
-                wmode = 'wb'
-            if py3:
-                wmode = 'w'
-            with open(regened_exp_loc, wmode) as ex:
+            with open(regened_exp_loc, 'w') as ex:
                 json.dump(results, ex, indent=2, separators=(',', ': '))
 
             expected_dir = os.path.dirname(expected_loc)
@@ -49,7 +36,7 @@ class JsonTester(testcase.FileBasedTesting):
             shutil.copy(regened_exp_loc, expected_loc)
 
         with open(expected_loc, 'rb') as ex:
-            expected = json.load(ex, encoding='utf-8', object_pairs_hook=OrderedDict)
+            expected = json.load(ex, encoding='utf-8')
 
         assert json.dumps(expected, indent=2) == json.dumps(results, indent=2)
 

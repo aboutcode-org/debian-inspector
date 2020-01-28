@@ -25,12 +25,6 @@ except ImportError:
 import email
 import io
 import re
-import sys
-import sys
-if sys.version_info[:2] >= (3, 6):
-    OrderedDict = dict
-else:
-    from collections import OrderedDict
 import textwrap
 
 from attr import attrs
@@ -400,8 +394,8 @@ class ParagraphMixin(FieldMixin):
     def from_dict(cls, data):
         assert isinstance(data, dict)
         known_names = list(fields_dict(cls))
-        known_data = OrderedDict()
-        known_data['extra_data'] = extra_data = OrderedDict()
+        known_data = {}
+        known_data['extra_data'] = extra_data = {}
         for key, value in data.items():
             key = key.replace('-', '_')
             if value:
@@ -415,7 +409,7 @@ class ParagraphMixin(FieldMixin):
         return cls(**known_data)
 
     def to_dict(self):
-        data = OrderedDict()
+        data = {}
         for field_name in fields_dict(self.__class__):
             if field_name == 'extra_data':
                 continue
@@ -457,20 +451,20 @@ class CatchAllParagraph(ParagraphMixin):
     A catch-all paragraph: everything is fed to the extra_data. Every field is
     treated as formatted text.
     """
-    extra_data = attrib(default=Factory(OrderedDict))
+    extra_data = attrib(default=Factory(dict))
 
     @classmethod
     def from_dict(cls, data):
         # Stuff all data in the extra_data mapping as FormattedTextField
         assert isinstance(data, dict)
-        known_data = OrderedDict()
+        known_data = {}
         for key, value in data.items():
             key = key.replace('-', '_')
             known_data[key] = FormattedTextField.from_value(value)
         return cls(extra_data=known_data)
 
     def to_dict(self):
-        data = OrderedDict()
+        data = {}
         for field_name, field_value in self.extra_data.items():
             if field_value:
                 if hasattr(field_value, 'dumps'):
@@ -537,7 +531,7 @@ def get_paragraph_data(text, remove_pgp_signature=False,):
     if not items or mls.defects:
         return {'unknown': text}
 
-    data = OrderedDict()
+    data = {}
     for name, value in items:
         name = name.lower().strip()
         value = value.strip()
@@ -624,7 +618,7 @@ class Debian822(MutableMapping):
         if data:
             text = None
             if isinstance(data, Mapping):
-                    paragraph = OrderedDict((k.lower(), v) for k, v in data.items())
+                    paragraph = {k.lower(): v for k, v in data.items()}
 
             elif isinstance(data, str):
                 text = data
@@ -639,10 +633,10 @@ class Debian822(MutableMapping):
                 first = seq[0]
                 if isinstance(first, str):
                     seq = (s.partition(': ') for s in seq)
-                    paragraph = OrderedDict([(k.lower(), v) for k, _, v in seq])
+                    paragraph = {k.lower(): v for k, _, v in seq}
                 else:
                     # seq of (k, v) items
-                    paragraph = OrderedDict((k.lower(), v) for k, v in data)
+                    paragraph = {k.lower(): v for k, v in data}
 
             else:
                 raise TypeError(
@@ -655,7 +649,7 @@ class Debian822(MutableMapping):
 
             self.data = paragraph
         else:
-            self.data = OrderedDict()
+            self.data = {}
 
     def __getitem__(self, key):
         return self.data.__getitem__(key.lower())
@@ -682,10 +676,10 @@ class Debian822(MutableMapping):
 
     def to_dict(self, normalize_names=False):
         if normalize_names:
-            return OrderedDict((normalize_control_field_name(key), value)
-                for key, value in self.data.items())
+            return {normalize_control_field_name(key): value
+                for key, value in self.data.items()}
         else:
-            return OrderedDict(self.data)
+            return dict(self.data)
 
     def __repr__(self):
         return self.dumps()
@@ -766,7 +760,7 @@ def parse_control_fields(input_fields, deps_fields=DEPS_FIELDS):
 
     """
     from debut import deps
-    output_fields = OrderedDict()
+    output_fields = {}
     for name, unparsed_value in input_fields.items():
         name = normalize_control_field_name(name)
         if name in deps_fields:

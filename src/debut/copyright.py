@@ -9,24 +9,12 @@ from __future__ import absolute_import
 from __future__ import print_function
 from __future__ import unicode_literals
 
-try:
-    from collections.abc import Mapping
-    from collections.abc import MutableMapping
-    from collections.abc import Sequence
-except ImportError:
-    # Python 2
-    from collections import Mapping
-    from collections import MutableMapping
-    from collections import Sequence
+from collections.abc import Mapping
+from collections.abc import MutableMapping
+from collections.abc import Sequence
 
 from email import utils as email_utils
 import itertools
-import sys
-
-if sys.version_info[:2] >= (3, 6):
-    OrderedDict = dict
-else:
-    from collections import OrderedDict
 
 from attr import attrs
 from attr import attrib
@@ -34,7 +22,6 @@ from attr import Factory
 from attr import fields_dict
 
 from debut import debcon
-from debut import control
 
 
 """
@@ -197,8 +184,8 @@ class ParagraphMixin(debcon.FieldMixin):
     def from_dict(cls, data):
         assert isinstance(data, dict)
         known_names = list(fields_dict(cls))
-        known_data = OrderedDict()
-        known_data['extra_data'] = extra_data = OrderedDict()
+        known_data = {}
+        known_data['extra_data'] = extra_data = {}
         for key, value in data.items():
             key = key.replace('-', '_')
             if value:
@@ -212,7 +199,7 @@ class ParagraphMixin(debcon.FieldMixin):
         return cls(**known_data)
 
     def to_dict(self):
-        data = OrderedDict()
+        data = {}
         for field_name in fields_dict(self.__class__):
             if field_name == 'extra_data':
                 continue
@@ -234,7 +221,7 @@ class ParagraphMixin(debcon.FieldMixin):
         for field_name, field_value in self.to_dict().items():
             if field_value:
                 field_name = field_name.replace('_', '-')
-                field_name = control.normalize_control_field_name(field_name)
+                field_name = debcon.normalize_control_field_name(field_name)
                 text.append('{}: {}'.format(field_name, field_value))
         return '\n'.join(text).strip()
 
@@ -254,20 +241,20 @@ class CatchAllParagraph(ParagraphMixin):
     A catch-all paragraph: everything is fed to the extra_data. Every field is
     treated as formatted text.
     """
-    extra_data = attrib(default=Factory(OrderedDict))
+    extra_data = attrib(default=Factory(dict))
 
     @classmethod
     def from_dict(cls, data):
         # Stuff all data in the extra_data mapping as FormattedTextField
         assert isinstance(data, dict)
-        known_data = OrderedDict()
+        known_data = {}
         for key, value in data.items():
             key = key.replace('-', '_')
             known_data[key] = debcon.FormattedTextField.from_value(value)
         return cls(extra_data=known_data)
 
     def to_dict(self):
-        data = OrderedDict()
+        data = {}
         for field_name, field_value in self.extra_data.items():
             if field_value:
                 if hasattr(field_value, 'dumps'):
@@ -302,7 +289,7 @@ class CopyrightHeaderParagraph(ParagraphMixin):
     files_excluded = debcon.AnyWhiteSpaceSeparatedField.attrib(default=None)
 
     # this is an overflow of extra unknown fields for this paragraph
-    extra_data = attrib(default=Factory(OrderedDict))
+    extra_data = attrib(default=Factory(dict))
 
     @staticmethod
     def is_valid_format(text):
@@ -329,7 +316,7 @@ class CopyrightFilesParagraph(ParagraphMixin):
     comment = debcon.FormattedTextField.attrib(default=None)
 
     # this is an overflow of extra unknown fields for this paragraph
-    extra_data = attrib(default=Factory(OrderedDict))
+    extra_data = attrib(default=Factory(dict))
 
     def dumps(self):
         if self.is_empty():
@@ -364,7 +351,7 @@ class CopyrightLicenseParagraph(ParagraphMixin):
     comment = debcon.FormattedTextField.attrib(default=None)
 
     # this is an overflow of extra unknown fields for this paragraph
-    extra_data = attrib(default=Factory(OrderedDict))
+    extra_data = attrib(default=Factory(dict))
 
     def is_empty(self):
         """
@@ -428,7 +415,7 @@ class DebianCopyright(object):
         return dumped + '\n'
 
     def to_dict(self):
-        data = OrderedDict()
+        data = {}
         data['paragraphs'] = [p.to_dict() for p in self.paragraphs]
         return data
 

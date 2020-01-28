@@ -15,11 +15,6 @@ from __future__ import unicode_literals
 
 import itertools
 from os import path
-import sys
-if sys.version_info[:2] >= (3, 6):
-    OrderedDict = dict
-else:
-    from collections import OrderedDict
 
 from attr import attrs
 from attr import attrib
@@ -74,7 +69,7 @@ class DebArchive(object):
             original_filename=original_filename)
 
     def to_dict(self):
-        data = OrderedDict()
+        data = {}
         data['name'] = self.name
         data['version'] = self.version
         data['architecture'] = self.architecture
