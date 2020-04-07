@@ -45,20 +45,23 @@ class Testunsign(TestCase):
         assert unsign.is_signed(COMPACT)
         assert EXPECTED_COMPACT == unsign.remove_signature(COMPACT)
 
-    def test_is_signed(self):
+    def test_is_signed1(self):
         text = '''
         -----BEGIN PGP SIGNED MESSAGE-----
         -----END PGP SIGNATURE-----
         '''
         assert unsign.is_signed(text)
 
+    def test_is_signed2(self):
         text = '''-----BEGIN PGP SIGNED MESSAGE-----
         -----END PGP SIGNATURE-----'''
         assert unsign.is_signed(text)
 
+    def test_is_signed3(self):
         text = '''-----BEGIN PGP SIGNED MESSAGE-----'''
         assert not unsign.is_signed(text)
 
+    def test_is_signed4(self):
         text = '''-----END PGP SIGNATURE-----'''
         assert not unsign.is_signed(text)
 

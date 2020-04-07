@@ -157,28 +157,30 @@ Conflicts: binfmt-support (<< 1.1.2)
 
         assert expected == unparsed_fields.to_dict(normalize_names=True)
 
-        parsed_fields = tuple(debcon.parse_control_fields(unparsed_fields).items())
+        parsed_fields = debcon.parse_control_fields(unparsed_fields)
 
-        expected = (
-            ('Package', 'python3.4-minimal'),
-            ('Version', '3.4.0-1+precise1'),
-            ('Architecture', 'amd64'),
-            ('Installed-Size', 3586),
-            ('Pre-Depends', deps.AndRelationships(relationships=(
-                deps.VersionedRelationship(name='libc6', operator='>=', version='2.15'),))),
-            ('Depends', deps.AndRelationships(relationships=(
-                deps.VersionedRelationship(name='libpython3.4-minimal', operator='=', version='3.4.0-1+precise1'),
-                deps.VersionedRelationship(name='libexpat1', operator='>=', version='1.95.8'),
-                deps.VersionedRelationship(name='libgcc1', operator='>=', version='1:4.1.1'),
-                deps.VersionedRelationship(name='zlib1g', operator='>=', version='1:1.2.0'),
+        expected = {
+            'Architecture': 'amd64',
+            'Conflicts': deps.AndRelationships(relationships=(
+                deps.VersionedRelationship(name=u'binfmt-support', operator=u'<<', version=u'1.1.2')
+            ,)),
+            'Depends': deps.AndRelationships(relationships=(
+                deps.VersionedRelationship(name=u'libpython3.4-minimal', operator=u'=', version=u'3.4.0-1+precise1'), 
+                deps.VersionedRelationship(name=u'libexpat1', operator=u'>=', version=u'1.95.8'), 
+                deps.VersionedRelationship(name=u'libgcc1', operator=u'>=', version=u'1:4.1.1'), 
+                deps.VersionedRelationship(name=u'zlib1g', operator=u'>=', version=u'1:1.2.0'), 
                 deps.OrRelationships(relationships=(
-                    deps.Relationship(name='foo'),
-                    deps.Relationship(name='bar')))))),
-            ('Recommends', deps.AndRelationships(relationships=(
-                deps.Relationship(name='python3.4'),))),
-            ('Suggests', deps.AndRelationships(relationships=(
-                deps.Relationship(name='binfmt-support'),))),
-            ('Conflicts', deps.AndRelationships(relationships=(
-                deps.VersionedRelationship(name='binfmt-support', operator='<<', version='1.1.2'),))),
-        )
+                    deps.Relationship(name=u'foo'), 
+                    deps.Relationship(name=u'bar')
+                ,))
+            ),),
+            'Installed-Size': 3586,
+            'Package': 'python3.4-minimal',
+            'Pre-Depends': deps.AndRelationships(relationships=(
+                deps.VersionedRelationship(name=u'libc6', operator=u'>=', version=u'2.15')
+            ,)),
+            'Recommends': deps.AndRelationships(relationships=(deps.Relationship(name=u'python3.4'),)),
+            'Suggests': deps.AndRelationships(relationships=(deps.Relationship(name=u'binfmt-support'),)),
+            'Version': '3.4.0-1+precise1'}
+
         assert expected == parsed_fields

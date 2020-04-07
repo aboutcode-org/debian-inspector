@@ -9,9 +9,15 @@ from __future__ import absolute_import
 from __future__ import print_function
 from __future__ import unicode_literals
 
-from collections.abc import Mapping
-from collections.abc import MutableMapping
-from collections.abc import Sequence
+try:
+    from collections.abc import Mapping
+    from collections.abc import MutableMapping
+    from collections.abc import Sequence
+except ImportError:
+    # Python 2
+    from collections import Mapping
+    from collections import MutableMapping
+    from collections import Sequence
 
 from email import utils as email_utils
 import itertools

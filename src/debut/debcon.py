@@ -27,6 +27,13 @@ import io
 import re
 import textwrap
 
+try:
+    # Python 2
+    unicode = unicode  # NOQA
+except NameError:  # pragma: nocover
+    # Python 3
+    unicode = str  # NOQA
+
 from attr import attrs
 from attr import attrib
 from attr import Factory
@@ -526,7 +533,12 @@ def get_paragraph_data(text, remove_pgp_signature=False,):
     if remove_pgp_signature:
         text = unsign.remove_signature(text)
 
-    mls = email.message_from_string(text)
+    try:
+        mls = email.message_from_string(text)
+    except UnicodeEncodeError:
+        t = text.encode('utf-8')
+        mls = email.message_from_string(t)
+
     items = list(mls.items())
     if not items or mls.defects:
         return {'unknown': text}
@@ -620,7 +632,7 @@ class Debian822(MutableMapping):
             if isinstance(data, Mapping):
                     paragraph = {k.lower(): v for k, v in data.items()}
 
-            elif isinstance(data, str):
+            elif isinstance(data, (str, unicode)):
                 text = data
 
             elif hasattr(data, 'read'):
@@ -631,7 +643,7 @@ class Debian822(MutableMapping):
                 # (before the : split)
                 seq = list(data)
                 first = seq[0]
-                if isinstance(first, str):
+                if isinstance(first, (str, unicode)):
                     seq = (s.partition(': ') for s in seq)
                     paragraph = {k.lower(): v for k, _, v in seq}
                 else:

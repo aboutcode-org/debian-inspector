@@ -65,7 +65,6 @@ Some examples:
     frozen=True,
     hash=False,
     slots=True,
-    kw_only=True,
     str=False
 )
 class Version(object):

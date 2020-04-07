@@ -12,6 +12,12 @@ from __future__ import absolute_import
 from __future__ import unicode_literals
 
 import re
+try:
+    # Python 2
+    unicode = unicode  # NOQA
+except NameError:  # pragma: nocover
+    # Python 3
+    unicode = str  # NOQA
 
 
 """
@@ -26,11 +32,11 @@ def is_signed(text):
     """
     Return True if the text is likely PGP-signed.
     """
-    if text and isinstance(text, str):
+    if text and isinstance(text, (str, unicode) ):
         text = text.strip()
-        if text:
-            return (text.startswith('-----BEGIN PGP SIGNED MESSAGE-----')
+        return text and (text.startswith('-----BEGIN PGP SIGNED MESSAGE-----')
                     and text.endswith('-----END PGP SIGNATURE-----'))
+    return False
 
 
 def remove_signature(text):

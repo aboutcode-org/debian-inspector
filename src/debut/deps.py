@@ -15,6 +15,13 @@ from __future__ import unicode_literals
 
 import re
 
+try:
+    # Python 2
+    unicode = unicode  # NOQA
+except NameError:  # pragma: nocover
+    # Python 3
+    unicode = str  # NOQA
+
 from attr import asdict
 from attr import attrs
 from attr import attrib
@@ -29,31 +36,7 @@ Parse and evaluate Debian package relationship aka. dependencies.
 This module provides functions to parse and evaluate Debian package relationship
 declarations as defined in `chapter 7` of the Debian policy manual.
 http://www.debian.org/doc/debian-policy/ch-relationships.html#s-depsyntax
-
-
-Examples:
-
->>> from debut.deps import parse_depends
->>> dependencies = parse_depends('python (>= 2.6), python (<< 3) | python (>= 3.4)')
->>> dependencies.matches('python', '2.5')
-False
->>> dependencies.matches('python', '3.0')
-False
->>> dependencies.matches('python', '2.6')
-True
->>> dependencies.matches('python', '3.4')
-True
->>> print(repr(dependencies))
-AndRelationships((VersionedRelationship(name='python', operator='>=', version='2.6', architectures=()),
-        OrRelationships(VersionedRelationship(name='python', operator='<<', version='3', architectures=()),
-                                        VersionedRelationship(name='python', operator='>=', version='3.4', architectures=()))))
->>> print(str(dependencies))
-python (>= 2.6), python (<< 3) | python (>= 3.4)
-
-As you can see the :func:`repr()` output of the relationship set shows the
-object tree and the :class:`str` output is the dependency line.
 """
-
 
 
 # Define a compiled regular expression pattern that we will use to match
@@ -90,10 +73,9 @@ def parse_depends(relationships):
 
     Each expression is a package name/versions/arch constraint or a pipe-
     separated list of alternative.
-
     """
 
-    if isinstance(relationships, str):
+    if isinstance(relationships, (str, unicode)):
         relationships = (r.strip() for r in relationships.split(',') if r.strip())
 
     return AndRelationships.from_relationships(*(map(parse_alternatives, relationships)))
@@ -136,25 +118,24 @@ def parse_relationship(expression):
     architecture restriction (refer to the Debian policy manual's documentation
     on the syntax of relationship fields for details).
     https://www.debian.org/doc/debian-policy/ch-relationships.html
-
-    Here's an example:
-
-    >>> from debut.deps import parse_relationship
-    >>> parse_relationship('python')
-    Relationship(name='python', architectures=())
-    >>> parse_relationship('python (<< 3)')
-    VersionedRelationship(name='python', operator='<<', version='3', architectures=())
-
     """
-    pre = parse_package_relationship_expression(expression)
-    name = pre.group('name')
-    version = pre.group('version')
+    try:
+        pre = parse_package_relationship_expression(expression)
+        name = pre.group('name')
+        version = pre.group('version')
+    except AttributeError:
+        print('gd:', pre.groupdict())
+        print('this:', repr(expression))
+        raise
+
     # Split the architecture restrictions into a tuple of strings.
     architectures = tuple((pre.group('architectures') or '').split())
+
     if name and not version:
         # A package name (and optional architecture restrictions) without
         # version relation.
         return Relationship(name=name, architectures=architectures)
+
     else:
         # A package name (and optional architecture restrictions) followed by a
         # relationship to specific version(s) of the package.
@@ -182,7 +163,6 @@ class AbstractRelationship(object):
         A set of package names (strings) in the relationship.
         """
         raise NotImplementedError
-
 
     def matches(self, name, version=None, architecture=None):
         """
