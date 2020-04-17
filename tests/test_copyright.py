@@ -11,6 +11,7 @@ from __future__ import unicode_literals
 
 from os import path
 
+from commoncode.system import py2
 from test_utils import JsonTester  # NOQA
 
 from debut import copyright
@@ -87,16 +88,16 @@ class TestDebianCopyright(JsonTester):
         test_file = self.get_test_loc('copyright/dep5-b43-fwcutter.copyright')
         expected_loc = 'copyright/dep5-b43-fwcutter.copyright-expected.dumps'
         results = copyright.DebianCopyright.from_file(test_file).dumps()
-        self.check_file(results, expected_loc, regen=False)
+        self.check_file(results, expected_loc, sort=py2, regen=False)
 
     def test_DebianCopyright_from_file__from_copyrights_dep5_3_dumps(self):
         test_file = self.get_test_loc('copyright/dep5-rpm.copyright')
         expected_loc = 'copyright/dep5-rpm.copyright-expected.dumps'
         results = copyright.DebianCopyright.from_file(test_file).dumps()
-        self.check_file(results, expected_loc, regen=False)
+        self.check_file(results, expected_loc, sort=py2, regen=False)
 
     def test_DebianCopyright_from_file__from_copyrights_dep5_dropbear_dumps(self):
         test_file = self.get_test_loc('copyright/dropbear.copyright')
         expected_loc = 'copyright/dropbear.copyright-expected.dumps'
         results = copyright.DebianCopyright.from_file(test_file).dumps()
-        self.check_file(results, expected_loc, regen=False)
+        self.check_file(results, expected_loc, sort=py2, regen=False)

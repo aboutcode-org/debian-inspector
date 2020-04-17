@@ -77,7 +77,7 @@ class FieldMixin(object):
     def from_value(self, value):
         return cls(value)
 
-    def dumps(self):
+    def dumps(self, sort=False):
         return NotImplementedError
 
     def __str__(self, *args, **kwargs):
@@ -95,7 +95,7 @@ class SingleLineField(FieldMixin):
     def from_value(cls, value):
         return cls(value=value and value.strip())
 
-    def dumps(self):
+    def dumps(self, sort=False):
         return self.value or ''
 
 
@@ -114,7 +114,7 @@ class LineSeparatedField(FieldMixin):
                 values.append(val.strip())
         return cls(values=values)
 
-    def dumps(self):
+    def dumps(self, sort=False):
         return '\n '.join(self.values or [])
 
 
@@ -133,7 +133,7 @@ class LineAndSpaceSeparatedField(FieldMixin):
                 values.append(tuple(space_separated(val)))
         return cls(values=values)
 
-    def dumps(self):
+    def dumps(self, sort=False):
         return '\n '.join(' '.join(v) for v in self.values or [])
 
 
@@ -152,7 +152,7 @@ class AnyWhiteSpaceSeparatedField(FieldMixin):
             values = [val for val in value.split()]
         return cls(values=values)
 
-    def dumps(self):
+    def dumps(self, sort=False):
         return '\n '.join(self.values or [])
 
 
@@ -170,7 +170,7 @@ class FormattedTextField(FieldMixin):
             value = from_formatted_text(value)
         return cls(text=value)
 
-    def dumps(self):
+    def dumps(self, sort=False):
         lines = line_separated(self.text)
         if not lines:
             return ''
@@ -268,7 +268,7 @@ class DescriptionField(FieldMixin):
         else:
             return cls(synopsis='')
 
-    def dumps(self):
+    def dumps(self, sort=False):
         """
         Return a string representation of self.
         """
@@ -302,7 +302,7 @@ class FileField(object):
             checksum, size , name = space_separated(value)
         return cls(checksum=checksum, size=size , name=name)
 
-    def dumps(self):
+    def dumps(self, sort=False):
         return '{} {} {}'.format(self.checksum, self.size , self.name)
 
 
@@ -321,8 +321,8 @@ class FilesField(FieldMixin):
                 values.append(FileField.from_value(val))
         return cls(values=values)
 
-    def dumps(self):
-        return '\n '.join(v.dumps for v in self.values or [])
+    def dumps(self, sort=False):
+        return '\n '.join(v.dumps(sort=sort) for v in self.values or [])
 
 
 def collect_files(data):
@@ -383,7 +383,7 @@ class MaintainerField(FieldMixin):
                 email_address = None
             return cls(name=name, email_address=email_address)
 
-    def dumps(self):
+    def dumps(self, sort=False):
         name = self.name
         if self.email_address:
             name = '{} <{}>'.format(name, self.email_address)
@@ -433,9 +433,12 @@ class ParagraphMixin(FieldMixin):
             data[field_name] = field_value
         return data
 
-    def dumps(self):
+    def dumps(self, sort=False):
         text = []
-        for field_name, field_value in self.to_dict().items():
+        items = self.to_dict().items()
+        if sort:
+            items -= sorted(items)
+        for field_name, field_value in items:
             if field_value:
                 field_name = field_name.replace('_', '-')
                 field_name = normalize_control_field_name(field_name)
@@ -696,21 +699,24 @@ class Debian822(MutableMapping):
     def __repr__(self):
         return self.dumps()
 
-    def dumps(self):
+    def dumps(self, sort=False):
         """
         Return a text that resembles the original Debian822 format. This is not
         meant to be a high fidelity rendering and not meant to be used as-is in
         control files.
         """
+        items = self.items()
+        if sort:
+            items = sorted(items)
         lines = []
-        for key, value in self.items():
+        for key, value in items:
             key = normalize_control_field_name(key)
             lines.append('{}: {}'.format(key, value))
         text = '\n'.join(lines) + '\n'
         return text
 
-    def dump(self, file_like=None):
-        text = self.dumps()
+    def dump(self, file_like=None, sort=False):
+        text = self.dumps(sort=sort)
         if file_like:
             file_like.write(text.encode('utf-8'))
         else:

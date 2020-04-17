@@ -165,12 +165,12 @@ Conflicts: binfmt-support (<< 1.1.2)
                 deps.VersionedRelationship(name=u'binfmt-support', operator=u'<<', version=u'1.1.2')
             ,)),
             'Depends': deps.AndRelationships(relationships=(
-                deps.VersionedRelationship(name=u'libpython3.4-minimal', operator=u'=', version=u'3.4.0-1+precise1'), 
-                deps.VersionedRelationship(name=u'libexpat1', operator=u'>=', version=u'1.95.8'), 
-                deps.VersionedRelationship(name=u'libgcc1', operator=u'>=', version=u'1:4.1.1'), 
-                deps.VersionedRelationship(name=u'zlib1g', operator=u'>=', version=u'1:1.2.0'), 
+                deps.VersionedRelationship(name=u'libpython3.4-minimal', operator=u'=', version=u'3.4.0-1+precise1'),
+                deps.VersionedRelationship(name=u'libexpat1', operator=u'>=', version=u'1.95.8'),
+                deps.VersionedRelationship(name=u'libgcc1', operator=u'>=', version=u'1:4.1.1'),
+                deps.VersionedRelationship(name=u'zlib1g', operator=u'>=', version=u'1:1.2.0'),
                 deps.OrRelationships(relationships=(
-                    deps.Relationship(name=u'foo'), 
+                    deps.Relationship(name=u'foo'),
                     deps.Relationship(name=u'bar')
                 ,))
             ),),

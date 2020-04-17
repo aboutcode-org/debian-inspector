@@ -32,7 +32,7 @@ def is_signed(text):
     """
     Return True if the text is likely PGP-signed.
     """
-    if text and isinstance(text, (str, unicode) ):
+    if text and isinstance(text, (str, unicode)):
         text = text.strip()
         return text and (text.startswith('-----BEGIN PGP SIGNED MESSAGE-----')
                     and text.endswith('-----END PGP SIGNATURE-----'))

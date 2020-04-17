@@ -18,7 +18,7 @@ from commoncode import testcase
 class JsonTester(testcase.FileBasedTesting):
     test_data_dir = os.path.join(os.path.dirname(__file__), 'data')
 
-    def check_json(self, results, expected_loc, regen=False):
+    def check_json(self, results, expected_loc, regen=False, sort=False):
         """
         Helper to test a results Python native object against an expected JSON
         file at expected_loc.
@@ -37,10 +37,12 @@ class JsonTester(testcase.FileBasedTesting):
 
         with open(expected_loc, 'rb') as ex:
             expected = json.load(ex, encoding='utf-8')
+        if sort:
+            assert sorted(expected) == sorted(results)
+        else:
+            assert json.dumps(expected, indent=2) == json.dumps(results, indent=2)
 
-        assert json.dumps(expected, indent=2) == json.dumps(results, indent=2)
-
-    def check_file(self, results, expected_loc, regen=False):
+    def check_file(self, results, expected_loc, regen=False, sort=False):
         """
         Helper to test a results text string against an expected file at
         expected_loc.
@@ -57,7 +59,10 @@ class JsonTester(testcase.FileBasedTesting):
                 os.makedirs(expected_dir)
             shutil.copy(regened_exp_loc, expected_loc)
 
-        with open(expected_loc) as ex:
+        with open(expected_loc, 'rb') as ex:
             expected = ex.read()
-
-        assert expected == results
+            expected = expected.decode('utf-8')
+        if sort:
+            assert sorted(expected.splitlines()) == sorted(results.splitlines())
+        else:
+            assert expected == results

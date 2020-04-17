@@ -9,16 +9,6 @@ from __future__ import absolute_import
 from __future__ import print_function
 from __future__ import unicode_literals
 
-try:
-    from collections.abc import Mapping
-    from collections.abc import MutableMapping
-    from collections.abc import Sequence
-except ImportError:
-    # Python 2
-    from collections import Mapping
-    from collections import MutableMapping
-    from collections import Sequence
-
 from email import utils as email_utils
 import itertools
 
@@ -45,9 +35,9 @@ class LicenseField(debcon.FieldMixin):
         lic = debcon.DescriptionField.from_value(value)
         return cls(name=lic.synopsis, text=lic.text)
 
-    def dumps(self):
+    def dumps(self, sort=False):
         lic = debcon.DescriptionField(self.name, self.text)
-        return lic.dumps().strip()
+        return lic.dumps(sort=sort).strip()
 
     def has_doc_reference(self):
         """
@@ -105,6 +95,8 @@ class CopyrightStatementField(debcon.FieldMixin):
     @classmethod
     def from_value(cls, value):
         value = value or ''
+        if isinstance(value, bytes):
+            value = value.decode('utf-8')
         value = ' '.join(value.split())
         year_range, _, holder = value.partition(' ')
         year_range = year_range.strip()
@@ -114,7 +106,7 @@ class CopyrightStatementField(debcon.FieldMixin):
             year_range = None
         return cls(holder=holder, year_range=year_range)
 
-    def dumps(self):
+    def dumps(self, sort=False):
         cop = self.holder
         if self.year_range:
             cop = '{} {}'.format(self.year_range, cop)
@@ -152,8 +144,11 @@ class CopyrightField(debcon.FieldMixin):
                 for v in debcon.line_separated(value)]
         return cls(statements=statements)
 
-    def dumps(self):
-        return '\n           '.join(s.dumps() for s in self.statements).strip()
+    def dumps(self, sort=False):
+        dumped = [s.dumps() for s in self.statements]
+        if sort:
+            dumped = sorted(dumped)
+        return '\n           '.join(dumped).strip()
 
 
 @attrs
@@ -176,7 +171,7 @@ class MaintainerField(debcon.FieldMixin):
                 email_address = None
             return cls(name=name, email_address=email_address)
 
-    def dumps(self):
+    def dumps(self, sort=False):
         name = self.name
         if self.email_address:
             name = '{} <{}>'.format(name, self.email_address)
@@ -222,13 +217,15 @@ class ParagraphMixin(debcon.FieldMixin):
             data[field_name] = field_value
         return data
 
-    def dumps(self):
+    def dumps(self, sort=False):
         text = []
         for field_name, field_value in self.to_dict().items():
             if field_value:
                 field_name = field_name.replace('_', '-')
                 field_name = debcon.normalize_control_field_name(field_name)
                 text.append('{}: {}'.format(field_name, field_value))
+        if sort:
+            text = sorted(text)
         return '\n'.join(text).strip()
 
     def is_empty(self):
@@ -324,11 +321,11 @@ class CopyrightFilesParagraph(ParagraphMixin):
     # this is an overflow of extra unknown fields for this paragraph
     extra_data = attrib(default=Factory(dict))
 
-    def dumps(self):
+    def dumps(self, sort=False):
         if self.is_empty():
             return 'Files: '
         else:
-            return ParagraphMixin.dumps(self)
+            return ParagraphMixin.dumps(self, sort=sort)
 
     def is_empty(self):
         """
@@ -370,11 +367,11 @@ class CopyrightLicenseParagraph(ParagraphMixin):
             and not self.license.name
             and not self.license.text)
 
-    def dumps(self):
+    def dumps(self, sort=False):
         if self.is_empty():
             return 'License: '
         else:
-            return ParagraphMixin.dumps(self)
+            return ParagraphMixin.dumps(self, sort=sort)
 
     def is_valid(self, strict=False):
         valid = self.license.name or (self.license.name and self.license.text)
@@ -415,8 +412,10 @@ class DebianCopyright(object):
             collected_paragraphs.append(cp)
         return cls(collected_paragraphs)
 
-    def dumps(self):
-        dumped = [p.dumps() for p in self.paragraphs]
+    def dumps(self, sort=False):
+        dumped = [p.dumps(sort=sort) for p in self.paragraphs]
+        if sort:
+            dumped = sorted(dumped)
         dumped = '\n\n'.join(dumped)
         return dumped + '\n'
 
