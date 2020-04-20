@@ -23,13 +23,9 @@ from debut.version import Version
 
 
 """
-Functions to build and inspect Debian binary package archives (``*.deb``
-files)."""
-
-
-# The names of control file fields that specify dependencies.
-DEPENDENCY_FIELDS = ('Depends', 'Pre-Depends')
-
+Functions to build and inspect Debian binary package archives (``*.deb``,
+``*.udeb`` files as well ``.orig`` and ``.debian`` tarballs).
+"""
 
 @attrs
 class DebArchive(object):
@@ -44,29 +40,18 @@ class DebArchive(object):
     @classmethod
     def from_filename(cls, filename):
         """
-        Parse the filename of a Debian binary package archive and return a DebArchive instance.
-        Raise ValueError if the `filename` is not valid.
+        Parse the filename of a Debian binary package archive and return a
+        DebArchive instance. Raise ValueError if the `filename` is not valid.
         """
         if isinstance(filename, DebArchive):
             return filename
-        original_filename = filename
-        filename = path.basename(filename)
-        basename, extension = path.splitext(filename)
-        if extension not in ('.deb', '.udeb'):
-            raise ValueError(
-                'Unknown Debian binary package filename extension: {}'.format(filename))
-        components = basename.split('_')
-        if len(components) != 3:
-            raise ValueError(
-                'Unknown Debian binary package filename format. '
-                'Should have three underscore: {}'.format(filename))
-        name, evr, architecture = components
-        version = Version.from_string(evr)
+
+        name, version, architecture = get_nva(path.basename(filename))
         return cls(
             name=name,
             version=version,
             architecture=architecture,
-            original_filename=original_filename)
+            original_filename=filename)
 
     def to_dict(self):
         data = {}
@@ -78,10 +63,92 @@ class DebArchive(object):
 
     def to_tuple(self):
         """
+        Return a tuple of name, Version, architecture suitable for sorting.
+        This tuple does not contain the original_filename value.
+        """
+        return tuple(v for v in self.to_dict().values() if v != 'original_filename')
+
+
+@attrs
+class CodeArchive(object):
+    """
+    A Debian .orig or .debian package archive.
+    These are not architecture-specific.
+    For instance in ./pool/main/a/apr-util there are files such as:
+    - apr-util_1.5.4.orig.tar.bz2 that contains the original upstream code
+    - apr-util_1.6.1-4.debian.tar.xz that contains the Debian patches and
+      control files
+    """
+    name = attrib()
+    version = attrib()
+    original_filename = attrib(default=None)
+
+    @classmethod
+    def from_filename(cls, filename):
+        """
+        Parse the `filename` of a Debian original package archive and return an OrigArchive instance.
+        Raise ValueError if the `filename` is not valid.
+        """
+        if isinstance(filename, CodeArchive):
+            return filename
+
+        name, version, _architecture = get_nva(path.basename(filename))
+        return cls(
+            name=name,
+            version=version,
+            original_filename=filename)
+
+    def to_dict(self):
+        data = {}
+        data['name'] = self.name
+        data['version'] = self.version
+        data['original_filename'] = self.original_filename
+        return data
+
+    def to_tuple(self):
+        """
         Return a tuple of name, Vresion, architecture suitable for sorting.
         This tuple does not contain the original_filename values.
         """
         return tuple(v for v in self.to_dict().values() if v != 'original_filename')
+
+
+def get_nva(filename):
+    """
+    Return a tuple of (name string, Version object, archictecture string or
+    None) parsed from the `filename` of .deb, .udeb, .orig or .debian archive..
+    """
+    is_known = False
+    if filename.endswith(('.deb', '.udeb')):
+        basename, _extension = path.splitext(filename)
+        is_known = True
+
+    elif filename.endswith(('.tar.gz', '.tar.xz', '.tar.bz2', '.tar.lzma')):
+        # A Format: 3.0 archive.
+        # Note that we ignore the legacy .diff.gz files for Format: 1.0
+        basename, _, _ = filename.rpartition('.tar.')
+        # remove the .orig or .debian
+        basename, pkgtype = path.splitext(basename)
+        if pkgtype in ('.orig', '.debian'):
+            is_known = True
+
+    if not is_known:
+        raise ValueError(
+            'Unknown Debian archive filename format: {}'.format(filename))
+
+    parts = basename.split('_')
+    if len(parts) == 2:
+        arch = None
+        name, evr = parts
+
+    elif len(parts) == 3:
+        name, evr , arch = parts
+
+    else:
+        raise ValueError(
+            'Unknown Debian archive filename format: {}'.format(filename))
+
+    return name, Version.from_string(evr), arch
 
 
 # TODO: simplify me

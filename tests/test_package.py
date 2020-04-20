@@ -107,6 +107,39 @@ class DebArchiveTestCase(unittest.TestCase):
             original_filename=fn)
         assert expected == debarch
 
+    def test_DebArchive_from_filename_udeb(self):
+        fn = '/var/cache/apt/archives/python2.7_2.7.3-0ubuntu3.4_amd64.udeb'
+        debarch = package.DebArchive.from_filename(fn)
+        expected = package.DebArchive(
+            name='python2.7',
+            version=version.Version(epoch=0, upstream='2.7.3', revision='0ubuntu3.4'),
+            architecture='amd64',
+            original_filename=fn)
+        assert expected == debarch
+
+    def test_CodeArchive_from_filename(self):
+        fn = '/var/cache/apt/archives/python2.7_2.7.3-0ubuntu3.4.orig.tar.gz'
+        debarch = package.CodeArchive.from_filename(fn)
+        expected = package.CodeArchive(
+            name='python2.7',
+            version=version.Version(epoch=0, upstream='2.7.3', revision='0ubuntu3.4'),
+            original_filename=fn)
+        assert expected == debarch
+
+    def test_CodeArchive_from_filename_supports_tar_gz_bz2_and_xz(self):
+        package.CodeArchive.from_filename('python2.7_2.7.3-0ubuntu3.4.orig.tar.gz')
+        package.CodeArchive.from_filename('python2.7_2.7.3-0ubuntu3.4.debian.tar.gz')
+
+        package.CodeArchive.from_filename('python2.7_2.7.3-0ubuntu3.4.orig.tar.bz2')
+        package.CodeArchive.from_filename('python2.7_2.7.3-0ubuntu3.4.debian.tar.bz2')
+
+        package.CodeArchive.from_filename('python2.7_2.7.3-0ubuntu3.4.orig.tar.xz')
+        package.CodeArchive.from_filename('python2.7_2.7.3-0ubuntu3.4.debian.tar.xz')
+
+    def test_CodeArchive_from_filename_raises_ValueError(self):
+        with self.assertRaises(ValueError):
+            package.CodeArchive.from_filename('python2.7_2.7.3-0ubuntu3.4.orif.tar.gz')
+
 
 class ControlTestCase(unittest.TestCase):
 
@@ -129,7 +162,7 @@ class ControlTestCase(unittest.TestCase):
         assert expected == parsed_info
 
     def test_parse_control_fields_2(self):
-        unparsed_fields = debcon.deb822_from_string('''
+        unparsed_fields = debcon.Debian822.from_string('''
 Package: python3.4-minimal
 Version: 3.4.0-1+precise1
 Architecture: amd64
@@ -153,7 +186,6 @@ Conflicts: binfmt-support (<< 1.1.2)
             'Suggests': 'binfmt-support',
             'Version': '3.4.0-1+precise1',
         }
-
 
         assert expected == unparsed_fields.to_dict(normalize_names=True)
 
