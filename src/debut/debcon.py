@@ -622,7 +622,8 @@ def read_text_file(location):
 
 class Debian822(MutableMapping):
     """
-    A mapping-like class that corresponds to a single deb822 paragraph like with a dsc.
+    A mapping-like class that corresponds to a single deb822 paragraph like a
+    whole .dsc file.
     """
     def __init__(self, data=None):
         """
@@ -689,6 +690,10 @@ class Debian822(MutableMapping):
             raise ValueError('Location has no parsable data: {}'.format(location))
         return Debian822(data)
 
+    @classmethod
+    def from_string(cls, text):
+        return Debian822(textwrap.dedent(text).strip())
+
     def to_dict(self, normalize_names=False):
         if normalize_names:
             return {normalize_control_field_name(key): value
@@ -723,8 +728,6 @@ class Debian822(MutableMapping):
             return text
 
 
-
-
 DEFAULT_CONTROL_FIELDS = {
     'Architecture': 'all',
     'Priority': 'optional',
@@ -739,8 +742,8 @@ def load_control_file(control_file):
     :param control_file: The filename of the control file to load (a string).
     :returns: A dictionary created by :func:`parse_control_fields()`.
     """
-    with open(control_file) as handle:
-        return parse_control_fields(Debian822(handle))
+    with open(control_file) as inp:
+        return parse_control_fields(Debian822(inp))
 
 
 DEPS_FIELDS = frozenset([
@@ -754,6 +757,7 @@ DEPS_FIELDS = frozenset([
     'Recommends',
     'Replaces',
     'Suggests',
+
     # Source control file fields.
     'Build-Conflicts',
     'Build-Conflicts-Arch',
@@ -808,10 +812,3 @@ def normalize_control_field_name(name):
     special_cases = dict(md5sum='MD5sum', sha1='SHA1', sha256='SHA256')
     return '-'.join(special_cases.get(
         w.lower(), w.capitalize()) for w in name.split('-'))
-
-
-def deb822_from_string(text):
-    """
-    Return a `debcon.Debian822` object built from a string.
-    """
-    return Debian822(textwrap.dedent(text).strip())
