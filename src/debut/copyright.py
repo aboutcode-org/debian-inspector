@@ -393,8 +393,17 @@ class DebianCopyright(object):
         self.fold_contiguous_empty_license_followed_by_unknown()
 
     @classmethod
+    def from_text(cls, text):
+        paragraphs = iter(debcon.get_paragraphs_data(text))
+        return cls._from_paragraph_data(paragraphs)
+
+    @classmethod
     def from_file(cls, location):
         paragraphs = iter(debcon.get_paragraphs_data_from_file(location))
+        return cls._from_paragraph_data(paragraphs)
+
+    @classmethod
+    def _from_paragraph_data(cls, paragraphs):
         collected_paragraphs = []
         for data in paragraphs:
             if 'format' in data or 'format-specification' in data:
