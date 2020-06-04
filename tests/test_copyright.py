@@ -101,3 +101,12 @@ class TestDebianCopyright(JsonTester):
         expected_loc = 'copyright/dropbear.copyright-expected.dumps'
         results = copyright.DebianCopyright.from_file(test_file).dumps()
         self.check_file(results, expected_loc, sort=py2, regen=False)
+
+    def test_DebianCopyright_from_text__from_copyrights_dep5_dropbear_dumps(self):
+        test_file = self.get_test_loc('copyright/dropbear.copyright')
+        import io
+        with io.open(test_file, encoding='utf-8') as td:
+            test_data = td.read()
+        expected_loc = 'copyright/dropbear.copyright-expected.dumps'
+        results = copyright.DebianCopyright.from_text(test_data).dumps()
+        self.check_file(results, expected_loc, sort=py2, regen=False)
