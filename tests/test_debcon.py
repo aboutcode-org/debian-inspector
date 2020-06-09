@@ -4,7 +4,6 @@
 
 # SPDX-License-Identifier: Apache-2.0
 
-
 from __future__ import absolute_import
 from __future__ import print_function
 from __future__ import unicode_literals
@@ -19,6 +18,10 @@ from debut import debcon
 
 class TestGetParagraphData(JsonTester):
     test_data_dir = path.join(path.dirname(__file__), 'data')
+
+    def test_get_paragraph_data_from_file_does_not_crash_on_None(self):
+        results = list(debcon.get_paragraph_data_from_file(None))
+        assert [] == results
 
     def test_get_paragraph_data_from_file_from_status(self):
         test_file = self.get_test_loc('debcon/status/one_status')
@@ -36,6 +39,12 @@ class TestGetParagraphData(JsonTester):
         test_file = self.get_test_loc('debcon/dsc/zlib_1.2.11.dfsg-1.dsc')
         expected_loc = 'debcon/dsc/zlib_1.2.11.dfsg-1.dsc-expected-no-desig.json'
         results = debcon.get_paragraph_data_from_file(test_file, remove_pgp_signature=False)
+        self.check_json(results, expected_loc, regen=False)
+
+    def test_get_paragraph_data_from_file_from_status_can_handle_perl_status(self):
+        test_file = self.get_test_loc('debcon/status/perl_status')
+        expected_loc = 'debcon/status/perl_status-expected.json'
+        results = debcon.get_paragraph_data_from_file(test_file)
         self.check_json(results, expected_loc, regen=False)
 
     def test_get_paragraph_data__invalid_format_returns_none(self):

@@ -8,7 +8,6 @@
 
 # SPDX-License-Identifier: Apache-2.0 AND MIT
 
-
 from __future__ import absolute_import
 from __future__ import print_function
 from __future__ import unicode_literals
@@ -42,7 +41,6 @@ import chardet
 
 from debut import unsign
 
-
 """
 Utilities to parse Debian-style control files aka. deb822 format.
 See https://salsa.debian.org/dpkg-team/dpkg/blob/0c9dc4493715ff3b37262528055943c52fdfb99c/man/deb822.man
@@ -69,6 +67,7 @@ class FieldMixin(object):
     """
     Base mixin for attrs-based fields.
     """
+
     @classmethod
     def attrib(cls, **kwargs):
         return attrib(converter=cls.from_value, **kwargs)
@@ -363,6 +362,7 @@ def collect_file(value):
         digest, size , name = space_separated(line)
         yield name, size, digest
 
+
 @attrs
 class MaintainerField(FieldMixin):
     """
@@ -496,6 +496,8 @@ def get_paragraphs_data_from_file(location):
     Yield paragraph data from the Debian control file at `location` that
     contains multiple paragraphs (e.g. Package, copyright file, etc).
     """
+    if not location:
+        return []
     return get_paragraphs_data(read_text_file(location))
 
 
@@ -514,6 +516,8 @@ def get_paragraph_data_from_file(location, remove_pgp_signature=False):
     Return paragraph data from the Debian control file at `location` that
     contains a single paragraph (e.g. a dsc file).
     """
+    if not location:
+        return []
     return get_paragraph_data(read_text_file(location), remove_pgp_signature)
 
 
@@ -543,6 +547,7 @@ def get_paragraph_data(text, remove_pgp_signature=False,):
         mls = email.message_from_string(t)
 
     items = list(mls.items())
+
     if not items or mls.defects:
         return {'unknown': text}
 
@@ -610,6 +615,8 @@ def read_text_file(location):
     """
     Return the content of the file at `location` as text.
     """
+    if not location:
+        return
     try:
         with io.open(location, 'r', encoding='utf-8') as tc:
             return tc.read()
@@ -625,6 +632,7 @@ class Debian822(MutableMapping):
     A mapping-like class that corresponds to a single deb822 paragraph like a
     whole .dsc file.
     """
+
     def __init__(self, data=None):
         """
         Build a new instance from `data` that is either a file-like object with
