@@ -206,7 +206,7 @@ def as_formatted_text(text):
 
 def from_formatted_text(text):
     """
-    Return cleaned text from a Debian formated description text
+    Return cleaned text from a Debian formatted description text
     using rules for handling line prefixes and continuations.
     """
     if not text:
@@ -491,49 +491,68 @@ class CatchAllParagraph(ParagraphMixin):
         return not self.is_all_unknown()
 
 
-def get_paragraphs_data_from_file(location):
+def get_paragraphs_data_from_file(location, preserve_keys_case=False):
     """
     Yield paragraph data from the Debian control file at `location` that
     contains multiple paragraphs (e.g. Package, copyright file, etc).
+
+    Optionally preserve the case of keys if `preserve_keys_case` is True (the
+    default is to lowercase  all keys).
     """
     if not location:
         return []
-    return get_paragraphs_data(read_text_file(location))
+    return get_paragraphs_data(
+        read_text_file(location), preserve_keys_case=preserve_keys_case)
 
 
-def get_paragraphs_data(text):
+def get_paragraphs_data(text, preserve_keys_case=False):
     """
     Yield paragraph mappings from a Debian control `text`.
+
+    Optionally preserve the case of keys if `preserve_keys_case` is True (the
+    default is to lowercase  all keys).
     """
     if text:
         paragraphs = (p for p in re.split('\n ?\n', text) if p)
         for para in paragraphs:
-            yield get_paragraph_data(para)
+            yield get_paragraph_data(para, preserve_keys_case=preserve_keys_case)
 
 
-def get_paragraph_data_from_file(location, remove_pgp_signature=False):
+def get_paragraph_data_from_file(location, remove_pgp_signature=False, preserve_keys_case=False):
     """
     Return paragraph data from the Debian control file at `location` that
     contains a single paragraph (e.g. a dsc file).
+
+    Optionally remove a wrapping PGP signature if `remove_pgp_signature` is
+    True.
+
+    Optionally preserve the case of keys if `preserve_keys_case` is True (the
+    default is to lowercase  all keys).
     """
     if not location:
         return []
-    return get_paragraph_data(read_text_file(location), remove_pgp_signature)
+    return get_paragraph_data(
+        read_text_file(location),
+        remove_pgp_signature=remove_pgp_signature,
+        preserve_keys_case=preserve_keys_case)
 
 
-def get_paragraph_data(text, remove_pgp_signature=False,):
+def get_paragraph_data(text, remove_pgp_signature=False, preserve_keys_case=False):
     """
     Return paragraph data from the Debian control `text`.
     The paragraph data is an ordered mapping of {name: value} fields. If there
     is data that is not parsable or not attached to a field name, this will be added to
     a field named "unknown".
 
-    The field name is lowercased.
     If there are duplicates field names, the string values of duplicates field
     names are merged together with a new line in the first occurence of that
     field.
 
-    Optionally remove a wrapping PGP signature if `remove_pgp_signature` is True.
+    Optionally remove a wrapping PGP signature if `remove_pgp_signature` is
+    True.
+
+    Optionally preserve the case of keys if `preserve_keys_case` is True (the
+    default is to lowercase  all keys).
     """
     if not text:
         return {'unknown': text}
@@ -553,7 +572,9 @@ def get_paragraph_data(text, remove_pgp_signature=False,):
 
     data = {}
     for name, value in items:
-        name = name.lower().strip()
+        if not preserve_keys_case:
+            name = name.lower()
+        name = name.strip()
         value = value.strip()
         if name in data:
             existing_values = data.get(name, '').splitlines()
@@ -642,7 +663,7 @@ class Debian822(MutableMapping):
         if data:
             text = None
             if isinstance(data, Mapping):
-                    paragraph = {k.lower(): v for k, v in data.items()}
+                paragraph = {k.lower(): v for k, v in data.items()}
 
             elif isinstance(data, (str, unicode)):
                 text = data
