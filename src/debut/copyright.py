@@ -4,7 +4,6 @@
 
 # SPDX-License-Identifier: Apache-2.0
 
-
 from __future__ import absolute_import
 from __future__ import print_function
 from __future__ import unicode_literals
@@ -12,13 +11,12 @@ from __future__ import unicode_literals
 from email import utils as email_utils
 import itertools
 
-from attr import attrs
 from attr import attrib
+from attr import attrs
 from attr import Factory
 from attr import fields_dict
 
 from debut import debcon
-
 
 """
 Utilities to parse Debian machine readable copyright files (aka. dep5)
@@ -273,6 +271,7 @@ class CatchAllParagraph(ParagraphMixin):
             return False
         return not self.is_all_unknown()
 
+
 @attrs
 class CopyrightHeaderParagraph(ParagraphMixin):
     """
@@ -347,6 +346,7 @@ class CopyrightFilesParagraph(ParagraphMixin):
         if strict:
             valid = valid and not self.has_extra_data()
         return valid
+
 
 @attrs
 class CopyrightLicenseParagraph(ParagraphMixin):
