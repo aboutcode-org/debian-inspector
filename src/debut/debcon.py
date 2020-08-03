@@ -491,53 +491,43 @@ class CatchAllParagraph(ParagraphMixin):
         return not self.is_all_unknown()
 
 
-def get_paragraphs_data_from_file(location, preserve_keys_case=False):
+def get_paragraphs_data_from_file(location):
     """
     Yield paragraph data from the Debian control file at `location` that
     contains multiple paragraphs (e.g. Package, copyright file, etc).
-
-    Optionally preserve the case of keys if `preserve_keys_case` is True (the
-    default is to lowercase  all keys).
     """
     if not location:
         return []
-    return get_paragraphs_data(
-        read_text_file(location), preserve_keys_case=preserve_keys_case)
+    return get_paragraphs_data(read_text_file(location))
 
 
-def get_paragraphs_data(text, preserve_keys_case=False):
+def get_paragraphs_data(text):
     """
     Yield paragraph mappings from a Debian control `text`.
-
-    Optionally preserve the case of keys if `preserve_keys_case` is True (the
-    default is to lowercase  all keys).
     """
     if text:
         paragraphs = (p for p in re.split('\n ?\n', text) if p)
         for para in paragraphs:
-            yield get_paragraph_data(para, preserve_keys_case=preserve_keys_case)
+            yield get_paragraph_data(para)
 
 
-def get_paragraph_data_from_file(location, remove_pgp_signature=False, preserve_keys_case=False):
+def get_paragraph_data_from_file(location, remove_pgp_signature=False):
     """
     Return paragraph data from the Debian control file at `location` that
     contains a single paragraph (e.g. a dsc file).
 
     Optionally remove a wrapping PGP signature if `remove_pgp_signature` is
     True.
-
-    Optionally preserve the case of keys if `preserve_keys_case` is True (the
-    default is to lowercase  all keys).
     """
     if not location:
         return []
     return get_paragraph_data(
         read_text_file(location),
         remove_pgp_signature=remove_pgp_signature,
-        preserve_keys_case=preserve_keys_case)
+    )
 
 
-def get_paragraph_data(text, remove_pgp_signature=False, preserve_keys_case=False):
+def get_paragraph_data(text, remove_pgp_signature=False):
     """
     Return paragraph data from the Debian control `text`.
     The paragraph data is an ordered mapping of {name: value} fields. If there
@@ -550,9 +540,6 @@ def get_paragraph_data(text, remove_pgp_signature=False, preserve_keys_case=Fals
 
     Optionally remove a wrapping PGP signature if `remove_pgp_signature` is
     True.
-
-    Optionally preserve the case of keys if `preserve_keys_case` is True (the
-    default is to lowercase  all keys).
     """
     if not text:
         return {'unknown': text}
@@ -572,9 +559,9 @@ def get_paragraph_data(text, remove_pgp_signature=False, preserve_keys_case=Fals
 
     data = {}
     for name, value in items:
-        if not preserve_keys_case:
-            name = name.lower()
-        name = name.strip()
+        # we do not preserve case: debian field names are case-insensitive AND
+        # we use a normalized lowercase version throughout.
+        name = name.lower().strip()
         value = value.strip()
         if name in data:
             existing_values = data.get(name, '').splitlines()

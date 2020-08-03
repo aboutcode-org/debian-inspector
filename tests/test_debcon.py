@@ -61,14 +61,6 @@ class TestGetParagraphData(JsonTester):
         results = debcon.get_paragraph_data(test)
         assert {key.lower(): value} == results
 
-    def test_get_paragraph_data_optionally_does_preserve_keys_case(self):
-        key = 'Some-text'
-        value = '''RFC 822
-        Compliant'''
-        test = '{}: {}'.format(key, value)
-        results = debcon.get_paragraph_data(test, preserve_keys_case=True)
-        assert {key: value} == results
-
     def test_get_paragraph_data__merge_duplicate_keys(self):
         o1 = 'some: val'
         kv1 = 'key: value1'
@@ -84,31 +76,6 @@ class TestGetParagraphData(JsonTester):
             assert sorted(expected) == sorted(results.items())
         else:
             assert expected == list(results.items())
-
-    def test_get_paragraph_data__does_not_merge_same_keys_of_different_cases_with_preserve_keys_case(self):
-        o1 = 'some: val'
-        kv1 = 'key: value1'
-        o2 = 'other: val'
-        # different key case of kv1
-        kv2 = 'Key: value2'
-        test = '{}\n{}\n{}\n{}'.format(o1, kv1, o2, kv2)
-        results = debcon.get_paragraph_data(test, preserve_keys_case=True)
-        expected = [
-            ('some', 'val'),
-            ('key', 'value1'),
-            ('other', 'val'),
-            ('Key', 'value2'),
-        ]
-        if py2:
-            assert sorted(expected) == sorted(results.items())
-        else:
-            assert expected == list(results.items())
-
-    def test_get_paragraphs_data_from_file_preserve_keys_case_of_alpine_installed_database(self):
-        test_file = self.get_test_loc('alpine/alpine-installed')
-        expected_loc = 'alpine/alpine-installed-expected.json'
-        results = list(debcon.get_paragraphs_data_from_file(test_file, preserve_keys_case=True))
-        self.check_json(results, expected_loc, regen=False)
 
     def test_test_get_paragraph_data__simple(self):
         items = 'A: b\nc: d'
