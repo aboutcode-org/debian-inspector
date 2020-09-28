@@ -275,6 +275,8 @@ class CatchAllParagraph(ParagraphMixin):
 @attrs
 class CopyrightHeaderParagraph(ParagraphMixin):
     """
+    The header paragraph.
+
     https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/#header-paragraph
     """
     # Default would be https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/')
@@ -310,6 +312,8 @@ class CopyrightHeaderParagraph(ParagraphMixin):
 @attrs
 class CopyrightFilesParagraph(ParagraphMixin):
     """
+    A "files" paragraph with files, copyright, license and comment fields.
+
     https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/#files-paragraph
     """
     files = debcon.AnyWhiteSpaceSeparatedField.attrib(default=None)
@@ -350,6 +354,11 @@ class CopyrightFilesParagraph(ParagraphMixin):
 
 @attrs
 class CopyrightLicenseParagraph(ParagraphMixin):
+    """
+    A standalone license paragraph with license and comment fields, but no files.
+    
+    https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/#stand-alone-license-paragraph
+    """
     license = LicenseField.attrib(default=None)
     comment = debcon.FormattedTextField.attrib(default=None)
 
@@ -532,4 +541,3 @@ class DebianCopyright(object):
             return has_header and (has_files or (has_license and has_files)) and has_unknown
         else:
             return has_header and (has_files or (has_license and has_files))
-
