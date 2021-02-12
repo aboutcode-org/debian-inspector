@@ -110,3 +110,25 @@ class TestDebianCopyright(JsonTester):
         expected_loc = 'copyright/dropbear.copyright-expected.dumps'
         results = copyright.DebianCopyright.from_text(test_data).dumps()
         self.check_file(results, expected_loc, sort=py2, regen=False)
+
+
+class TestCopyright(JsonTester):
+    test_data_dir = path.join(path.dirname(__file__), 'data')
+
+    def test_is_machine_readable_copyright(self):
+        text='''format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: b43-fwcutter
+Source: http://linuxwireless.org/en/users/Drivers/b43'''
+        assert copyright.is_machine_readable_copyright(text)
+
+    def test_is_machine_readable_copyright_ignore_case(self):
+        text='''Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: b43-fwcutter
+Source: http://linuxwireless.org/en/users/Drivers/b43'''
+        assert copyright.is_machine_readable_copyright(text)
+
+    def test_is_machine_readable_copyright_fasle(self):
+        text='''homepage: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+        '''
+        assert not copyright.is_machine_readable_copyright(text)
+

@@ -295,18 +295,21 @@ class CopyrightHeaderParagraph(ParagraphMixin):
     # this is an overflow of extra unknown fields for this paragraph
     extra_data = attrib(default=Factory(dict))
 
-    @staticmethod
-    def is_valid_format(text):
-        return text and text.strip().lower() in (
-            'https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/',
-            'http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/',
-        )
-
     def is_valid(self, strict=False):
-        valid = self.is_valid_format(self.format.value)
+        valid = is_machine_readable_copyright(self.format.value)
         if strict:
             valid = valid and not self.has_extra_data()
         return valid
+
+
+def is_machine_readable_copyright(text):
+    """
+    Return True if a text is for a machine-readable copyright format.
+    """
+    return text and text[:100].lower().startswith((
+        'format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0',
+        'format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0',
+    ))
 
 
 @attrs
@@ -356,7 +359,7 @@ class CopyrightFilesParagraph(ParagraphMixin):
 class CopyrightLicenseParagraph(ParagraphMixin):
     """
     A standalone license paragraph with license and comment fields, but no files.
-    
+
     https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/#stand-alone-license-paragraph
     """
     license = LicenseField.attrib(default=None)
