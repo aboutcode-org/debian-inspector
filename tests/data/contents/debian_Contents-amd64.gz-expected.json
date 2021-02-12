@@ -1,0 +1,444 @@
+[
+  {
+    "bin/ash": [
+      "ash"
+    ],
+    "bin/bash": [
+      "bash"
+    ],
+    "bin/bash-static": [
+      "bash-static"
+    ],
+    "bin/bioauth": [
+      "libpam-biometric"
+    ],
+    "bin/bioctl": [
+      "libpam-biometric"
+    ],
+    "bin/brltty": [
+      "brltty"
+    ],
+    "bin/bsd-csh": [
+      "csh"
+    ],
+    "bin/btrfs": [
+      "btrfs-progs"
+    ],
+    "bin/btrfs-find-root": [
+      "btrfs-progs"
+    ],
+    "bin/btrfs-image": [
+      "btrfs-progs"
+    ],
+    "bin/btrfs-map-logical": [
+      "btrfs-progs"
+    ],
+    "bin/btrfs-select-super": [
+      "btrfs-progs"
+    ],
+    "bin/btrfsck": [
+      "btrfs-progs"
+    ],
+    "bin/btrfstune": [
+      "btrfs-progs"
+    ],
+    "bin/bunzip2": [
+      "bzip2"
+    ],
+    "bin/busybox": [
+      "busybox",
+      "busybox-static"
+    ],
+    "bin/bzcat": [
+      "bzip2"
+    ],
+    "bin/bzcmp": [
+      "bzip2"
+    ],
+    "bin/bzdiff": [
+      "bzip2"
+    ],
+    "bin/bzegrep": [
+      "bzip2"
+    ],
+    "bin/bzexe": [
+      "bzip2"
+    ],
+    "bin/bzfgrep": [
+      "bzip2"
+    ],
+    "bin/bzgrep": [
+      "bzip2"
+    ],
+    "bin/bzip2": [
+      "bzip2"
+    ],
+    "bin/bzip2recover": [
+      "bzip2"
+    ],
+    "bin/bzless": [
+      "bzip2"
+    ],
+    "bin/bzmore": [
+      "bzip2"
+    ],
+    "bin/cat": [
+      "coreutils"
+    ],
+    "bin/chacl": [
+      "acl"
+    ],
+    "bin/checkpassword.login": [
+      "fgetty"
+    ],
+    "bin/chgrp": [
+      "coreutils"
+    ],
+    "bin/chmod": [
+      "coreutils"
+    ],
+    "bin/chown": [
+      "coreutils"
+    ],
+    "bin/chvt": [
+      "kbd"
+    ],
+    "bin/con2fbmap": [
+      "fbset"
+    ],
+    "bin/cp": [
+      "coreutils"
+    ],
+    "bin/cpio": [
+      "cpio"
+    ],
+    "bin/dash": [
+      "dash"
+    ],
+    "bin/date": [
+      "coreutils"
+    ],
+    "bin/dd": [
+      "coreutils"
+    ],
+    "bin/df": [
+      "coreutils"
+    ],
+    "bin/dir": [
+      "coreutils"
+    ],
+    "bin/dmesg": [
+      "util-linux"
+    ],
+    "bin/dnsdomainname": [
+      "hostname"
+    ],
+    "bin/domainname": [
+      "hostname"
+    ],
+    "bin/dumpkeys": [
+      "kbd"
+    ],
+    "bin/echo": [
+      "coreutils"
+    ],
+    "bin/ed": [
+      "ed"
+    ],
+    "bin/efibootdump": [
+      "efibootmgr"
+    ],
+    "bin/efibootmgr": [
+      "efibootmgr"
+    ],
+    "bin/egrep": [
+      "grep"
+    ],
+    "bin/elogind-inhibit": [
+      "elogind"
+    ],
+    "bin/elvis-tiny": [
+      "elvis-tiny"
+    ],
+    "bin/false": [
+      "coreutils"
+    ],
+    "bin/fbset": [
+      "fbset"
+    ],
+    "bin/fgconsole": [
+      "kbd"
+    ],
+    "bin/fgrep": [
+      "grep"
+    ],
+    "bin/findmnt": [
+      "util-linux"
+    ],
+    "bin/francine": [
+      "francine"
+    ],
+    "bin/fsck.btrfs": [
+      "btrfs-progs"
+    ],
+    "bin/fuser": [
+      "psmisc"
+    ],
+    "bin/fusermount": [
+      "fuse",
+      "fuse3"
+    ],
+    "bin/fusermount3": [
+      "fuse3"
+    ],
+    "bin/gaffitter": [
+      "gaffitter"
+    ],
+    "bin/getfacl": [
+      "acl"
+    ],
+    "bin/grep": [
+      "grep"
+    ],
+    "bin/gunzip": [
+      "gzip"
+    ],
+    "bin/gzexe": [
+      "gzip"
+    ],
+    "bin/gzip": [
+      "gzip"
+    ],
+    "bin/hciconfig": [
+      "bluez"
+    ],
+    "bin/hostname": [
+      "hostname"
+    ],
+    "bin/ip": [
+      "iproute2"
+    ],
+    "bin/is_aufs": [
+      "fsprotect"
+    ],
+    "bin/journalctl": [
+      "systemd"
+    ],
+    "bin/kbd_mode": [
+      "kbd"
+    ],
+    "bin/keyctl": [
+      "keyutils"
+    ],
+    "bin/kill": [
+      "procps"
+    ],
+    "bin/kmod": [
+      "kmod"
+    ],
+    "bin/ksh93": [
+      "ksh"
+    ],
+    "bin/less": [
+      "less"
+    ],
+    "bin/lessecho": [
+      "less"
+    ],
+    "bin/lessfile": [
+      "less"
+    ],
+    "bin/lesskey": [
+      "less"
+    ],
+    "bin/lesspipe": [
+      "less"
+    ],
+    "bin/live-boot": [
+      "live-boot",
+      "open-infrastructure-system-boot"
+    ],
+    "bin/live-config": [
+      "live-config",
+      "open-infrastructure-system-config"
+    ]
+  },
+  {
+    "ash": [
+      "bin/ash"
+    ],
+    "bash": [
+      "bin/bash"
+    ],
+    "bash-static": [
+      "bin/bash-static"
+    ],
+    "libpam-biometric": [
+      "bin/bioauth",
+      "bin/bioctl"
+    ],
+    "brltty": [
+      "bin/brltty"
+    ],
+    "csh": [
+      "bin/bsd-csh"
+    ],
+    "btrfs-progs": [
+      "bin/btrfs",
+      "bin/btrfs-find-root",
+      "bin/btrfs-image",
+      "bin/btrfs-map-logical",
+      "bin/btrfs-select-super",
+      "bin/btrfsck",
+      "bin/btrfstune",
+      "bin/fsck.btrfs"
+    ],
+    "bzip2": [
+      "bin/bunzip2",
+      "bin/bzcat",
+      "bin/bzcmp",
+      "bin/bzdiff",
+      "bin/bzegrep",
+      "bin/bzexe",
+      "bin/bzfgrep",
+      "bin/bzgrep",
+      "bin/bzip2",
+      "bin/bzip2recover",
+      "bin/bzless",
+      "bin/bzmore"
+    ],
+    "busybox": [
+      "bin/busybox"
+    ],
+    "busybox-static": [
+      "bin/busybox"
+    ],
+    "coreutils": [
+      "bin/cat",
+      "bin/chgrp",
+      "bin/chmod",
+      "bin/chown",
+      "bin/cp",
+      "bin/date",
+      "bin/dd",
+      "bin/df",
+      "bin/dir",
+      "bin/echo",
+      "bin/false"
+    ],
+    "acl": [
+      "bin/chacl",
+      "bin/getfacl"
+    ],
+    "fgetty": [
+      "bin/checkpassword.login"
+    ],
+    "kbd": [
+      "bin/chvt",
+      "bin/dumpkeys",
+      "bin/fgconsole",
+      "bin/kbd_mode"
+    ],
+    "fbset": [
+      "bin/con2fbmap",
+      "bin/fbset"
+    ],
+    "cpio": [
+      "bin/cpio"
+    ],
+    "dash": [
+      "bin/dash"
+    ],
+    "util-linux": [
+      "bin/dmesg",
+      "bin/findmnt"
+    ],
+    "hostname": [
+      "bin/dnsdomainname",
+      "bin/domainname",
+      "bin/hostname"
+    ],
+    "ed": [
+      "bin/ed"
+    ],
+    "efibootmgr": [
+      "bin/efibootdump",
+      "bin/efibootmgr"
+    ],
+    "grep": [
+      "bin/egrep",
+      "bin/fgrep",
+      "bin/grep"
+    ],
+    "elogind": [
+      "bin/elogind-inhibit"
+    ],
+    "elvis-tiny": [
+      "bin/elvis-tiny"
+    ],
+    "francine": [
+      "bin/francine"
+    ],
+    "psmisc": [
+      "bin/fuser"
+    ],
+    "fuse": [
+      "bin/fusermount"
+    ],
+    "fuse3": [
+      "bin/fusermount",
+      "bin/fusermount3"
+    ],
+    "gaffitter": [
+      "bin/gaffitter"
+    ],
+    "gzip": [
+      "bin/gunzip",
+      "bin/gzexe",
+      "bin/gzip"
+    ],
+    "bluez": [
+      "bin/hciconfig"
+    ],
+    "iproute2": [
+      "bin/ip"
+    ],
+    "fsprotect": [
+      "bin/is_aufs"
+    ],
+    "systemd": [
+      "bin/journalctl"
+    ],
+    "keyutils": [
+      "bin/keyctl"
+    ],
+    "procps": [
+      "bin/kill"
+    ],
+    "kmod": [
+      "bin/kmod"
+    ],
+    "ksh": [
+      "bin/ksh93"
+    ],
+    "less": [
+      "bin/less",
+      "bin/lessecho",
+      "bin/lessfile",
+      "bin/lesskey",
+      "bin/lesspipe"
+    ],
+    "live-boot": [
+      "bin/live-boot"
+    ],
+    "open-infrastructure-system-boot": [
+      "bin/live-boot"
+    ],
+    "live-config": [
+      "bin/live-config"
+    ],
+    "open-infrastructure-system-config": [
+      "bin/live-config"
+    ]
+  }
+]

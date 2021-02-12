@@ -1,0 +1,212 @@
+This file maps each file available in the Ubuntu
+system to the package from which it originates.  It includes packages
+from the DIST distribution for the ARCH architecture.
+
+You can use this list to determine which package contains a specific
+file, or whether or not a specific file is available.  The list is
+updated weekly, each architecture on a different day.
+
+When a file is contained in more than one package, all packages are
+listed.  When a directory is contained in more than one package, only
+the first is listed.
+
+The best way to search quickly for a file is with the Unix `grep'
+utility, as in `grep <regular expression> CONTENTS':
+
+ $ grep nose Contents
+ etc/nosendfile                                          net/sendfile
+ usr/X11R6/bin/noseguy                                   x11/xscreensaver
+ usr/X11R6/man/man1/noseguy.1x.gz                        x11/xscreensaver
+ usr/doc/examples/ucbmpeg/mpeg_encode/nosearch.param     graphics/ucbmpeg
+ usr/lib/cfengine/bin/noseyparker                        admin/cfengine
+
+This list contains files in all packages, even though not all of the
+packages are installed on an actual system at once.  If you want to
+find out which packages on an installed Debian system provide a
+particular file, you can use `dpkg --search <filename>':
+
+ $ dpkg --search /usr/bin/dselect
+ dpkg: /usr/bin/dselect
+
+
+FILE                                                    LOCATION
+bin/afio                            universe/utils/afio
+bin/ash                             universe/shells/ash
+bin/autopartition                       admin/ubiquity
+bin/autopartition-loop                      admin/ubiquity
+bin/bash                            shells/bash
+bin/bash-static                         universe/shells/bash-static
+bin/block-attr                          admin/ubiquity
+bin/bsd-csh                         universe/shells/csh
+bin/bunzip2                         utils/bzip2
+bin/busybox                         shells/busybox-static,universe/utils/busybox
+bin/bzcat                           utils/bzip2
+bin/bzcmp                           utils/bzip2
+bin/bzdiff                          utils/bzip2
+bin/bzegrep                         utils/bzip2
+bin/bzexe                           utils/bzip2
+bin/bzfgrep                         utils/bzip2
+bin/bzgrep                          utils/bzip2
+bin/bzip2                           utils/bzip2
+bin/bzip2recover                        utils/bzip2
+bin/bzless                          utils/bzip2
+bin/bzmore                          utils/bzip2
+bin/cat                             utils/coreutils
+bin/chacl                           utils/acl
+bin/check-missing-firmware                  admin/ubiquity
+bin/checkpassword                       universe/admin/fgetty
+bin/chgrp                           utils/coreutils
+bin/chmod                           utils/coreutils
+bin/chown                           utils/coreutils
+bin/chvt                            utils/kbd
+bin/ckbcomp-mini                        universe/utils/console-setup-mini
+bin/con2fbmap                           admin/fbset
+bin/cp                              utils/coreutils
+bin/cpio                            utils/cpio
+bin/cvssh                           universe/devel/gforge-common
+bin/dash                            shells/dash
+bin/date                            utils/coreutils
+bin/dbus-cleanup-sockets                    devel/dbus
+bin/dbus-daemon                         devel/dbus
+bin/dbus-uuidgen                        devel/dbus
+bin/dd                              utils/coreutils
+bin/dd_rescue                           universe/utils/ddrescue
+bin/debconf-get                         admin/ubiquity
+bin/df                              utils/coreutils
+bin/dir                             utils/coreutils
+bin/dmesg                           utils/util-linux
+bin/dnsdomainname                       admin/hostname
+bin/domainname                          admin/hostname
+bin/dumpkeys                            utils/kbd
+bin/echo                            utils/coreutils
+bin/ed                              editors/ed
+bin/efibootmgr                          admin/efibootmgr
+bin/egrep                           utils/grep
+bin/elvis-tiny                          universe/editors/elvis-tiny
+bin/false                           utils/coreutils
+bin/fbset                           admin/fbset
+bin/fdflush                         universe/utils/fdflush
+bin/fgconsole                           utils/kbd,universe/utils/console-tools
+bin/fgetty-login                        universe/admin/fgetty
+bin/fgetty-login2                       universe/admin/fgetty
+bin/fgrep                           utils/grep
+bin/findmnt                         admin/mount
+bin/francine                            universe/admin/francine
+bin/fuser                           admin/psmisc
+bin/fusermount                          utils/fuse
+bin/gaffitter                           universe/utils/gaffitter
+bin/get_mountoptions                        admin/ubiquity
+bin/getfacl                         utils/acl
+bin/grep                            utils/grep
+bin/gunzip                          utils/gzip
+bin/gzexe                           utils/gzip
+bin/gzip                            utils/gzip
+bin/hostname                            admin/hostname
+bin/hw-detect                           admin/ubiquity
+bin/in-target                           admin/ubiquity
+bin/init-checkconf                      admin/upstart
+bin/initctl2dot                         admin/upstart
+bin/ip                              net/iproute
+bin/is_aufs                         universe/admin/fsprotect
+bin/kbd_mode                            utils/kbd,universe/utils/console-tools
+bin/keyctl                          misc/keyutils
+bin/kill                            admin/procps
+bin/ksh93                           universe/shells/ksh
+bin/ld_static                           universe/devel/binutils-static
+bin/less                            text/less
+bin/lessecho                            text/less
+bin/lessfile                            text/less
+bin/lesskey                         text/less
+bin/lesspipe                            text/less
+bin/list-devices                        admin/ubiquity
+bin/ln                              utils/coreutils
+bin/loadkeys                            utils/kbd,universe/utils/console-tools
+bin/log-output                          admin/ubiquity
+bin/login                           admin/login
+bin/logread                         universe/utils/busybox-syslogd
+bin/lowntfs-3g                          otherosfs/ntfs-3g
+bin/ls                              utils/coreutils
+bin/lsblk                           utils/util-linux
+bin/lsmod                           admin/module-init-tools
+bin/makedumpfile-static                     universe/devel/makedumpfile-static
+bin/mapdevfs                            admin/ubiquity
+bin/mkdir                           utils/coreutils
+bin/mknod                           utils/coreutils
+bin/mksh                            universe/shells/mksh
+bin/mksh-static                         universe/shells/mksh
+bin/mktemp                          utils/coreutils
+bin/modeline2fb                         admin/fbset
+bin/more                            utils/util-linux
+bin/mount                           admin/mount,universe/admin/loop-aes-utils
+bin/mountpoint                          admin/initscripts
+bin/mt-gnu                          utils/cpio
+bin/mt-st                           universe/admin/mt-st
+bin/mv                              utils/coreutils
+bin/nano                            editors/nano
+bin/nano-tiny                           universe/editors/nano-tiny
+bin/nbd-server                          admin/nbd-server
+bin/nc.openbsd                          net/netcat-openbsd
+bin/nc.traditional                      universe/net/netcat-traditional
+bin/nc6                             universe/net/netcat6
+bin/netstat                         net/net-tools
+bin/nisdomainname                       admin/hostname
+bin/ntfs-3g                         otherosfs/ntfs-3g
+bin/ntfs-3g.probe                       otherosfs/ntfs-3g
+bin/ntfs-3g.secaudit                        otherosfs/ntfs-3g
+bin/ntfs-3g.usermap                     otherosfs/ntfs-3g
+bin/ntfscat                         otherosfs/ntfs-3g
+bin/ntfsck                          otherosfs/ntfs-3g
+bin/ntfscluster                         otherosfs/ntfs-3g
+bin/ntfscmp                         otherosfs/ntfs-3g
+bin/ntfsdecrypt                         otherosfs/ntfs-3g
+bin/ntfsdump_logfile                        otherosfs/ntfs-3g
+bin/ntfsfix                         otherosfs/ntfs-3g
+bin/ntfsinfo                            otherosfs/ntfs-3g
+bin/ntfsls                          otherosfs/ntfs-3g
+bin/ntfsmftalloc                        otherosfs/ntfs-3g
+bin/ntfsmove                            otherosfs/ntfs-3g
+bin/ntfstruncate                        otherosfs/ntfs-3g
+bin/ntfswipe                            otherosfs/ntfs-3g
+bin/open                            utils/kbd
+bin/openvt                          utils/kbd
+bin/parted_devices                      admin/ubiquity
+bin/parted_server                       admin/ubiquity
+bin/partman                         admin/ubiquity
+bin/partman-command                     admin/ubiquity
+bin/partman-commit                      admin/ubiquity
+bin/partmap                         admin/ubiquity
+bin/pax                             utils/pax
+bin/paxcpio                         utils/pax
+bin/paxtar                          utils/pax
+bin/pdksh                           shells/pdksh
+bin/perform_recipe                      admin/ubiquity
+bin/pidof                           admin/sysvinit-utils
+bin/ping                            net/iputils-ping,universe/net/inetutils-ping
+bin/ping6                           net/iputils-ping,universe/net/inetutils-ping
+bin/plymouth                            x11/plymouth
+bin/plymouth-upstart-bridge                 x11/plymouth
+bin/posh                            universe/shells/posh
+bin/preseed_command                     admin/ubiquity
+bin/ps                              admin/procps
+bin/pwd                             utils/coreutils
+bin/rbash                           shells/bash
+bin/rdisc6                          universe/net/ndisc6
+bin/readlink                            utils/coreutils
+bin/register-module                     admin/ubiquity
+bin/rm                              utils/coreutils
+bin/rmdir                           utils/coreutils
+bin/rnano                           editors/nano
+bin/rsbac_login                         universe/admin/rsbac-admin
+bin/run-parts                           utils/debianutils
+bin/running-in-container                    admin/upstart
+bin/sash                            universe/shells/sash
+bin/sdpnetstat                          universe/net/sdpnetstat
+bin/search-path                         admin/ubiquity
+bin/sed                             utils/sed
+bin/select_mountoptions                     admin/ubiquity
+bin/select_mountpoint                       admin/ubiquity
+bin/serdo                           universe/admin/minit
+bin/setfacl                         utils/acl
+bin/setfont                         utils/kbd
+bin/setserial                           comm/setserial
+bin/setupcon                            utils/console-setup,universe/utils/console-setup-mini

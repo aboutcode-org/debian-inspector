@@ -1,0 +1,890 @@
+[
+  {
+    "bin/afio": [
+      "afio"
+    ],
+    "bin/ash": [
+      "ash"
+    ],
+    "bin/autopartition": [
+      "ubiquity"
+    ],
+    "bin/autopartition-loop": [
+      "ubiquity"
+    ],
+    "bin/bash": [
+      "bash"
+    ],
+    "bin/bash-static": [
+      "bash-static"
+    ],
+    "bin/block-attr": [
+      "ubiquity"
+    ],
+    "bin/bsd-csh": [
+      "csh"
+    ],
+    "bin/bunzip2": [
+      "bzip2"
+    ],
+    "bin/busybox": [
+      "busybox-static",
+      "busybox"
+    ],
+    "bin/bzcat": [
+      "bzip2"
+    ],
+    "bin/bzcmp": [
+      "bzip2"
+    ],
+    "bin/bzdiff": [
+      "bzip2"
+    ],
+    "bin/bzegrep": [
+      "bzip2"
+    ],
+    "bin/bzexe": [
+      "bzip2"
+    ],
+    "bin/bzfgrep": [
+      "bzip2"
+    ],
+    "bin/bzgrep": [
+      "bzip2"
+    ],
+    "bin/bzip2": [
+      "bzip2"
+    ],
+    "bin/bzip2recover": [
+      "bzip2"
+    ],
+    "bin/bzless": [
+      "bzip2"
+    ],
+    "bin/bzmore": [
+      "bzip2"
+    ],
+    "bin/cat": [
+      "coreutils"
+    ],
+    "bin/chacl": [
+      "acl"
+    ],
+    "bin/check-missing-firmware": [
+      "ubiquity"
+    ],
+    "bin/checkpassword": [
+      "fgetty"
+    ],
+    "bin/chgrp": [
+      "coreutils"
+    ],
+    "bin/chmod": [
+      "coreutils"
+    ],
+    "bin/chown": [
+      "coreutils"
+    ],
+    "bin/chvt": [
+      "kbd"
+    ],
+    "bin/ckbcomp-mini": [
+      "console-setup-mini"
+    ],
+    "bin/con2fbmap": [
+      "fbset"
+    ],
+    "bin/cp": [
+      "coreutils"
+    ],
+    "bin/cpio": [
+      "cpio"
+    ],
+    "bin/cvssh": [
+      "gforge-common"
+    ],
+    "bin/dash": [
+      "dash"
+    ],
+    "bin/date": [
+      "coreutils"
+    ],
+    "bin/dbus-cleanup-sockets": [
+      "dbus"
+    ],
+    "bin/dbus-daemon": [
+      "dbus"
+    ],
+    "bin/dbus-uuidgen": [
+      "dbus"
+    ],
+    "bin/dd": [
+      "coreutils"
+    ],
+    "bin/dd_rescue": [
+      "ddrescue"
+    ],
+    "bin/debconf-get": [
+      "ubiquity"
+    ],
+    "bin/df": [
+      "coreutils"
+    ],
+    "bin/dir": [
+      "coreutils"
+    ],
+    "bin/dmesg": [
+      "util-linux"
+    ],
+    "bin/dnsdomainname": [
+      "hostname"
+    ],
+    "bin/domainname": [
+      "hostname"
+    ],
+    "bin/dumpkeys": [
+      "kbd"
+    ],
+    "bin/echo": [
+      "coreutils"
+    ],
+    "bin/ed": [
+      "ed"
+    ],
+    "bin/efibootmgr": [
+      "efibootmgr"
+    ],
+    "bin/egrep": [
+      "grep"
+    ],
+    "bin/elvis-tiny": [
+      "elvis-tiny"
+    ],
+    "bin/false": [
+      "coreutils"
+    ],
+    "bin/fbset": [
+      "fbset"
+    ],
+    "bin/fdflush": [
+      "fdflush"
+    ],
+    "bin/fgconsole": [
+      "kbd",
+      "console-tools"
+    ],
+    "bin/fgetty-login": [
+      "fgetty"
+    ],
+    "bin/fgetty-login2": [
+      "fgetty"
+    ],
+    "bin/fgrep": [
+      "grep"
+    ],
+    "bin/findmnt": [
+      "mount"
+    ],
+    "bin/francine": [
+      "francine"
+    ],
+    "bin/fuser": [
+      "psmisc"
+    ],
+    "bin/fusermount": [
+      "fuse"
+    ],
+    "bin/gaffitter": [
+      "gaffitter"
+    ],
+    "bin/get_mountoptions": [
+      "ubiquity"
+    ],
+    "bin/getfacl": [
+      "acl"
+    ],
+    "bin/grep": [
+      "grep"
+    ],
+    "bin/gunzip": [
+      "gzip"
+    ],
+    "bin/gzexe": [
+      "gzip"
+    ],
+    "bin/gzip": [
+      "gzip"
+    ],
+    "bin/hostname": [
+      "hostname"
+    ],
+    "bin/hw-detect": [
+      "ubiquity"
+    ],
+    "bin/in-target": [
+      "ubiquity"
+    ],
+    "bin/init-checkconf": [
+      "upstart"
+    ],
+    "bin/initctl2dot": [
+      "upstart"
+    ],
+    "bin/ip": [
+      "iproute"
+    ],
+    "bin/is_aufs": [
+      "fsprotect"
+    ],
+    "bin/kbd_mode": [
+      "kbd",
+      "console-tools"
+    ],
+    "bin/keyctl": [
+      "keyutils"
+    ],
+    "bin/kill": [
+      "procps"
+    ],
+    "bin/ksh93": [
+      "ksh"
+    ],
+    "bin/ld_static": [
+      "binutils-static"
+    ],
+    "bin/less": [
+      "less"
+    ],
+    "bin/lessecho": [
+      "less"
+    ],
+    "bin/lessfile": [
+      "less"
+    ],
+    "bin/lesskey": [
+      "less"
+    ],
+    "bin/lesspipe": [
+      "less"
+    ],
+    "bin/list-devices": [
+      "ubiquity"
+    ],
+    "bin/ln": [
+      "coreutils"
+    ],
+    "bin/loadkeys": [
+      "kbd",
+      "console-tools"
+    ],
+    "bin/log-output": [
+      "ubiquity"
+    ],
+    "bin/login": [
+      "login"
+    ],
+    "bin/logread": [
+      "busybox-syslogd"
+    ],
+    "bin/lowntfs-3g": [
+      "ntfs-3g"
+    ],
+    "bin/ls": [
+      "coreutils"
+    ],
+    "bin/lsblk": [
+      "util-linux"
+    ],
+    "bin/lsmod": [
+      "module-init-tools"
+    ],
+    "bin/makedumpfile-static": [
+      "makedumpfile-static"
+    ],
+    "bin/mapdevfs": [
+      "ubiquity"
+    ],
+    "bin/mkdir": [
+      "coreutils"
+    ],
+    "bin/mknod": [
+      "coreutils"
+    ],
+    "bin/mksh": [
+      "mksh"
+    ],
+    "bin/mksh-static": [
+      "mksh"
+    ],
+    "bin/mktemp": [
+      "coreutils"
+    ],
+    "bin/modeline2fb": [
+      "fbset"
+    ],
+    "bin/more": [
+      "util-linux"
+    ],
+    "bin/mount": [
+      "mount",
+      "loop-aes-utils"
+    ],
+    "bin/mountpoint": [
+      "initscripts"
+    ],
+    "bin/mt-gnu": [
+      "cpio"
+    ],
+    "bin/mt-st": [
+      "mt-st"
+    ],
+    "bin/mv": [
+      "coreutils"
+    ],
+    "bin/nano": [
+      "nano"
+    ],
+    "bin/nano-tiny": [
+      "nano-tiny"
+    ],
+    "bin/nbd-server": [
+      "nbd-server"
+    ],
+    "bin/nc.openbsd": [
+      "netcat-openbsd"
+    ],
+    "bin/nc.traditional": [
+      "netcat-traditional"
+    ],
+    "bin/nc6": [
+      "netcat6"
+    ],
+    "bin/netstat": [
+      "net-tools"
+    ],
+    "bin/nisdomainname": [
+      "hostname"
+    ],
+    "bin/ntfs-3g": [
+      "ntfs-3g"
+    ],
+    "bin/ntfs-3g.probe": [
+      "ntfs-3g"
+    ],
+    "bin/ntfs-3g.secaudit": [
+      "ntfs-3g"
+    ],
+    "bin/ntfs-3g.usermap": [
+      "ntfs-3g"
+    ],
+    "bin/ntfscat": [
+      "ntfs-3g"
+    ],
+    "bin/ntfsck": [
+      "ntfs-3g"
+    ],
+    "bin/ntfscluster": [
+      "ntfs-3g"
+    ],
+    "bin/ntfscmp": [
+      "ntfs-3g"
+    ],
+    "bin/ntfsdecrypt": [
+      "ntfs-3g"
+    ],
+    "bin/ntfsdump_logfile": [
+      "ntfs-3g"
+    ],
+    "bin/ntfsfix": [
+      "ntfs-3g"
+    ],
+    "bin/ntfsinfo": [
+      "ntfs-3g"
+    ],
+    "bin/ntfsls": [
+      "ntfs-3g"
+    ],
+    "bin/ntfsmftalloc": [
+      "ntfs-3g"
+    ],
+    "bin/ntfsmove": [
+      "ntfs-3g"
+    ],
+    "bin/ntfstruncate": [
+      "ntfs-3g"
+    ],
+    "bin/ntfswipe": [
+      "ntfs-3g"
+    ],
+    "bin/open": [
+      "kbd"
+    ],
+    "bin/openvt": [
+      "kbd"
+    ],
+    "bin/parted_devices": [
+      "ubiquity"
+    ],
+    "bin/parted_server": [
+      "ubiquity"
+    ],
+    "bin/partman": [
+      "ubiquity"
+    ],
+    "bin/partman-command": [
+      "ubiquity"
+    ],
+    "bin/partman-commit": [
+      "ubiquity"
+    ],
+    "bin/partmap": [
+      "ubiquity"
+    ],
+    "bin/pax": [
+      "pax"
+    ],
+    "bin/paxcpio": [
+      "pax"
+    ],
+    "bin/paxtar": [
+      "pax"
+    ],
+    "bin/pdksh": [
+      "pdksh"
+    ],
+    "bin/perform_recipe": [
+      "ubiquity"
+    ],
+    "bin/pidof": [
+      "sysvinit-utils"
+    ],
+    "bin/ping": [
+      "iputils-ping",
+      "inetutils-ping"
+    ],
+    "bin/ping6": [
+      "iputils-ping",
+      "inetutils-ping"
+    ],
+    "bin/plymouth": [
+      "plymouth"
+    ],
+    "bin/plymouth-upstart-bridge": [
+      "plymouth"
+    ],
+    "bin/posh": [
+      "posh"
+    ],
+    "bin/preseed_command": [
+      "ubiquity"
+    ],
+    "bin/ps": [
+      "procps"
+    ],
+    "bin/pwd": [
+      "coreutils"
+    ],
+    "bin/rbash": [
+      "bash"
+    ],
+    "bin/rdisc6": [
+      "ndisc6"
+    ],
+    "bin/readlink": [
+      "coreutils"
+    ],
+    "bin/register-module": [
+      "ubiquity"
+    ],
+    "bin/rm": [
+      "coreutils"
+    ],
+    "bin/rmdir": [
+      "coreutils"
+    ],
+    "bin/rnano": [
+      "nano"
+    ],
+    "bin/rsbac_login": [
+      "rsbac-admin"
+    ],
+    "bin/run-parts": [
+      "debianutils"
+    ],
+    "bin/running-in-container": [
+      "upstart"
+    ],
+    "bin/sash": [
+      "sash"
+    ],
+    "bin/sdpnetstat": [
+      "sdpnetstat"
+    ],
+    "bin/search-path": [
+      "ubiquity"
+    ],
+    "bin/sed": [
+      "sed"
+    ],
+    "bin/select_mountoptions": [
+      "ubiquity"
+    ],
+    "bin/select_mountpoint": [
+      "ubiquity"
+    ],
+    "bin/serdo": [
+      "minit"
+    ],
+    "bin/setfacl": [
+      "acl"
+    ],
+    "bin/setfont": [
+      "kbd"
+    ],
+    "bin/setserial": [
+      "setserial"
+    ],
+    "bin/setupcon": [
+      "console-setup",
+      "console-setup-mini"
+    ]
+  },
+  {
+    "afio": [
+      "bin/afio"
+    ],
+    "ash": [
+      "bin/ash"
+    ],
+    "ubiquity": [
+      "bin/autopartition",
+      "bin/autopartition-loop",
+      "bin/block-attr",
+      "bin/check-missing-firmware",
+      "bin/debconf-get",
+      "bin/get_mountoptions",
+      "bin/hw-detect",
+      "bin/in-target",
+      "bin/list-devices",
+      "bin/log-output",
+      "bin/mapdevfs",
+      "bin/parted_devices",
+      "bin/parted_server",
+      "bin/partman",
+      "bin/partman-command",
+      "bin/partman-commit",
+      "bin/partmap",
+      "bin/perform_recipe",
+      "bin/preseed_command",
+      "bin/register-module",
+      "bin/search-path",
+      "bin/select_mountoptions",
+      "bin/select_mountpoint"
+    ],
+    "bash": [
+      "bin/bash",
+      "bin/rbash"
+    ],
+    "bash-static": [
+      "bin/bash-static"
+    ],
+    "csh": [
+      "bin/bsd-csh"
+    ],
+    "bzip2": [
+      "bin/bunzip2",
+      "bin/bzcat",
+      "bin/bzcmp",
+      "bin/bzdiff",
+      "bin/bzegrep",
+      "bin/bzexe",
+      "bin/bzfgrep",
+      "bin/bzgrep",
+      "bin/bzip2",
+      "bin/bzip2recover",
+      "bin/bzless",
+      "bin/bzmore"
+    ],
+    "busybox-static": [
+      "bin/busybox"
+    ],
+    "busybox": [
+      "bin/busybox"
+    ],
+    "coreutils": [
+      "bin/cat",
+      "bin/chgrp",
+      "bin/chmod",
+      "bin/chown",
+      "bin/cp",
+      "bin/date",
+      "bin/dd",
+      "bin/df",
+      "bin/dir",
+      "bin/echo",
+      "bin/false",
+      "bin/ln",
+      "bin/ls",
+      "bin/mkdir",
+      "bin/mknod",
+      "bin/mktemp",
+      "bin/mv",
+      "bin/pwd",
+      "bin/readlink",
+      "bin/rm",
+      "bin/rmdir"
+    ],
+    "acl": [
+      "bin/chacl",
+      "bin/getfacl",
+      "bin/setfacl"
+    ],
+    "fgetty": [
+      "bin/checkpassword",
+      "bin/fgetty-login",
+      "bin/fgetty-login2"
+    ],
+    "kbd": [
+      "bin/chvt",
+      "bin/dumpkeys",
+      "bin/fgconsole",
+      "bin/kbd_mode",
+      "bin/loadkeys",
+      "bin/open",
+      "bin/openvt",
+      "bin/setfont"
+    ],
+    "console-setup-mini": [
+      "bin/ckbcomp-mini",
+      "bin/setupcon"
+    ],
+    "fbset": [
+      "bin/con2fbmap",
+      "bin/fbset",
+      "bin/modeline2fb"
+    ],
+    "cpio": [
+      "bin/cpio",
+      "bin/mt-gnu"
+    ],
+    "gforge-common": [
+      "bin/cvssh"
+    ],
+    "dash": [
+      "bin/dash"
+    ],
+    "dbus": [
+      "bin/dbus-cleanup-sockets",
+      "bin/dbus-daemon",
+      "bin/dbus-uuidgen"
+    ],
+    "ddrescue": [
+      "bin/dd_rescue"
+    ],
+    "util-linux": [
+      "bin/dmesg",
+      "bin/lsblk",
+      "bin/more"
+    ],
+    "hostname": [
+      "bin/dnsdomainname",
+      "bin/domainname",
+      "bin/hostname",
+      "bin/nisdomainname"
+    ],
+    "ed": [
+      "bin/ed"
+    ],
+    "efibootmgr": [
+      "bin/efibootmgr"
+    ],
+    "grep": [
+      "bin/egrep",
+      "bin/fgrep",
+      "bin/grep"
+    ],
+    "elvis-tiny": [
+      "bin/elvis-tiny"
+    ],
+    "fdflush": [
+      "bin/fdflush"
+    ],
+    "console-tools": [
+      "bin/fgconsole",
+      "bin/kbd_mode",
+      "bin/loadkeys"
+    ],
+    "mount": [
+      "bin/findmnt",
+      "bin/mount"
+    ],
+    "francine": [
+      "bin/francine"
+    ],
+    "psmisc": [
+      "bin/fuser"
+    ],
+    "fuse": [
+      "bin/fusermount"
+    ],
+    "gaffitter": [
+      "bin/gaffitter"
+    ],
+    "gzip": [
+      "bin/gunzip",
+      "bin/gzexe",
+      "bin/gzip"
+    ],
+    "upstart": [
+      "bin/init-checkconf",
+      "bin/initctl2dot",
+      "bin/running-in-container"
+    ],
+    "iproute": [
+      "bin/ip"
+    ],
+    "fsprotect": [
+      "bin/is_aufs"
+    ],
+    "keyutils": [
+      "bin/keyctl"
+    ],
+    "procps": [
+      "bin/kill",
+      "bin/ps"
+    ],
+    "ksh": [
+      "bin/ksh93"
+    ],
+    "binutils-static": [
+      "bin/ld_static"
+    ],
+    "less": [
+      "bin/less",
+      "bin/lessecho",
+      "bin/lessfile",
+      "bin/lesskey",
+      "bin/lesspipe"
+    ],
+    "login": [
+      "bin/login"
+    ],
+    "busybox-syslogd": [
+      "bin/logread"
+    ],
+    "ntfs-3g": [
+      "bin/lowntfs-3g",
+      "bin/ntfs-3g",
+      "bin/ntfs-3g.probe",
+      "bin/ntfs-3g.secaudit",
+      "bin/ntfs-3g.usermap",
+      "bin/ntfscat",
+      "bin/ntfsck",
+      "bin/ntfscluster",
+      "bin/ntfscmp",
+      "bin/ntfsdecrypt",
+      "bin/ntfsdump_logfile",
+      "bin/ntfsfix",
+      "bin/ntfsinfo",
+      "bin/ntfsls",
+      "bin/ntfsmftalloc",
+      "bin/ntfsmove",
+      "bin/ntfstruncate",
+      "bin/ntfswipe"
+    ],
+    "module-init-tools": [
+      "bin/lsmod"
+    ],
+    "makedumpfile-static": [
+      "bin/makedumpfile-static"
+    ],
+    "mksh": [
+      "bin/mksh",
+      "bin/mksh-static"
+    ],
+    "loop-aes-utils": [
+      "bin/mount"
+    ],
+    "initscripts": [
+      "bin/mountpoint"
+    ],
+    "mt-st": [
+      "bin/mt-st"
+    ],
+    "nano": [
+      "bin/nano",
+      "bin/rnano"
+    ],
+    "nano-tiny": [
+      "bin/nano-tiny"
+    ],
+    "nbd-server": [
+      "bin/nbd-server"
+    ],
+    "netcat-openbsd": [
+      "bin/nc.openbsd"
+    ],
+    "netcat-traditional": [
+      "bin/nc.traditional"
+    ],
+    "netcat6": [
+      "bin/nc6"
+    ],
+    "net-tools": [
+      "bin/netstat"
+    ],
+    "pax": [
+      "bin/pax",
+      "bin/paxcpio",
+      "bin/paxtar"
+    ],
+    "pdksh": [
+      "bin/pdksh"
+    ],
+    "sysvinit-utils": [
+      "bin/pidof"
+    ],
+    "iputils-ping": [
+      "bin/ping",
+      "bin/ping6"
+    ],
+    "inetutils-ping": [
+      "bin/ping",
+      "bin/ping6"
+    ],
+    "plymouth": [
+      "bin/plymouth",
+      "bin/plymouth-upstart-bridge"
+    ],
+    "posh": [
+      "bin/posh"
+    ],
+    "ndisc6": [
+      "bin/rdisc6"
+    ],
+    "rsbac-admin": [
+      "bin/rsbac_login"
+    ],
+    "debianutils": [
+      "bin/run-parts"
+    ],
+    "sash": [
+      "bin/sash"
+    ],
+    "sdpnetstat": [
+      "bin/sdpnetstat"
+    ],
+    "sed": [
+      "bin/sed"
+    ],
+    "minit": [
+      "bin/serdo"
+    ],
+    "setserial": [
+      "bin/setserial"
+    ],
+    "console-setup": [
+      "bin/setupcon"
+    ]
+  }
+]
