@@ -5,7 +5,7 @@ copyright: |
     Copyright (C) Peter Odding <peter@peterodding.com>
 
 notes: This has been substantially modified and enhanced from the original python-dpkg
- to extract the version comparison codeoriginall in the Dpkg class.
+ to extract the version comparison code originally in the Dpkg class.
 
 license_expression: apache-2.0 AND mit
 homepage_url: https://github.com/xolox/python-deb-pkg-tools
