@@ -8,30 +8,13 @@
 
 # SPDX-License-Identifier: Apache-2.0 AND MIT
 
-from __future__ import absolute_import
-from __future__ import print_function
-from __future__ import unicode_literals
-
-try:
-    from collections.abc import Mapping
-    from collections.abc import MutableMapping
-    from collections.abc import Sequence
-except ImportError:
-    # Python 2
-    from collections import Mapping
-    from collections import MutableMapping
-    from collections import Sequence
+from collections.abc import Mapping
+from collections.abc import MutableMapping
+from collections.abc import Sequence
 import email
 import io
 import re
 import textwrap
-
-try:
-    # Python 2
-    unicode = unicode  # NOQA
-except NameError:  # pragma: nocover
-    # Python 3
-    unicode = str  # NOQA
 
 from attr import attrs
 from attr import attrib
@@ -652,7 +635,7 @@ class Debian822(MutableMapping):
             if isinstance(data, Mapping):
                 paragraph = {k.lower(): v for k, v in data.items()}
 
-            elif isinstance(data, (str, unicode)):
+            elif isinstance(data, str):
                 text = data
 
             elif hasattr(data, 'read'):
@@ -663,7 +646,7 @@ class Debian822(MutableMapping):
                 # (before the : split)
                 seq = list(data)
                 first = seq[0]
-                if isinstance(first, (str, unicode)):
+                if isinstance(first, str):
                     seq = (s.partition(': ') for s in seq)
                     paragraph = {k.lower(): v for k, _, v in seq}
                 else:

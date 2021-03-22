@@ -8,27 +8,13 @@
 
 # SPDX-License-Identifier: Apache-2.0 AND MIT
 
-
-from __future__ import absolute_import
-from __future__ import print_function
-from __future__ import unicode_literals
-
 import re
-
-try:
-    # Python 2
-    unicode = unicode  # NOQA
-except NameError:  # pragma: nocover
-    # Python 3
-    unicode = str  # NOQA
 
 from attr import asdict
 from attr import attrs
 from attr import attrib
 
 from debian_inspector import version as dversion
-
-
 
 """
 Parse and evaluate Debian package relationship aka. dependencies.
@@ -37,7 +23,6 @@ This module provides functions to parse and evaluate Debian package relationship
 declarations as defined in `chapter 7` of the Debian policy manual.
 http://www.debian.org/doc/debian-policy/ch-relationships.html#s-depsyntax
 """
-
 
 # Define a compiled regular expression pattern that we will use to match
 # package relationship expressions consisting of a package name followed by
@@ -55,7 +40,6 @@ parse_package_relationship_expression = re.compile(r'''
     # Optionally capture architecture restriction inside brackets.
     ( \[ (?P<architectures> [^\]]+ ) \] )?
 ''', re.VERBOSE).match
-
 
 ARCHITECTURE_RESTRICTIONS_MESSAGE = "Architecture constraint is not implemented."
 
@@ -75,7 +59,7 @@ def parse_depends(relationships):
     separated list of alternative.
     """
 
-    if isinstance(relationships, (str, unicode)):
+    if isinstance(relationships, str):
         relationships = (r.strip() for r in relationships.split(',') if r.strip())
 
     return AndRelationships.from_relationships(*(map(parse_alternatives, relationships)))
@@ -210,6 +194,7 @@ class Relationship(AbstractRelationship):
             name=self.name,
             arches='[{}]'.format(' '.join(self.architectures))
         )
+
     def to_dict(self):
         return asdict(self)
 

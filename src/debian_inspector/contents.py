@@ -36,9 +36,9 @@ def parse_contents(location, has_header=True):
     for format details.
     """
     if location.endswith('.gz'):
-        opener, mode=gzip.GzipFile, 'rb'
+        opener, mode = gzip.GzipFile, 'rb'
     else:
-        opener, mode=open, 'r'
+        opener, mode = open, 'r'
 
     packages_by_path = defaultdict(list)
     paths_by_package = defaultdict(list)
@@ -64,7 +64,7 @@ def parse_contents(location, has_header=True):
                         'Invalid Contents file with a FILE/LOCATION header: '
                         'call with has_header=True.'
                     )
-                    
+
                 if not in_table:
                     # The first row of the table SHOULD have the columns "FILE"
                     # and "LOCATION": This is the spec and used to be True for

@@ -8,11 +8,6 @@
 
 # SPDX-License-Identifier: Apache-2.0 AND MIT
 
-
-from __future__ import absolute_import
-from __future__ import print_function
-from __future__ import unicode_literals
-
 import itertools
 from os import path
 
@@ -21,11 +16,11 @@ from attr import attrib
 
 from debian_inspector.version import Version
 
-
 """
 Functions to build and inspect Debian binary package archives (``*.deb``,
 ``*.udeb`` files as well ``.orig`` and ``.debian`` tarballs).
 """
+
 
 @attrs
 class DebArchive(object):

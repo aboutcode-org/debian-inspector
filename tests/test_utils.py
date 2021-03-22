@@ -4,14 +4,10 @@
 
 # SPDX-License-Identifier: Apache-2.0
 
-
-from __future__ import absolute_import
-from __future__ import print_function
-from __future__ import unicode_literals
-
-import os.path
 import json
 import shutil
+import os.path
+
 from commoncode import testcase
 
 
@@ -23,7 +19,7 @@ class JsonTester(testcase.FileBasedTesting):
         Helper to test a results Python native object against an expected JSON
         file at expected_loc.
         """
-        expected_loc = self.get_test_loc(expected_loc, exists=not regen)
+        expected_loc = self.get_test_loc(expected_loc)
 
         if regen:
             regened_exp_loc = self.get_temp_file()
@@ -47,7 +43,7 @@ class JsonTester(testcase.FileBasedTesting):
         Helper to test a results text string against an expected file at
         expected_loc.
         """
-        expected_loc = self.get_test_loc(expected_loc, exists=not regen)
+        expected_loc = self.get_test_loc(expected_loc)
 
         if regen:
             regened_exp_loc = self.get_temp_file()

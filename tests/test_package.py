@@ -8,11 +8,6 @@
 
 # SPDX-License-Identifier: Apache-2.0 AND MIT
 
-
-from __future__ import absolute_import
-from __future__ import print_function
-from __future__ import unicode_literals
-
 from os import path
 import unittest
 
@@ -51,6 +46,7 @@ class PackageTestCase(unittest.TestCase):
 
 
 V = version.Version.from_string
+
 
 class VersionTestCase(unittest.TestCase):
     # Check each individual operator (to make sure the two implementations

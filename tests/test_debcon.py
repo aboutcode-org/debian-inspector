@@ -3,14 +3,8 @@
 # http://nexb.com and https://github.com/nexB/debian_inspector/
 
 # SPDX-License-Identifier: Apache-2.0
-
-from __future__ import absolute_import
-from __future__ import print_function
-from __future__ import unicode_literals
-
 from os import path
 
-from commoncode.system import py2
 from test_utils import JsonTester  # NOQA
 
 from debian_inspector import debcon
@@ -72,10 +66,7 @@ class TestGetParagraphData(JsonTester):
             ('some', 'val'),
             ('key', 'value1\nvalue2'),
             ('other', 'val')]
-        if py2:
-            assert sorted(expected) == sorted(results.items())
-        else:
-            assert expected == list(results.items())
+        assert expected == list(results.items())
 
     def test_test_get_paragraph_data__simple(self):
         items = 'A: b\nc: d'
@@ -128,10 +119,8 @@ class TestGetParagraphData(JsonTester):
     def test_get_paragraphs_data_from_file__from_status(self):
         test_file = self.get_test_loc('debcon/status/simple_status')
         expected_loc = 'debcon/status/simple_status-expected.json'
-        if py2:
-            expected_loc = 'debcon/status/simple_status-expected-py2.json'
         results = list(debcon.get_paragraphs_data_from_file(test_file))
-        self.check_json(results, expected_loc, sort=py2, regen=False)
+        self.check_json(results, expected_loc, regen=False)
 
 
 class TestDebian822(JsonTester):

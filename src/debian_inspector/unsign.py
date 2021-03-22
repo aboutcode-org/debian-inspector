@@ -7,18 +7,7 @@
 
 # SPDX-License-Identifier: Apache-2.0 AND BSD-3-Clause
 
-
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import re
-try:
-    # Python 2
-    unicode = unicode  # NOQA
-except NameError:  # pragma: nocover
-    # Python 3
-    unicode = str  # NOQA
-
 
 """
 Utility to remove PGP signature from messages used to get the RFC822 message
@@ -32,7 +21,7 @@ def is_signed(text):
     """
     Return True if the text is likely PGP-signed.
     """
-    if text and isinstance(text, (str, unicode)):
+    if text and isinstance(text, str):
         text = text.strip()
         return text and (text.startswith('-----BEGIN PGP SIGNED MESSAGE-----')
                     and text.endswith('-----END PGP SIGNATURE-----'))
@@ -53,12 +42,12 @@ def remove_signature(text):
     unsigned = signed.groupdict().get('cleartext')
     return unsigned
 
-
 # A re.VERBOSE regular expression to parse a PGP signed message in its parts.
 # the re.VERBOSE flag allows for:
 #  - whitespace is ignored except when in a character class or escaped
 #  - anything after a '#' that is not escaped or in a character class is
 #  ignored, allowing for comments
+
 
 pgp_signed = re.compile(r"""
     # This capture group is optional because it will only be present in signed
