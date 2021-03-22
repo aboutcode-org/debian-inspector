@@ -1,25 +1,27 @@
 #
 # Copyright (c) nexB Inc. and others.
 # http://nexb.com and https://github.com/nexB/debut/
-
-# Copyright [2017] The Climate Corporation (https://climate.com)
-
-# Copyright (c) 2018 Peter Odding
+# Copyright (c) The Climate Corporation (https://climate.com)
+# Copyright (c) Peter Odding
 # Author: Peter Odding <peter@peterodding.com>
 # URL: https://github.com/xolox/python-deb-pkg-tools
-
+# https://github.com/TheClimateCorporation/python-dpkg
 # SPDX-License-Identifier: Apache-2.0 AND MIT
-
 
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
+import logging
+import operator as operator_module
+import re
 from functools import cmp_to_key
+from itertools import zip_longest
 
 from attr import asdict
 from attr import attrs
 from attr import attrib
 
+logger = logging.getLogger(__name__)
 
 """
 Parse, compare and sort Debian package versions.
@@ -29,14 +31,12 @@ described at
 https://www.debian.org/doc/debian-policy/ch-controlfields.html#s-f-Version
 
 This has been substantially modified and enhanced from the original python-dpkg
-Dpkg class by Nathan J. Meh and team from The Climate Corporation to extract
-only the subset that does the version comparison
-https://github.com/TheClimateCorporation/python-dpkg ...
+Dpkg class by Nathan J. Meh and team from The Climate Corporation and
+code from python-deb-pkg-tools by Peter Odding to extract only the subset that
+does the version parsing, comparison and version constraints evaluatiob.
+
+
 So much so that little of this code may still looks like the original.
-
-In addition code from python-deb-pkg-tools by Peter Odding <peter@peterodding.com>
-at https://github.com/xolox/python-deb-pkg-tools has also been mixed in.
-
 
 Some examples:
 
@@ -85,74 +85,74 @@ class Version(object):
     demonstrate that this version sorting order is different from regular
     sorting and 'natural order sorting'.
     """
-
-    # Copyright (c) 2018 Peter Odding
-
-    # Debian packaging tools: Version comparison.
-    # Original-Author: Peter Odding <peter@peterodding.com>
-    # Original-URL: https://github.com/xolox/python-deb-pkg-tools
-    # heavily modified for debut
-
     epoch = attrib(default=0)
     upstream = attrib(default=None)
-    revision = attrib(default=None)
+    revision = attrib(default='0')
 
     def __str__(self, *args, **kwargs):
         if self.epoch:
-            template = '{epoch}:{upstream}'
+            version = f'{self.epoch}:{self.upstream}'
         else:
-            template = '{upstream}'
+            version = f'{self.upstream}'
 
-        if self.revision is not None and self.revision != '0':
-            template += '-{revision}'
+        if self.revision not in (None, '0'):
+            version += f'-{self.revision}'
 
-        return template.format(**self.to_dict())
+        return version
 
     def __repr__(self, *args, **kwargs):
         return str(self)
 
     def __hash__(self):
-        return hash(str(self))
+        return hash(self.tuple())
 
     def __eq__(self, other):
-        if type(self) is type(other):
-            return eval_constraint(self, '=', other)
-        else:
-            return NotImplemented
+        return type(self) is type(other) and self.tuple() == other.tuple()
 
     def __ne__(self, other):
-        if type(self) is type(other):
-            return not eval_constraint(self, '=', other)
-        else:
-            return NotImplemented
+        return not self.__eq__(other)
 
     def __lt__(self, other):
         if type(self) is type(other):
             return eval_constraint(self, '<<', other)
-        else:
-            return NotImplemented
+        return NotImplemented
 
     def __le__(self, other):
         if type(self) is type(other):
             return eval_constraint(self, '<=', other)
-        else:
-            return NotImplemented
+        return NotImplemented
 
     def __gt__(self, other):
         if type(self) is type(other):
             return eval_constraint(self, '>>', other)
-        else:
-            return NotImplemented
+        return NotImplemented
 
     def __ge__(self, other):
         if type(self) is type(other):
             return eval_constraint(self, '>=', other)
-        else:
-            return NotImplemented
+        return NotImplemented
 
     @classmethod
     def from_string(cls, version):
-        epoch, upstream, revision = get_evr(version)
+        if not version and not isinstance(version , str):
+            raise ValueError('Invalid version string: "{}"'.format(version))
+        version = version.strip()
+        if not version:
+            raise ValueError('Invalid version string: "{}"'.format(version))
+        if not  _is_valid_version(version):
+            raise ValueError('Invalid version string: "{}"'.format(version))
+
+        if ":" in version:
+            epoch, _, version = version.partition(':')
+            epoch = int(epoch)
+        else:
+            epoch = 0
+
+        if "-" in version:
+            upstream, _, revision = version.rpartition('-')
+        else:
+            upstream = version
+            revision = '0'
         return cls(epoch=epoch, upstream=upstream, revision=revision)
 
     def compare(self, other_version):
@@ -160,6 +160,28 @@ class Version(object):
 
     def to_dict(self):
         return asdict(self)
+
+    def tuple(self):
+        return self.epoch, self.upstream, self.revision
+
+
+_is_valid_version = re.compile(
+    r'^'
+    # epoch must start with a digit
+    r'(\d+:)?'
+    # upstream must start with a digit
+    r'\d'
+    r'('
+      # upstream  can contain only alphanumerics and the characters . + -
+      # ~ (full stop, plus, hyphen, tilde)
+      # we are adding the extra check that it must end with alphanum
+      r'[A-Za-z0-9\.\+\-\~]*[A-Za-z0-9]'
+    r'|'
+      # If there is no debian_revision then hyphens are not allowed.
+      # we are adding the extra check that it must end with alphanum
+      r'[A-Za-z0-9\.\+\~]*[A-Za-z0-9]-[A-Za-z0-9\+\.\~]*[A-Za-z0-9]'
+    r')?'
+    r'$').match
 
 
 def eval_constraint(version1, operator, version2):
@@ -169,231 +191,32 @@ def eval_constraint(version1, operator, version2):
     satisfied and False otherwise.
     """
 
-    # Copyright (c) 2018 Peter Odding
-    # Debian packaging tools: Version comparison.
-    # Origial-Author: Peter Odding <peter@peterodding.com>
-    # Origial-URL: https://github.com/xolox/python-deb-pkg-tools
+    version1 = coerce_version(version1)
+    version2 = coerce_version(version2)
 
     result = compare_versions(version1, version2)
+    # See https://www.debian.org/doc/debian-policy/ch-relationships.html#syntax-of-relationship-fields
+    operators = {
+        '<=': operator_module.le,
+        # legacy for compat
+        '<': operator_module.le,
 
-    return ((operator == '<<' and result < 0) or
-            (operator == '>>' and result > 0) or
-            (operator in ('<', '<=') and result <= 0) or
-            (operator in ('>', '>=') and result >= 0) or
-            (operator == '=' and result == 0))
+        '>=': operator_module.ge,
+        # legacy for compat
+        '>': operator_module.ge,
 
+        '<<': operator_module.lt,
+        '>>': operator_module.gt,
 
-def get_epoch(version):
-    """
-    Return a tuple of (epoch, remainder) from a `version` string.
-    epoch is an integer.
-    """
-    if ':' not in version:
-        return 0, version
+        '=': operator_module.eq,
+    }
 
-    if version.startswith(':') or version.endswith(':'):
-        raise ValueError('Invalid epoch with leading or trailing colon: {}'.format(version))
-
-    left, _, right = version.partition(':')
-    if left.isdigit():
-        epoch = int(left)
-        remainder = right
-        return epoch, remainder
-
-    raise ValueError('Invalid epoch: must be digits: {}'.format(version))
-
-
-def get_upstream(version):
-    """
-    Return a tuple of (upstream version, revision) from a `version` string.
-    Return '0' for revision if absent.
-    """
-    left, _, right = version.rpartition('-')
-    if left and right:
-        upstream = left
-        revision = right
-    else:
-        # no hyphens means no debian version, also valid.
-        upstream = version
-        revision = '0'
-    return upstream, revision
-
-
-def get_evr(version):
-    """
-    Return a tuple of (epoch, upstream version, revision) from a `version`
-    string.
-    """
-    e, remainder = get_epoch(version)
-    v, r = get_upstream(remainder)
-    return e, v, r
-
-
-def get_alphas(revision):
-    """
-    Return a tuple of the first non-digit characters of a revision (which
-    may be empty) and the remaining characters.
-    """
-    # get the index of the first digit
-    for i, char in enumerate(revision):
-        if char.isdigit():
-            if i == 0:
-                return '', revision
-            return revision[0:i], revision[i:]
-    # string is entirely alphas
-    return revision, ''
-
-
-def get_digits(revision):
-    """
-    Return a tuple of the first integer characters of a revision (which
-    may be empty) and the remainder.
-    """
-    # If the string is empty, return (0,'')
-    if not revision:
-        return 0, ''
-    # get the index of the first non-digit
-    for i, char in enumerate(revision):
-        if not char.isdigit():
-            if i == 0:
-                return 0, revision
-            return int(revision[0:i]), revision[i:]
-    # string is entirely digits
-    return int(revision), ''
-
-
-def listify(revision):
-    """
-    Split a revision string into a list of alternating between strings and
-    numbers, padded on either end to always be "str, int, str, int..." and
-    always be of even length.  This allows us to trivially implement the
-    comparison algorithm described at
-    http://debian.org/doc/debian-policy/ch-controlfields.html#s-f-Version
-    """
-    result = []
-    while revision:
-        rev_1, remainder = get_alphas(revision)
-        rev_2, remainder = get_digits(remainder)
-        result.extend([rev_1, rev_2])
-        revision = remainder
-    return result
-
-
-def compare_strings(a, b):
-    """
-    Compare two Debian package version string sections with a lexical sort
-    algorithm and return cmp-like values.
-    Return 0 if a=b, 1 if a>b and -1 if a<b.
-
-        The lexical comparison is a comparison of ASCII values modified so that
-        all the letters sort earlier than all the non-letters and so that a
-        tilde sorts before anything, even the end of a part.
-    """
-
-    if a == b:
-        return 0
     try:
-        for i, char in enumerate(a):
-            if char == b[i]:
-                continue
-            # "a tilde sorts before anything, even the end of a part"
-            # (emptyness)
-            if char == '~':
-                return -1
-            if b[i] == '~':
-                return 1
-            # "all the letters sort earlier than all the non-letters"
-            if char.isalpha() and not b[i].isalpha():
-                return -1
-            if not char.isalpha() and b[i].isalpha():
-                return 1
-            # otherwise lexical sort
-            if ord(char) > ord(b[i]):
-                return 1
-            if ord(char) < ord(b[i]):
-                return -1
-    except IndexError:
-        # a is longer than b but otherwise equal, hence greater
-        # ...except for goddamn tildes
-        if char == '~':
-            return -1
-        return 1
-    # if we get here, a is shorter than b but otherwise equal, hence lesser
-    # ...except for goddamn tildes
-    if b[len(a)] == '~':
-        return 1
-    return -1
-
-
-def compare_revisions(a, b):
-    """
-    Compare two revision strings as described at
-    https://www.debian.org/doc/debian-policy/ch-controlfields.html#s-f-Version
-    and return cmp-like values.
-
-    Return 0 id a==b, 1 if a>b and -1 if a<b.
-    """
-    if a == b:
-        return 0
-    # listify pads results so that we will always be comparing ints to ints
-    # and strings to strings (at least until we fall off the end of a list)
-    al = listify(a)
-    bl = listify(b)
-    if al == bl:
-        return 0
-    try:
-        for i, item in enumerate(al):
-            assert isinstance(item, bl[i].__class__)
-            # if the items are equal, next
-            if item == bl[i]:
-                continue
-            # numeric comparison
-            if isinstance(item, int):
-                if item > bl[i]:
-                    return 1
-                if item < bl[i]:
-                    return -1
-            else:
-                # string comparison
-                return compare_strings(item, bl[i])
-    except IndexError:
-        # a is longer than b but otherwise equal, hence greater
-        return 1
-    # rev1 is shorter than rev2 but otherwise equal, hence lesser
-    return -1
-
-
-def compare_versions(a, b):
-    """
-    Compare two Debian package version strings or Version instances,
-    suitable for passing to list.sort().
-
-    Return 0 id a=b, 1 if a>b and -1 if a<b.
-    """
-    if not isinstance(a, Version):
-        a = Version.from_string(a)
-    if not isinstance(b, Version):
-        b = Version.from_string(b)
-
-    # if epochs differ, immediately return the newer one
-    if a.epoch < b.epoch:
-        return -1
-    if a.epoch > b.epoch:
-        return 1
-
-    # then, compare the upstream versions
-    upstreams = compare_revisions(a.upstream, b.upstream)
-    if upstreams != 0:
-        return upstreams
-
-    # then, compare the revisions
-    revisions = compare_revisions(a.revision, b.revision)
-    if revisions != 0:
-        return revisions
-
-    # at this point, the versions are equal, but due to an interpolated
-    # zero in either the epoch or the debian version
-    return 0
+        operator = operators[operator]
+    except KeyError:
+        msg = f'Unsupported Debian version constraint comparison operator: {version1} {operator} {version2}'
+        raise ValueError(msg)
+    return operator(result, 0)
 
 
 def compare_versions_key(x):
@@ -408,3 +231,193 @@ def compare_strings_key(x):
     Return a key string function suitable for use in sorted().
     """
     return cmp_to_key(compare_strings)(x)
+
+
+def compare_strings(version1, version2):
+    """
+    Compare two version strings (upstream or revision) using Debain semantics
+    and return one of the following integer numbers:
+        - -1 means version1 sorts before version2
+        - 0 means version1 and version2 are equal
+        - 1 means version1 sorts after version2
+    """
+    logger.debug("Comparing Debian version number substrings %r and %r ..", version1, version2)
+    mapping = characters_order
+    v1 = list(version1)
+    v2 = list(version2)
+    while v1 or v2:
+        # Quoting from the 'deb-version' manual page: First the initial part of each
+        # string consisting entirely of non-digit characters is determined. These two
+        # parts (one of which may be empty) are compared lexically. If a difference is
+        # found it is returned. The lexical comparison is a comparison of ASCII values
+        # modified so that all the letters sort earlier than all the non-letters and so
+        # that a tilde sorts before anything, even the end of a part. For example, the
+        # following parts are in sorted order: '~~', '~~a', '~', the empty part, 'a'.
+        p1 = get_non_digit_prefix(v1)
+        p2 = get_non_digit_prefix(v2)
+        if p1 != p2:
+            logger.debug("Comparing non-digit prefixes %r and %r ..", p1, p2)
+            for c1, c2 in zip_longest(p1, p2, fillvalue=""):
+                logger.debug("Performing lexical comparison between characters %r and %r ..", c1, c2)
+                o1 = mapping.get(c1)
+                o2 = mapping.get(c2)
+                if o1 < o2:
+                    logger.debug("Determined that %r sorts before %r (based on lexical comparison).", version1, version2)
+                    return -1
+                elif o1 > o2:
+                    logger.debug("Determined that %r sorts after %r (based on lexical comparison).", version1, version2)
+                    return 1
+        elif p1:
+            logger.debug("Skipping matching non-digit prefix %r ..", p1)
+        # Quoting from the 'deb-version' manual page: Then the initial part of the
+        # remainder of each string which consists entirely of digit characters is
+        # determined. The numerical values of these two parts are compared, and any
+        # difference found is returned as the result of the comparison. For these purposes
+        # an empty string (which can only occur at the end of one or both version strings
+        # being compared) counts as zero.
+        d1 = get_digit_prefix(v1)
+        d2 = get_digit_prefix(v2)
+        logger.debug("Comparing numeric prefixes %i and %i ..", d1, d2)
+        if d1 < d2:
+            logger.debug("Determined that %r sorts before %r (based on numeric comparison).", version1, version2)
+            return -1
+        elif d1 > d2:
+            logger.debug("Determined that %r sorts after %r (based on numeric comparison).", version1, version2)
+            return 1
+        else:
+            logger.debug("Determined that numeric prefixes match.")
+    logger.debug("Determined that version numbers are equal.")
+    return 0
+
+
+def compare_versions(version1, version2):
+    """
+    Compare two Version objects or strings and return one of the following
+    integer numbers:
+
+      - -1 means version1 sorts before version2
+      - 0 means version1 and version2 are equal
+      - 1 means version1 sorts after version2
+    """
+    version1 = coerce_version(version1)
+    version2 = coerce_version(version2)
+    return compare_version_objects(version1, version2)
+
+
+def coerce_version(value):
+    """
+    Return a Version object from value.
+
+    :param value: The value to coerce (a string or :class:`Version` object).
+    :returns: A :class:`Version` object.
+    """
+    if not isinstance(value, Version):
+        value = Version.from_string(value)
+    return value
+
+
+def compare_version_objects(version1, version2):
+    """
+    Compare two Version objects and return one of the following
+    integer numbers:
+
+      - -1 means version1 sorts before version2
+      - 0 means version1 and version2 are equal
+      - 1 means version1 sorts after version2
+    """
+    if version1.epoch < version2.epoch:
+        return -1
+    if version1.epoch > version2.epoch:
+        return 1
+    result = compare_strings(version1.upstream, version2.upstream)
+    if result != 0:
+        return result
+    if version1.revision or version2.revision:
+        return compare_strings(version1.revision, version2.revision)
+    return 0
+
+
+def get_digit_prefix(characters):
+    """
+    Return the digit prefix from a list of characters.
+    """
+    value = 0
+    while characters and characters[0].isdigit():
+        value = value * 10 + int(characters.pop(0))
+    return value
+
+
+def get_non_digit_prefix(characters):
+    """
+    Return the non-digit prefix from a list of characters.
+    """
+    prefix = []
+    while characters and not characters[0].isdigit():
+        prefix.append(characters.pop(0))
+    return prefix
+
+
+# a mapping of characters to integers representing the Debian sort order.
+characters_order = {
+    # The tilde sorts before everything.
+    '~': 0,
+    # The empty string sort before everything except a tilde.
+    '': 1,
+    # Letters sort before everything but a tilde or empty string, in their regular lexical sort order.
+    'A': 2,
+    'B': 3,
+    'C': 4,
+    'D': 5,
+    'E': 6,
+    'F': 7,
+    'G': 8,
+    'H': 9,
+    'I': 10,
+    'J': 11,
+    'K': 12,
+    'L': 13,
+    'M': 14,
+    'N': 15,
+    'O': 16,
+    'P': 17,
+    'Q': 18,
+    'R': 19,
+    'S': 20,
+    'T': 21,
+    'U': 22,
+    'V': 23,
+    'W': 24,
+    'X': 25,
+    'Y': 26,
+    'Z': 27,
+    'a': 28,
+    'b': 29,
+    'c': 30,
+    'd': 31,
+    'e': 32,
+    'f': 33,
+    'g': 34,
+    'h': 35,
+    'i': 36,
+    'j': 37,
+    'k': 38,
+    'l': 39,
+    'm': 40,
+    'n': 41,
+    'o': 42,
+    'p': 43,
+    'q': 44,
+    'r': 45,
+    's': 46,
+    't': 47,
+    'u': 48,
+    'v': 49,
+    'w': 50,
+    'x': 51,
+    'y': 52,
+    'z': 53,
+    # Punctuation characters follow in their regular lexical sort order.
+    '+': 54,
+    '-': 55,
+    '.': 56,
+}
