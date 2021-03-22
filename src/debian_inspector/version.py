@@ -1,6 +1,6 @@
 #
 # Copyright (c) nexB Inc. and others.
-# http://nexb.com and https://github.com/nexB/debut/
+# http://nexb.com and https://github.com/nexB/debian_inspector/
 # Copyright (c) The Climate Corporation (https://climate.com)
 # Copyright (c) Peter Odding
 # Author: Peter Odding <peter@peterodding.com>
@@ -42,7 +42,7 @@ Some examples:
 
 #### Compare two arbitrary version strings
 
-    >>> from debut import debver
+    >>> from debian_inspector import debver
     >>> debver.compare_versions('0:1.0-test1', '0:1.0-test2')
     -1
     >>> debver.compare_versions('1.0', '0.6')
@@ -52,7 +52,7 @@ Some examples:
 
 #### Use Version as a key function to sort a list of version strings
 
-    >>> from debut.debver import Version
+    >>> from debian_inspector.debver import Version
     >>> sorted(['0:1.0-test1', '1:0.0-test0', '0:1.0-test2'] , key=Version.from_string)
     ['0:1.0-test1', '0:1.0-test2', '1:0.0-test0']
 
@@ -76,7 +76,7 @@ class Version(object):
     defined in the Debian Policy Manual. Use it to sort Debian package versions
     from oldest to newest in ascending version order like this:
 
-      >>> from debut.version import Version
+      >>> from debian_inspector.version import Version
       >>> unsorted = ['0.1', '0.5', '1.0', '2.0', '3.0', '1:0.4', '2:0.3']
       >>> print([str(v) for v in sorted(Version.from_string(s) for s in unsorted)])
       ['0.1', '0.5', '1.0', '2.0', '3.0', '1:0.4', '2:0.3']

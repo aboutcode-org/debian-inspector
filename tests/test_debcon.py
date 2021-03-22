@@ -1,6 +1,6 @@
 #
 # Copyright (c) nexB Inc. and others. All rights reserved.
-# http://nexb.com and https://github.com/nexB/debut/
+# http://nexb.com and https://github.com/nexB/debian_inspector/
 
 # SPDX-License-Identifier: Apache-2.0
 
@@ -13,7 +13,7 @@ from os import path
 from commoncode.system import py2
 from test_utils import JsonTester  # NOQA
 
-from debut import debcon
+from debian_inspector import debcon
 
 
 class TestGetParagraphData(JsonTester):
@@ -151,7 +151,7 @@ class TestDebian822(JsonTester):
 
     def test_Debian822_from_items_list(self):
         items = [
-            ('Package', 'debut'),
+            ('Package', 'debian_inspector'),
             ('Depends', 'python, python-pip, python-pip-accel'),
             ('Installed-Size', '65'),
         ]
@@ -159,13 +159,13 @@ class TestDebian822(JsonTester):
         expected = {
             'depends': 'python, python-pip, python-pip-accel',
             'installed-size': '65',
-            'package': 'debut',
+            'package': 'debian_inspector',
         }
         assert expected == d822.to_dict()
         expected2 = {
             'depends': 'python, python-pip, python-pip-accel',
             'installed-size': '65',
-            'package': 'debut',
+            'package': 'debian_inspector',
         }
         assert expected2 == dict(d822)
 

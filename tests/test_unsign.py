@@ -1,6 +1,6 @@
 #
 # Copyright (c) nexB Inc. and others.
-# http://nexb.com and https://github.com/nexB/debut/
+# http://nexb.com and https://github.com/nexB/debian_inspector/
 
 # SPDX-License-Identifier: Apache-2.0
 
@@ -11,7 +11,7 @@ from __future__ import unicode_literals
 
 from unittest import TestCase
 
-from debut import unsign
+from debian_inspector import unsign
 
 
 class Testunsign(TestCase):

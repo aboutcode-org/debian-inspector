@@ -1,6 +1,6 @@
 #
 # Copyright (c) nexB Inc. and others.
-# http://nexb.com and https://github.com/nexB/debut/
+# http://nexb.com and https://github.com/nexB/debian_inspector/
 
 # Copyright (c) 2014-2019 Security Innovation, Inc
 # All rights reserved.
@@ -24,7 +24,7 @@ except NameError:  # pragma: nocover
 Utility to remove PGP signature from messages used to get the RFC822 message
 in a .dsc file that uses signature.
 Copied from # https://github.com/SecurityInnovation/PGPy/blob/e2893da8b2f5ce0694257caddd8d852aece546ff/pgpy/types.py#L57
-and adapted for debut.
+and adapted for debian_inspector.
 """
 
 

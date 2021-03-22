@@ -1,6 +1,6 @@
 #
 # Copyright (c) nexB Inc. and others.
-# http://nexb.com and https://github.com/nexB/debut/
+# http://nexb.com and https://github.com/nexB/debian_inspector/
 
 # Copyright (c) 2018 Peter Odding
 # Author: Peter Odding <peter@peterodding.com>
@@ -26,7 +26,7 @@ from attr import asdict
 from attr import attrs
 from attr import attrib
 
-from debut import version as dversion
+from debian_inspector import version as dversion
 
 
 

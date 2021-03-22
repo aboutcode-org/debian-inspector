@@ -1,6 +1,6 @@
 #
 # Copyright (c) nexB Inc. and others.
-# http://nexb.com and https://github.com/nexB/debut/
+# http://nexb.com and https://github.com/nexB/debian_inspector/
 
 # SPDX-License-Identifier: Apache-2.0
 
@@ -16,7 +16,7 @@ from attr import attrs
 from attr import Factory
 from attr import fields_dict
 
-from debut import debcon
+from debian_inspector import debcon
 
 """
 Utilities to parse Debian machine readable copyright files (aka. dep5)

@@ -1,6 +1,6 @@
 #
 # Copyright (c) nexB Inc. and others.
-# http://nexb.com and https://github.com/nexB/debut/
+# http://nexb.com and https://github.com/nexB/debian_inspector/
 
 # Copyright 2013 Agustin Henze <tin@sluc.org.ar>
 
@@ -15,7 +15,7 @@ import fnmatch
 import os
 from os import path
 
-from debut.copyright import CopyrightFilesParagraph
+from debian_inspector.copyright import CopyrightFilesParagraph
 
 
 class Coverage(object):

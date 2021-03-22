@@ -1,6 +1,6 @@
 #
 # Copyright (c) nexB Inc. and others.
-# http://nexb.com and https://github.com/nexB/debut/
+# http://nexb.com and https://github.com/nexB/debian_inspector/
 
 # Copyright (c) 2018 Peter Odding
 # Author: Peter Odding <peter@peterodding.com>
@@ -16,7 +16,7 @@ from __future__ import unicode_literals
 import re
 import unittest
 
-from debut import deps
+from debian_inspector import deps
 
 
 class DepsTestCase(unittest.TestCase):

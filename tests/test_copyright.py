@@ -1,6 +1,6 @@
 #
 # Copyright (c) nexB Inc. and others.
-# http://nexb.com and https://github.com/nexB/debut/
+# http://nexb.com and https://github.com/nexB/debian_inspector/
 
 # SPDX-License-Identifier: Apache-2.0
 
@@ -14,7 +14,7 @@ from os import path
 from commoncode.system import py2
 from test_utils import JsonTester  # NOQA
 
-from debut import copyright
+from debian_inspector import copyright
 
 
 class TestCopyrightFields(JsonTester):
