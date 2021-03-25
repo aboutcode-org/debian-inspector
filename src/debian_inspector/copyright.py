@@ -139,7 +139,10 @@ class CopyrightField(debcon.FieldMixin):
         return cls(statements=statements)
 
     def dumps(self, sort=False):
-        dumped = [s.dumps() for s in self.statements]
+        dumped = [
+            s.dumps() if hasattr(s, 'dumps') else str(s)
+            for s in self.statements
+        ]
         if sort:
             dumped = sorted(dumped)
         return '\n           '.join(dumped).strip()
