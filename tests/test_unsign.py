@@ -1,17 +1,12 @@
 #
 # Copyright (c) nexB Inc. and others.
-# http://nexb.com and https://github.com/nexB/debut/
+# http://nexb.com and https://github.com/nexB/debian_inspector/
 
 # SPDX-License-Identifier: Apache-2.0
 
-
-from __future__ import absolute_import
-from __future__ import print_function
-from __future__ import unicode_literals
-
 from unittest import TestCase
 
-from debut import unsign
+from debian_inspector import unsign
 
 
 class Testunsign(TestCase):
@@ -76,7 +71,6 @@ Homepage: http://zlib.net/
 Standards-Version: 3.9.8
 '''
 
-
 SIGNED = '''-----BEGIN PGP SIGNED MESSAGE-----
 Hash: SHA512
 
@@ -122,7 +116,6 @@ qwfP8hx7pnR4CV1rFfmmDmtwORv4edwfgS6mmbdpKClWS2k4ft7AFEjmBPL+vqKc
 =BVVn
 -----END PGP SIGNATURE-----
 '''
-
 
 EXPECTED_SIGNED = '''Format: 3.0 (quilt)
 Source: zlib
@@ -173,7 +166,6 @@ qwfP8hx7pnR4CV1rFfmmDmtwORv4edwfgS6mmbdpKClWS2k4ft7AFEjmBPL+vqKc
 -----END PGP SIGNATURE-----
 '''
 
-
 COMPACT = '''-----BEGIN PGP SIGNED MESSAGE-----
 Hash: SHA512
 Format: 3.0 (quilt)
@@ -216,7 +208,6 @@ qwfP8hx7pnR4CV1rFfmmDmtwORv4edwfgS6mmbdpKClWS2k4ft7AFEjmBPL+vqKc
 =BVVn
 -----END PGP SIGNATURE-----
 '''
-
 
 EXPECTED_COMPACT = '''Hash: SHA512
 Format: 3.0 (quilt)

@@ -1,6 +1,6 @@
 #
 # Copyright (c) nexB Inc. and others.
-# http://nexb.com and https://github.com/nexB/debut/
+# http://nexb.com and https://github.com/nexB/debian_inspector/
 
 # Copyright (c) 2018 Peter Odding
 # Author: Peter Odding <peter@peterodding.com>
@@ -8,18 +8,13 @@
 
 # SPDX-License-Identifier: Apache-2.0 AND MIT
 
-
-from __future__ import absolute_import
-from __future__ import print_function
-from __future__ import unicode_literals
-
 from os import path
 import unittest
 
-from debut import debcon
-from debut import deps
-from debut import package
-from debut import version
+from debian_inspector import debcon
+from debian_inspector import deps
+from debian_inspector import package
+from debian_inspector import version
 
 
 class PackageTestCase(unittest.TestCase):
@@ -51,6 +46,7 @@ class PackageTestCase(unittest.TestCase):
 
 
 V = version.Version.from_string
+
 
 class VersionTestCase(unittest.TestCase):
     # Check each individual operator (to make sure the two implementations

@@ -1,6 +1,6 @@
 #
 # Copyright (c) nexB Inc. and others.
-# http://nexb.com and https://github.com/nexB/debut/
+# http://nexb.com and https://github.com/nexB/debian_inspector/
 
 # Copyright (c) 2018 Peter Odding
 # Author: Peter Odding <peter@peterodding.com>
@@ -8,15 +8,10 @@
 
 # SPDX-License-Identifier: Apache-2.0 AND MIT
 
-
-from __future__ import absolute_import
-from __future__ import print_function
-from __future__ import unicode_literals
-
 import re
 import unittest
 
-from debut import deps
+from debian_inspector import deps
 
 
 class DepsTestCase(unittest.TestCase):
@@ -71,8 +66,10 @@ class DepsTestCase(unittest.TestCase):
         assert 'amd64' in relationship_set.relationships[0].architectures
 
     def test_relationships_objects_as_strings(self):
+
         def strip(text):
             return re.sub(r'\s+', '', text)
+
         relationship_set = deps.parse_depends('foo, bar(>=1)|baz[i386]')
         expected = 'foo, bar (>= 1) | baz [i386]'
         assert expected == str(relationship_set)

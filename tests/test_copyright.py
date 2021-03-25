@@ -1,20 +1,14 @@
 #
 # Copyright (c) nexB Inc. and others.
-# http://nexb.com and https://github.com/nexB/debut/
+# http://nexb.com and https://github.com/nexB/debian_inspector/
 
 # SPDX-License-Identifier: Apache-2.0
 
-
-from __future__ import absolute_import
-from __future__ import print_function
-from __future__ import unicode_literals
-
 from os import path
 
-from commoncode.system import py2
 from test_utils import JsonTester  # NOQA
 
-from debut import copyright
+from debian_inspector import copyright
 
 
 class TestCopyrightFields(JsonTester):
@@ -88,19 +82,19 @@ class TestDebianCopyright(JsonTester):
         test_file = self.get_test_loc('copyright/dep5-b43-fwcutter.copyright')
         expected_loc = 'copyright/dep5-b43-fwcutter.copyright-expected.dumps'
         results = copyright.DebianCopyright.from_file(test_file).dumps()
-        self.check_file(results, expected_loc, sort=py2, regen=False)
+        self.check_file(results, expected_loc, regen=False)
 
     def test_DebianCopyright_from_file__from_copyrights_dep5_3_dumps(self):
         test_file = self.get_test_loc('copyright/dep5-rpm.copyright')
         expected_loc = 'copyright/dep5-rpm.copyright-expected.dumps'
         results = copyright.DebianCopyright.from_file(test_file).dumps()
-        self.check_file(results, expected_loc, sort=py2, regen=False)
+        self.check_file(results, expected_loc, regen=False)
 
     def test_DebianCopyright_from_file__from_copyrights_dep5_dropbear_dumps(self):
         test_file = self.get_test_loc('copyright/dropbear.copyright')
         expected_loc = 'copyright/dropbear.copyright-expected.dumps'
         results = copyright.DebianCopyright.from_file(test_file).dumps()
-        self.check_file(results, expected_loc, sort=py2, regen=False)
+        self.check_file(results, expected_loc, regen=False)
 
     def test_DebianCopyright_from_text__from_copyrights_dep5_dropbear_dumps(self):
         test_file = self.get_test_loc('copyright/dropbear.copyright')
@@ -109,26 +103,26 @@ class TestDebianCopyright(JsonTester):
             test_data = td.read()
         expected_loc = 'copyright/dropbear.copyright-expected.dumps'
         results = copyright.DebianCopyright.from_text(test_data).dumps()
-        self.check_file(results, expected_loc, sort=py2, regen=False)
+        self.check_file(results, expected_loc, regen=False)
 
 
 class TestCopyright(JsonTester):
     test_data_dir = path.join(path.dirname(__file__), 'data')
 
     def test_is_machine_readable_copyright(self):
-        text='''format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+        text = '''format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: b43-fwcutter
 Source: http://linuxwireless.org/en/users/Drivers/b43'''
         assert copyright.is_machine_readable_copyright(text)
 
     def test_is_machine_readable_copyright_ignore_case(self):
-        text='''Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+        text = '''Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: b43-fwcutter
 Source: http://linuxwireless.org/en/users/Drivers/b43'''
         assert copyright.is_machine_readable_copyright(text)
 
     def test_is_machine_readable_copyright_fasle(self):
-        text='''homepage: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+        text = '''homepage: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
         '''
         assert not copyright.is_machine_readable_copyright(text)
 

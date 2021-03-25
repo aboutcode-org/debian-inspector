@@ -1,6 +1,6 @@
 #
 # Copyright (c) nexB Inc. and others.
-# http://nexb.com and https://github.com/nexB/debut/
+# http://nexb.com and https://github.com/nexB/debian_inspector/
 
 # SPDX-License-Identifier: Apache-2.0
 
@@ -8,7 +8,7 @@ from os import path
 
 from test_utils import JsonTester  # NOQA
 
-from debut import contents
+from debian_inspector import contents
 
 
 class TestContentsParse(JsonTester):
