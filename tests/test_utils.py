@@ -32,7 +32,7 @@ class JsonTester(testcase.FileBasedTesting):
             shutil.copy(regened_exp_loc, expected_loc)
 
         with open(expected_loc, 'rb') as ex:
-            expected = json.load(ex, encoding='utf-8')
+            expected = json.load(ex)
         if sort:
             assert sorted(expected) == sorted(results)
         else:
