@@ -23,12 +23,12 @@ class DepsTestCase(unittest.TestCase):
             deps.OrRelationships(relationships=(
                 deps.VersionedRelationship(name='bar', operator='>=', version='1'),
                 deps.Relationship(name='baz')))))
-        assert expected == relationship_set
+        assert relationship_set == expected
 
     def test_relationship_parsing_single_relationship(self):
         expected = deps.AndRelationships(relationships=(
             deps.VersionedRelationship(name='foo', operator='=', version='1.0'),))
-        assert expected == deps.parse_depends('foo (=1.0)')
+        assert deps.parse_depends('foo (=1.0)') == expected
 
     def test_relationship_parsing_raise_valueerror_for_invalid_relationship(self):
         self.assertRaises(ValueError, deps.parse_depends, 'foo (bar) (baz)')
@@ -40,7 +40,7 @@ class DepsTestCase(unittest.TestCase):
             deps.VersionedRelationship(name='python', operator='>=', version='2.6'),
             deps.VersionedRelationship(name='python', operator='<<', version='3'))
         )
-        assert expected == depends
+        assert depends == expected
         assert not depends.matches('python', '2.5')
         assert depends.matches('python', '2.6')
         assert depends.matches('python', '2.7')
@@ -48,7 +48,7 @@ class DepsTestCase(unittest.TestCase):
     def test_parse_alternatives_with_no_alternative(self):
         depends = deps.parse_alternatives('python2.6')
         expected = deps.Relationship(name='python2.6')
-        assert expected == depends
+        assert depends == expected
 
     def test_parse_alternatives(self):
         depends = deps.parse_alternatives('python2.6 | python2.7')
@@ -56,12 +56,12 @@ class DepsTestCase(unittest.TestCase):
             deps.Relationship(name='python2.6'),
             deps.Relationship(name='python2.7'))
         )
-        assert expected == depends
+        assert depends == expected
 
     def test_architecture_restriction_parsing(self):
         relationship_set = deps.parse_depends('qux [i386 amd64]')
-        assert relationship_set.relationships[0].name == 'qux'
-        assert len(relationship_set.relationships[0].architectures) == 2
+        assert 'qux' == relationship_set.relationships[0].name
+        assert 2 == len(relationship_set.relationships[0].architectures)
         assert 'i386' in relationship_set.relationships[0].architectures
         assert 'amd64' in relationship_set.relationships[0].architectures
 
@@ -72,20 +72,20 @@ class DepsTestCase(unittest.TestCase):
 
         relationship_set = deps.parse_depends('foo, bar(>=1)|baz[i386]')
         expected = 'foo, bar (>= 1) | baz [i386]'
-        assert expected == str(relationship_set)
+        assert str(relationship_set) == expected
 
         expected = deps.AndRelationships(relationships=(
             deps.Relationship(name='foo'),
             deps.OrRelationships(relationships=(
                 deps.VersionedRelationship(name='bar', operator='>=', version='1'),
                 deps.Relationship(name='baz', architectures=('i386',))))))
-        assert expected == relationship_set
+        assert relationship_set == expected
 
     def test_relationship_evaluation_works_without_version(self):
         relationship_set = deps.parse_depends('python')
         assert relationship_set.matches('python')
         assert not relationship_set.matches('python2.7')
-        assert list(relationship_set.names) == ['python']
+        assert ['python'] == list(relationship_set.names)
 
     def test_relationship_evaluation_alternative_OR_works_without_version(self):
         relationship_set = deps.parse_depends('python2.6 | python2.7')
@@ -93,7 +93,7 @@ class DepsTestCase(unittest.TestCase):
         assert relationship_set.matches('python2.6')
         assert relationship_set.matches('python2.7')
         assert not relationship_set.matches('python3.0')
-        assert sorted(relationship_set.names) == ['python2.6', 'python2.7']
+        assert ['python2.6', 'python2.7'] == sorted(relationship_set.names)
 
     def test_relationship_evaluation_works_without_version_against_versioned(self):
         # Testing for matches without providing a version is valid (should not
@@ -101,7 +101,7 @@ class DepsTestCase(unittest.TestCase):
         relationship_set = deps.parse_depends('python (>= 2.6), python (<< 3)')
         assert relationship_set.matches('python', '2.7')
         assert not relationship_set.matches('python')
-        assert list(relationship_set.names) == ['python']
+        assert ['python'] == list(relationship_set.names)
 
     def test_relationship_evaluation_combination_AND_works_with_version(self):
         # Distinguishing between packages whose name was matched but whose
@@ -118,7 +118,7 @@ class DepsTestCase(unittest.TestCase):
         assert relationship_set.matches('python', '2.7') is True
         assert relationship_set.matches('python', '2.6')
         assert relationship_set.matches('python', '3.4')
-        assert list(relationship_set.names) == ['python']
+        assert ['python'] == list(relationship_set.names)
 
     def test_parse_depends_misc(self):
         dependencies = deps.parse_depends('python (>= 2.6), python (<< 3) | python (>= 3.4)')
@@ -129,13 +129,13 @@ class DepsTestCase(unittest.TestCase):
                 deps.VersionedRelationship(name='python', operator='>=', version='3.4')
             ,))
         ,))
-        assert expected == dependencies
+        assert dependencies == expected
 
         expected = 'python (>= 2.6), python (<< 3) | python (>= 3.4)'
-        assert expected == str(dependencies)
+        assert str(dependencies) == expected
 
     def test_parse_relationship(self):
         rel = deps.parse_relationship('python')
-        assert deps.Relationship(name='python') == rel
+        assert rel == deps.Relationship(name='python')
         rel = deps.parse_relationship('python (<< 3)')
-        assert deps.VersionedRelationship(name='python', operator='<<', version='3') == rel
+        assert rel == deps.VersionedRelationship(name='python', operator='<<', version='3')

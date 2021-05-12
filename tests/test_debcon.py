@@ -16,7 +16,7 @@ class TestGetParagraphData(JsonTester):
 
     def test_get_paragraph_data_from_file_does_not_crash_on_None(self):
         results = list(debcon.get_paragraph_data_from_file(None))
-        assert [] == results
+        assert results == []
 
     def test_get_paragraph_data_from_file_from_single_status(self):
         test_file = self.get_test_loc('debcon/status/one_status')
@@ -52,7 +52,7 @@ class TestGetParagraphData(JsonTester):
         text = '''Some text that is not RFC 822
         Compliant'''
         results = debcon.get_paragraph_data(text)
-        assert {'unknown': text} == results
+        assert results == {'unknown': text}
 
     def test_get_paragraph_data_does_not_preserve_keys_case_by_default(self):
         key = 'Some-text'
@@ -60,7 +60,7 @@ class TestGetParagraphData(JsonTester):
         Compliant'''
         test = '{}: {}'.format(key, value)
         results = debcon.get_paragraph_data(test)
-        assert {key.lower(): value} == results
+        assert results == {key.lower(): value}
 
     def test_get_paragraph_data__merge_duplicate_keys(self):
         o1 = 'some: val'
@@ -73,49 +73,49 @@ class TestGetParagraphData(JsonTester):
             ('some', 'val'),
             ('key', 'value1\nvalue2'),
             ('other', 'val')]
-        assert expected == list(results.items())
+        assert list(results.items()) == expected
 
     def test_test_get_paragraph_data__simple(self):
         items = 'A: b\nc: d'
         results = debcon.get_paragraph_data(items)
         expected = {'a': 'b', 'c': 'd'}
-        assert expected == results
+        assert results == expected
 
     def test_test_get_paragraph_data_lowers_only_keys(self):
         items = 'A: B\nDF: D'
         results = debcon.get_paragraph_data(items)
         expected = {'a': 'B', 'df': 'D'}
-        assert expected == results
+        assert results == expected
 
     def test_test_get_paragraph_data_merge_dupes(self):
         items = 'A: B\nDF: D\ndf: x'
         results = debcon.get_paragraph_data(items)
         expected = {'a': 'B', 'df': 'D\nx'}
-        assert expected == results
+        assert results == expected
 
     def test_get_paragraphs_data__splits_paragraphs_correctly(self):
         test='para1: test1\n\npara2: test2'
         results = list(debcon.get_paragraphs_data(test))
         expected = [{'para1': 'test1'}, {'para2': 'test2'}]
-        assert expected == results
+        assert results == expected
 
     def test_split_in_paragraphs__splits_paragraphs_correctly(self):
         test='para1: test1\n\npara2: test2'
         results = list(debcon.split_in_paragraphs(test))
         expected = ['para1: test1', 'para2: test2']
-        assert expected == results
+        assert results == expected
 
     def test_split_in_paragraphs__handles_more_than_two_empty_lines(self):
         test='para1: test1\n\n\n\n\npara2: test2'
         results = list(debcon.split_in_paragraphs(test))
         expected = ['para1: test1', 'para2: test2']
-        assert expected == results
+        assert results == expected
 
     def test_split_in_paragraphs__handles_empty_lines_with_spaces(self):
         test='para1: test1\n\n \t     \n          \npara2: test2'
         results = list(debcon.split_in_paragraphs(test))
         expected = ['para1: test1', 'para2: test2']
-        assert expected == results
+        assert results == expected
 
     def test_get_paragraphs_data_from_text__from_status_file(self):
         test_file = self.get_test_loc('debcon/status/simple_status')
@@ -167,7 +167,7 @@ class TestGetParagraphData(JsonTester):
         test = 'Foo: home\n\nBar: baz'
         results = debcon.get_paragraph_data(test)
         expected = {'foo': 'home', 'unknown': 'Bar: baz'}
-        assert expected == results
+        assert results == expected
 
 
 class TestDebian822(JsonTester):
@@ -211,13 +211,13 @@ class TestDebian822(JsonTester):
             'installed-size': '65',
             'package': 'debian_inspector',
         }
-        assert expected == d822.to_dict()
+        assert d822.to_dict() == expected
         expected2 = {
             'depends': 'python, python-pip, python-pip-accel',
             'installed-size': '65',
             'package': 'debian_inspector',
         }
-        assert expected2 == dict(d822)
+        assert dict(d822) == expected2
 
 
 class TestDebianFields(JsonTester):
@@ -226,18 +226,18 @@ class TestDebianFields(JsonTester):
     def test_FormattedTextField(self):
         test = 'simple'
         results = debcon.FormattedTextField.from_value(test)
-        assert 'simple' == results.text
-        assert 'simple' == results.dumps()
+        assert results.text == 'simple'
+        assert results.dumps() == 'simple'
 
         test = ' simple'
         results = debcon.FormattedTextField.from_value(test)
-        assert 'simple' == results.text
-        assert 'simple' == results.dumps()
+        assert results.text == 'simple'
+        assert results.dumps() == 'simple'
 
         test = '  simple'
         results = debcon.FormattedTextField.from_value(test)
-        assert 'simple' == results.text
-        assert 'simple' == results.dumps()
+        assert results.text == 'simple'
+        assert results.dumps() == 'simple'
 
     def test_FormattedTextField_multilines(self):
         test = ''' complex
@@ -248,26 +248,26 @@ class TestDebianFields(JsonTester):
 '''
         results = debcon.FormattedTextField.from_value(test)
         expected = 'complex\nsome\n\n nostrip'
-        assert expected == results.text
+        assert results.text == expected
         expected = 'complex\n some\n .\n  nostrip'
-        assert expected == results.dumps()
+        assert results.dumps() == expected
 
     def test_DescriptionField(self):
         test = 'simple'
         results = debcon.DescriptionField.from_value(test)
-        assert 'simple' == results.synopsis
+        assert results.synopsis == 'simple'
         assert not results.text
-        assert 'simple' == results.dumps()
+        assert results.dumps() == 'simple'
 
         test = ' simple'
-        assert 'simple' == results.synopsis
+        assert results.synopsis == 'simple'
         assert not results.text
-        assert 'simple' == results.dumps()
+        assert results.dumps() == 'simple'
 
         test = '  simple'
-        assert 'simple' == results.synopsis
+        assert results.synopsis == 'simple'
         assert not results.text
-        assert 'simple' == results.dumps()
+        assert results.dumps() == 'simple'
 
     def test_DescriptionField_multilines(self):
         test = ''' complex
@@ -277,45 +277,45 @@ class TestDebianFields(JsonTester):
  .
 '''
         results = debcon.DescriptionField.from_value(test)
-        assert 'complex' == results.synopsis
-        assert 'some\n\n nostrip' == results.text
-        assert 'complex\n some\n .\n  nostrip' == results.dumps()
+        assert results.synopsis == 'complex'
+        assert results.text == 'some\n\n nostrip'
+        assert results.dumps() == 'complex\n some\n .\n  nostrip'
 
     def test_MaintainerField(self):
         test = ' Joe Z. Doe   <me@jzd.me> '
         results = debcon.MaintainerField.from_value(test)
-        assert 'Joe Z. Doe' == results.name
-        assert 'me@jzd.me' == results.email_address
-        assert 'Joe Z. Doe <me@jzd.me>' == results.dumps()
+        assert results.name == 'Joe Z. Doe'
+        assert results.email_address == 'me@jzd.me'
+        assert results.dumps() == 'Joe Z. Doe <me@jzd.me>'
 
     def test_MaintainerField_incorrect_email(self):
         test = ' Joe Z. Doe   me@j zd.me> '
         results = debcon.MaintainerField.from_value(test)
-        assert 'Joe Z. Doe   me@j zd.me>' == results.name
+        assert results.name == 'Joe Z. Doe   me@j zd.me>'
         assert not results.email_address
-        assert 'Joe Z. Doe   me@j zd.me>' == results.dumps()
+        assert results.dumps() == 'Joe Z. Doe   me@j zd.me>'
 
     def test_SingleLineField(self):
         test = ' some value '
         results = debcon.SingleLineField.from_value(test)
-        assert 'some value' == results.value
-        assert 'some value' == results.dumps()
-        assert str(results) == results.dumps()
+        assert results.value == 'some value'
+        assert results.dumps() == 'some value'
+        assert results.dumps() == str(results)
 
     def test_LineSeparatedField(self):
         test = ' some value   \n   some value   \n     some more   '
         results = debcon.LineSeparatedField.from_value(test)
-        assert ['some value', 'some value', 'some more'] == results.values
-        assert 'some value\n some value\n some more' == results.dumps()
+        assert results.values == ['some value', 'some value', 'some more']
+        assert results.dumps() == 'some value\n some value\n some more'
 
     def test_AnyWhiteSpaceSeparatedField(self):
         test = ' some value   \n   some value   \n     some more   '
         results = debcon.AnyWhiteSpaceSeparatedField.from_value(test)
-        assert ['some', 'value', 'some', 'value', 'some', 'more'] == results.values
-        assert 'some\n value\n some\n value\n some\n more' == results.dumps()
+        assert results.values == ['some', 'value', 'some', 'value', 'some', 'more']
+        assert results.dumps() == 'some\n value\n some\n value\n some\n more'
 
     def test_LineAndSpaceSeparatedField(self):
         test = ' some value \n some value   \n     some more'
         results = debcon.LineAndSpaceSeparatedField.from_value(test)
-        assert [('some', 'value'), ('some', 'value'), ('some', 'more')] == results.values
-        assert 'some value\n some value\n some more' == results.dumps()
+        assert results.values == [('some', 'value'), ('some', 'value'), ('some', 'more')]
+        assert results.dumps() == 'some value\n some value\n some more'

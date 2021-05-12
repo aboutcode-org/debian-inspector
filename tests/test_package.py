@@ -21,7 +21,7 @@ class PackageTestCase(unittest.TestCase):
 
     def test_find_latest_version(self):
         good = ['name_1.0_all.deb', 'name_0.5_all.deb']
-        assert path.basename(package.find_latest_version(good).original_filename) == 'name_1.0_all.deb'
+        assert 'name_1.0_all.deb' == path.basename(package.find_latest_version(good).original_filename)
         bad = ['one_1.0_all.deb', 'two_0.5_all.deb']
         self.assertRaises(ValueError, package.find_latest_version, bad)
 
@@ -30,15 +30,15 @@ class PackageTestCase(unittest.TestCase):
         results = sorted(
             [path.basename(a.original_filename)
              for a in package.find_latest_versions(packages).values()])
-        assert sorted(['one_1.0_all.deb', 'two_1.5_all.deb']) == results
+        assert results == sorted(['one_1.0_all.deb', 'two_1.5_all.deb'])
 
     def test_test_DebArch_from_filename(self):
         filename = '/var/cache/apt/archives/python2.7_2.7.3-0ubuntu3.4_amd64.deb'
         deb = package.DebArchive.from_filename(filename)
-        assert 'python2.7' == deb.name
-        assert '2.7.3-0ubuntu3.4' == str(deb.version)
-        assert 'amd64' == deb.architecture
-        assert filename == deb.original_filename
+        assert deb.name == 'python2.7'
+        assert str(deb.version) == '2.7.3-0ubuntu3.4'
+        assert deb.architecture == 'amd64'
+        assert deb.original_filename == filename
 
     def test_DebArch_from_filename__raise_ValueError_on_errors(self):
         self.assertRaises(ValueError, package.DebArchive.from_filename, 'python2.7_2.7.3-0ubuntu3.4_amd64.not-a-deb')
@@ -57,7 +57,7 @@ class VersionTestCase(unittest.TestCase):
         # Check version sorting implemented on top of `=' and `<<' comparisons.
         expected_order = ['0.1', '0.5', '1.0', '2.0', '3.0', '1:0.4', '2:0.3']
         assert expected_order != list(sorted(expected_order))
-        assert expected_order == list(map(str, sorted(map(V, expected_order))))
+        assert list(map(str, sorted(map(V, expected_order)))) == expected_order
 
     def test_version_comparison_superior(self):
         assert V('1.0') > V('0.5')  # usual semantics
@@ -82,9 +82,9 @@ class VersionTestCase(unittest.TestCase):
         assert not V('0.5') <= V('0.2')  # sanity check
 
     def test_version_comparison_equal(self):
-        assert V('42') == V('42')  # usual semantics
-        assert V('0.5') == V('0:0.5')  # unusual semantics
-        assert not V('0.5') == V('1.0')  # sanity check
+        assert V('42')  # usual semantics == V('42')
+        assert V('0:0.5')  # unusual semantics == V('0.5')
+        assert V('1.0')  # sanity check == not V('0.5')
 
     def test_version_comparison_not_equal(self):
         assert V('1') != V('0')  # usual semantics
@@ -101,7 +101,7 @@ class DebArchiveTestCase(unittest.TestCase):
             version=version.Version(epoch=0, upstream='2.7.3', revision='0ubuntu3.4'),
             architecture='amd64',
             original_filename=fn)
-        assert expected == debarch
+        assert debarch == expected
 
     def test_DebArchive_from_filename_udeb(self):
         fn = '/var/cache/apt/archives/python2.7_2.7.3-0ubuntu3.4_amd64.udeb'
@@ -111,7 +111,7 @@ class DebArchiveTestCase(unittest.TestCase):
             version=version.Version(epoch=0, upstream='2.7.3', revision='0ubuntu3.4'),
             architecture='amd64',
             original_filename=fn)
-        assert expected == debarch
+        assert debarch == expected
 
     def test_CodeArchive_from_filename(self):
         fn = '/var/cache/apt/archives/python2.7_2.7.3-0ubuntu3.4.orig.tar.gz'
@@ -120,7 +120,7 @@ class DebArchiveTestCase(unittest.TestCase):
             name='python2.7',
             version=version.Version(epoch=0, upstream='2.7.3', revision='0ubuntu3.4'),
             original_filename=fn)
-        assert expected == debarch
+        assert debarch == expected
 
     def test_CodeArchive_from_filename_supports_tar_gz_bz2_and_xz(self):
         package.CodeArchive.from_filename('python2.7_2.7.3-0ubuntu3.4.orig.tar.gz')
@@ -155,7 +155,7 @@ class ControlTestCase(unittest.TestCase):
                 )),
             'Installed-Size': 42
         }
-        assert expected == parsed_info
+        assert parsed_info == expected
 
     def test_parse_control_fields_2(self):
         unparsed_fields = debcon.Debian822.from_string('''
@@ -183,7 +183,7 @@ Conflicts: binfmt-support (<< 1.1.2)
             'Version': '3.4.0-1+precise1',
         }
 
-        assert expected == unparsed_fields.to_dict(normalize_names=True)
+        assert unparsed_fields.to_dict(normalize_names=True) == expected
 
         parsed_fields = debcon.parse_control_fields(unparsed_fields)
 
@@ -211,4 +211,4 @@ Conflicts: binfmt-support (<< 1.1.2)
             'Suggests': deps.AndRelationships(relationships=(deps.Relationship(name=u'binfmt-support'),)),
             'Version': '3.4.0-1+precise1'}
 
-        assert expected == parsed_fields
+        assert parsed_fields == expected

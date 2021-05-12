@@ -17,16 +17,16 @@ class TestCopyrightFields(JsonTester):
     def test_CopyrightStatementField(self):
         test = ' 2012-12  MyCom  inc. '
         results = copyright.CopyrightStatementField.from_value(test)
-        assert '2012-12' == results.year_range
-        assert 'MyCom inc.' == results.holder
-        assert '2012-12 MyCom inc.' == results.dumps()
+        assert results.year_range == '2012-12'
+        assert results.holder == 'MyCom inc.'
+        assert results.dumps() == '2012-12 MyCom inc.'
 
     def test_CopyrightStatementField_no_year(self):
         test = '   MyCom  inc. '
         results = copyright.CopyrightStatementField.from_value(test)
-        assert 'MyCom inc.' == results.holder
+        assert results.holder == 'MyCom inc.'
         assert not results.year_range
-        assert 'MyCom inc.' == results.dumps()
+        assert results.dumps() == 'MyCom inc.'
 
     def test_is_year_range(self):
         assert copyright.is_year_range('2012')
@@ -40,9 +40,9 @@ class TestCopyrightFields(JsonTester):
     def test_LicenseField(self):
         test = '  sim ple   '
         results = copyright.LicenseField.from_value(test)
-        assert 'sim ple' == results.name
+        assert results.name == 'sim ple'
         assert not results.text
-        assert 'sim ple' == results.dumps()
+        assert results.dumps() == 'sim ple'
 
     def test_LicenseField_with_text(self):
         test = ''' GPL 2.0
@@ -52,9 +52,9 @@ class TestCopyrightFields(JsonTester):
  .
 '''
         results = copyright.LicenseField.from_value(test)
-        assert 'GPL 2.0' == results.name
-        assert 'licensed under the gpl\n\n attribution' == results.text
-        assert 'GPL 2.0\n licensed under the gpl\n .\n  attribution' == results.dumps()
+        assert results.name == 'GPL 2.0'
+        assert results.text == 'licensed under the gpl\n\n attribution'
+        assert results.dumps() == 'GPL 2.0\n licensed under the gpl\n .\n  attribution'
 
 
 class TestDebianCopyright(JsonTester):

@@ -19,7 +19,7 @@ class DebPkgToolsTestCase(TestCase):
         expected_order = ['0.1', '0.5', '1.0', '2.0', '3.0', '1:0.4', '2:0.3']
         assert list(sorted(expected_order)) != expected_order
         result = [str(v) for v in sorted(map(Version.from_string, expected_order))]
-        assert result == expected_order
+        assert expected_order == result
 
     def test_version_comparison(self):
         assert Version.from_string('1.0') > Version.from_string('0.5')
@@ -42,7 +42,7 @@ class DebPkgToolsTestCase(TestCase):
 
         assert Version.from_string('42') == Version.from_string('42')
         assert Version.from_string('0.5') == Version.from_string('0:0.5')
-        assert not Version.from_string('0.5') == Version.from_string('1.0')
+        assert Version.from_string('0.5') != Version.from_string('1.0')
 
         assert Version.from_string('1') != Version.from_string('0')
         assert not Version.from_string('0.5') != Version.from_string('0:0.5')

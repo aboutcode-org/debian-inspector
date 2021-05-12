@@ -34,9 +34,9 @@ class JsonTester(testcase.FileBasedTesting):
         with open(expected_loc, 'rb') as ex:
             expected = json.load(ex)
         if sort:
-            assert sorted(expected) == sorted(results)
+            assert sorted(results) == sorted(expected)
         else:
-            assert json.dumps(expected, indent=2) == json.dumps(results, indent=2)
+            assert json.dumps(results, indent=2) == json.dumps(expected, indent=2)
 
     def check_file(self, results, expected_loc, regen=False, sort=False):
         """
@@ -59,6 +59,6 @@ class JsonTester(testcase.FileBasedTesting):
             expected = ex.read()
             expected = expected.decode('utf-8')
         if sort:
-            assert sorted(expected.splitlines()) == sorted(results.splitlines())
+            assert sorted(results.splitlines()) == sorted(expected.splitlines())
         else:
-            assert expected == results
+            assert results == expected
