@@ -1,21 +1,15 @@
 graft src
-graft tests
-include .gitignore
 
-include apache-2.0.LICENSE
-include bsd-new.LICENSE
-include mit.LICENSE
+include *.LICENSE
 include NOTICE
-
-include README.rst
-include CHANGELOG.rst
-include configure
-include configure2
-include MANIFEST.in
-include requirements-tests.txt
-include setup.cfg
-include setup.py
-
-prune src/debian_inspector.egg-info
+include *.ABOUT
+include *.toml
+include *.yml
+include *.rst
+include setup.*
+include configure*
+include requirements*
+include .git*
 
 global-exclude *.py[co] __pycache__ *.*~
+
