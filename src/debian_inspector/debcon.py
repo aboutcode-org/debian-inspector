@@ -56,7 +56,9 @@ class FieldMixin(object):
         return attrib(converter=cls.from_value, **kwargs)
 
     @classmethod
-    def from_value(self, value):
+    def from_value(cls, value):
+        if isinstance(value, cls):
+            return value
         return cls(value)
 
     def dumps(self, sort=False):

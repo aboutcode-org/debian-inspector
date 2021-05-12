@@ -26,6 +26,8 @@ class LicenseField(debcon.FieldMixin):
 
     @classmethod
     def from_value(cls, value):
+        if isinstance(value, cls):
+            return value
         lic = debcon.DescriptionField.from_value(value)
         return cls(name=lic.synopsis, text=lic.text)
 
@@ -88,6 +90,8 @@ class CopyrightStatementField(debcon.FieldMixin):
 
     @classmethod
     def from_value(cls, value):
+        if isinstance(value, cls):
+            return value
         value = value or ''
         if isinstance(value, bytes):
             value = value.decode('utf-8')
@@ -131,6 +135,8 @@ class CopyrightField(debcon.FieldMixin):
 
     @classmethod
     def from_value(cls, value):
+        if isinstance(value, cls):
+            return value
         statements = []
         if value:
             statements = [
@@ -159,6 +165,8 @@ class MaintainerField(debcon.FieldMixin):
 
     @classmethod
     def from_value(cls, value):
+        if isinstance(value, cls):
+            return value
         name = email_address = None
         if value:
             value = value.strip()
