@@ -1,12 +1,13 @@
 #
+# Copyright (c) nexB Inc. and others. All rights reserved.
+# SPDX-License-Identifier: Apache-2.0
+# See http://www.apache.org/licenses/LICENSE-2.0 for the license text.
+# See https://github.com/nexB/debian-inspector for support or download.
+# See https://aboutcode.org for more information about nexB OSS projects.
+#
 # Copyright [2017] The Climate Corporation (https://climate.com)
 # https://github.com/TheClimateCorporation/python-dpkg
 # original author: Nathan J. Meh
-
-# Copyright (c) nexB Inc. and others.
-# http://nexb.com and https://github.com/nexB/debian_inspector/
-
-# SPDX-License-Identifier: Apache-2.0
 
 from unittest import TestCase
 

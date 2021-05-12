@@ -1,11 +1,14 @@
-
-# Debian packaging tools: Automated tests.
 #
+# Copyright (c) nexB Inc. and others. All rights reserved.
+# SPDX-License-Identifier: Apache-2.0
+# SPDX-License-Identifier: MIT
+# See http://www.apache.org/licenses/LICENSE-2.0 for the license text.
+# See https://github.com/nexB/debian-inspector for support or download.
+# See https://aboutcode.org for more information about nexB OSS projects.
 # Author: Peter Odding <peter@peterodding.com>
 # Last Change: March 9, 2021
 # URL: https://github.com/xolox/python-deb-pkg-tools
 
-# SPDX-License-Identifier: MIT
 
 from unittest import TestCase
 

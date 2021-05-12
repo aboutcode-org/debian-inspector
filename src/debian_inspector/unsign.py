@@ -1,11 +1,11 @@
 #
-# Copyright (c) nexB Inc. and others.
-# http://nexb.com and https://github.com/nexB/debian_inspector/
-
 # Copyright (c) 2014-2019 Security Innovation, Inc
-# All rights reserved.
-
+# Copyright (c) nexB Inc. and others. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0 AND BSD-3-Clause
+# See http://www.apache.org/licenses/LICENSE-2.0 for the license text.
+# See https://github.com/nexB/debian-inspector for support or download.
+# See https://aboutcode.org for more information about nexB OSS projects.
+#
 
 import re
 
