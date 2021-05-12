@@ -2,7 +2,7 @@ Changelog
 =========
 
 v2021.5.12
---------------------
+----------
 
 - Adopt calendar versioning, latest skeleton and various cosmetic code formatting
 - Fix bug where some content could be dropped from invalid debian file
