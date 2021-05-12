@@ -19,3 +19,6 @@ Description: shared libraries for terminal handling
 Homepage: https://invisible-island.net/ncurses/
 Original-Maintainer: Craig Small <csmall@debian.org>
 
+
+Package: another package
+Status: install ok installed

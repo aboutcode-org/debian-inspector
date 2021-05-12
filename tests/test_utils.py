@@ -19,7 +19,7 @@ class JsonTester(testcase.FileBasedTesting):
         Helper to test a results Python native object against an expected JSON
         file at expected_loc.
         """
-        expected_loc = self.get_test_loc(expected_loc)
+        expected_loc = self.get_test_loc(expected_loc, must_exist=False)
 
         if regen:
             regened_exp_loc = self.get_temp_file()

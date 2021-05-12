@@ -1,17 +1,16 @@
 {
-  "package": "libncurses5",
+  "package": "libudev1",
   "status": "install ok installed",
   "priority": "optional",
   "section": "libs",
-  "installed-size": "283",
+  "installed-size": "227",
   "maintainer": "Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
   "architecture": "amd64",
   "multi-arch": "same",
-  "source": "ncurses",
-  "version": "6.1-1ubuntu1.18.04",
-  "depends": "libtinfo5 (= 6.1-1ubuntu1.18.04), libc6 (>= 2.14)",
-  "recommends": "libgpm2",
-  "description": "shared libraries for terminal handling\n The ncurses library routines are a terminal-independent method of\n updating character screens with reasonable optimization.\n .\n This package contains the shared libraries necessary to run programs\n compiled with ncurses.",
-  "homepage": "https://invisible-island.net/ncurses/",
-  "original-maintainer": "Craig Small <csmall@debian.org>"
+  "source": "systemd",
+  "version": "237-3ubuntu10.22",
+  "depends": "libc6 (>= 2.25)",
+  "description": "libudev shared library\n This library provides access to udev device information.",
+  "homepage": "https://www.freedesktop.org/wiki/Software/systemd",
+  "original-maintainer": "Debian systemd Maintainers <pkg-systemd-maintainers@lists.alioth.debian.org>"
 }

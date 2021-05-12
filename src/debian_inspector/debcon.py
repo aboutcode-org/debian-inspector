@@ -478,21 +478,40 @@ class CatchAllParagraph(ParagraphMixin):
 
 def get_paragraphs_data_from_file(location):
     """
-    Yield paragraph data from the Debian control file at `location` that
-    contains multiple paragraphs (e.g. Package, copyright file, etc).
+    Yield paragraph data mappings from the Debian control file at `location`
+    that contains multiple paragraphs (e.g. Package, status, copyright file,
+    etc.).
     """
     if not location:
         return []
     return get_paragraphs_data(read_text_file(location))
 
 
-def get_paragraphs_data(text):
+def split_in_paragraphs(text):
     """
-    Yield paragraph mappings from a Debian control `text`.
+    Yield paragraphs from a `text` string that contains one or more paragraph
+    separated by two empty lines.
+    See https://www.debian.org/doc/debian-policy/ch-controlfields#s-controlsyntax
+
+        "A control file consists of one or more paragraphs of fields.
+        The paragraphs are separated by empty lines.
+        Parsers may accept lines consisting solely of spaces and tabs as
+        paragraph separators, but control files should use empty lines.
     """
     if text:
-        paragraphs = (p for p in re.split('\n ?\n', text) if p)
-        for para in paragraphs:
+        for p in re.split(r'\n\n(?:[ \t]*\n)*', text):
+            if not p:
+                continue
+            yield p
+
+
+def get_paragraphs_data(text):
+    """
+    Yield paragraph data mappings from the Debian control `text` string that
+    contains multiple paragraphs (e.g. Package, status, copyright file, etc.).
+    """
+    if text:
+        for para in split_in_paragraphs(text) or []:
             yield get_paragraph_data(para)
 
 
@@ -514,10 +533,10 @@ def get_paragraph_data_from_file(location, remove_pgp_signature=False):
 
 def get_paragraph_data(text, remove_pgp_signature=False):
     """
-    Return paragraph data from the Debian control `text`.
-    The paragraph data is an ordered mapping of {name: value} fields. If there
-    is data that is not parsable or not attached to a field name, this will be added to
-    a field named "unknown".
+    Return paragraph data from the Debian control `text`. The paragraph data is
+    an ordered mapping of {name: value} fields. If there is data that is not
+    parsable or not attached to a field name, this will be added to a field
+    named "unknown".
 
     If there are duplicates field names, the string values of duplicates field
     names are merged together with a new line in the first occurence of that
@@ -528,6 +547,7 @@ def get_paragraph_data(text, remove_pgp_signature=False):
     """
     if not text:
         return {'unknown': text}
+
     if remove_pgp_signature:
         text = unsign.remove_signature(text)
 
@@ -542,6 +562,12 @@ def get_paragraph_data(text, remove_pgp_signature=False):
     if not items or mls.defects:
         return {'unknown': text}
 
+    # in a header-only email we should not have a payload. Yet when this happens
+    # we should no ignore it either, so let's treat this as "unknown"
+    payload = mls.get_payload()
+    if payload:
+        items.append(('unknown', payload))
+
     data = {}
     for name, value in items:
         # we do not preserve case: debian field names are case-insensitive AND
@@ -555,16 +581,6 @@ def get_paragraph_data(text, remove_pgp_signature=False):
         data[name] = value
 
     return data
-
-
-def fold(value):
-    """
-    Return a folded `value` string. Folding is the Debian 822 process of
-    removing all white spaces from a string.
-    """
-    if not value:
-        return value
-    return ''.join(value.split())
 
 
 def line_separated(value):

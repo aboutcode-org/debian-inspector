@@ -3,6 +3,7 @@
 # http://nexb.com and https://github.com/nexB/debian_inspector/
 
 # SPDX-License-Identifier: Apache-2.0
+
 from os import path
 
 from test_utils import JsonTester  # NOQA
@@ -17,9 +18,15 @@ class TestGetParagraphData(JsonTester):
         results = list(debcon.get_paragraph_data_from_file(None))
         assert [] == results
 
-    def test_get_paragraph_data_from_file_from_status(self):
+    def test_get_paragraph_data_from_file_from_single_status(self):
         test_file = self.get_test_loc('debcon/status/one_status')
         expected_loc = 'debcon/status/one_status-expected.json'
+        results = debcon.get_paragraph_data_from_file(test_file)
+        self.check_json(results, expected_loc, regen=False)
+
+    def test_get_paragraph_data_from_file_from_status_with_junk_uses_unknown(self):
+        test_file = self.get_test_loc('debcon/status/one_status_junk', must_exist=False)
+        expected_loc = 'debcon/status/one_status_junk-expected.json'
         results = debcon.get_paragraph_data_from_file(test_file)
         self.check_json(results, expected_loc, regen=False)
 
@@ -86,6 +93,38 @@ class TestGetParagraphData(JsonTester):
         expected = {'a': 'B', 'df': 'D\nx'}
         assert expected == results
 
+    def test_get_paragraphs_data__splits_paragraphs_correctly(self):
+        test='para1: test1\n\npara2: test2'
+        results = list(debcon.get_paragraphs_data(test))
+        expected = [{'para1': 'test1'}, {'para2': 'test2'}]
+        assert expected == results
+
+    def test_split_in_paragraphs__splits_paragraphs_correctly(self):
+        test='para1: test1\n\npara2: test2'
+        results = list(debcon.split_in_paragraphs(test))
+        expected = ['para1: test1', 'para2: test2']
+        assert expected == results
+
+    def test_split_in_paragraphs__handles_more_than_two_empty_lines(self):
+        test='para1: test1\n\n\n\n\npara2: test2'
+        results = list(debcon.split_in_paragraphs(test))
+        expected = ['para1: test1', 'para2: test2']
+        assert expected == results
+
+    def test_split_in_paragraphs__handles_empty_lines_with_spaces(self):
+        test='para1: test1\n\n \t     \n          \npara2: test2'
+        results = list(debcon.split_in_paragraphs(test))
+        expected = ['para1: test1', 'para2: test2']
+        assert expected == results
+
+    def test_get_paragraphs_data_from_text__from_status_file(self):
+        test_file = self.get_test_loc('debcon/status/simple_status')
+        with open(test_file) as tf:
+            test_file = tf.read()
+        expected_loc = 'debcon/status/simple_status-expected.json'
+        results = list(debcon.get_paragraphs_data(test_file))
+        self.check_json(results, expected_loc, regen=False)
+
     def test_get_paragraphs_data_from_file__from_copyrights_dep5_1(self):
         test_file = self.get_test_loc('debcon/copyright/dep5-b43-fwcutter.copyright')
         expected_loc = 'debcon/copyright/dep5-b43-fwcutter.copyright-expected.json'
@@ -122,14 +161,36 @@ class TestGetParagraphData(JsonTester):
         results = list(debcon.get_paragraphs_data_from_file(test_file))
         self.check_json(results, expected_loc, regen=False)
 
+    def test_get_paragraph_data__return_unknow_if_we_have_payload(self):
+        # we were skipping email payloads: a payload means this is not a
+        # header only file and therefore something we cannot process normally
+        test = 'Foo: home\n\nBar: baz'
+        results = debcon.get_paragraph_data(test)
+        expected = {'foo': 'home', 'unknown': 'Bar: baz'}
+        assert expected == results
+
 
 class TestDebian822(JsonTester):
     test_data_dir = path.join(path.dirname(__file__), 'data')
 
-    def test_Debian822_from_file__from_status(self):
+    def test_Debian822_from_file__from_one_status(self):
         test_file = self.get_test_loc('debcon/deb822/one_status')
         expected_loc = 'debcon/deb822/one_status-expected-deb822.json'
         results = debcon.Debian822.from_file(test_file).to_dict()
+        self.check_json(results, expected_loc, regen=False)
+
+    def test_Debian822_from_file__from_one_status_keeps_unknown_junk(self):
+        test_file = self.get_test_loc('debcon/deb822/one_status_junk')
+        expected_loc = 'debcon/deb822/one_status_junk-expected-deb822.json'
+        results = debcon.Debian822.from_file(test_file).to_dict()
+        self.check_json(results, expected_loc, regen=False)
+
+    def test_Debian822_from_string__from_one_status(self):
+        test_file = self.get_test_loc('debcon/deb822/one_status')
+        with open(test_file) as tf:
+            test_file = tf.read()
+        expected_loc = 'debcon/deb822/one_status-expected-deb822.json'
+        results = debcon.Debian822.from_string(test_file).to_dict()
         self.check_json(results, expected_loc, regen=False)
 
     def test_Debian822_from_file__signed_from_dsc(self):
