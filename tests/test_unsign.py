@@ -1,8 +1,11 @@
 #
-# Copyright (c) nexB Inc. and others.
-# http://nexb.com and https://github.com/nexB/debian_inspector/
-
+# Copyright (c) nexB Inc. and others. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
+# See http://www.apache.org/licenses/LICENSE-2.0 for the license text.
+# See https://github.com/nexB/debian-inspector for support or download.
+# See https://aboutcode.org for more information about nexB OSS projects.
+#
+
 
 from unittest import TestCase
 
@@ -13,32 +16,32 @@ class Testunsign(TestCase):
 
     def test_remove_signature_and_is_signed_corner_cases(self):
         assert not unsign.is_signed(None)
-        assert None == unsign.remove_signature(None)
+        assert unsign.remove_signature(None) == None
 
         assert not unsign.is_signed('')
-        assert '' == unsign.remove_signature('')
+        assert unsign.remove_signature('') == ''
 
         assert not unsign.is_signed('\n')
-        assert '\n' == unsign.remove_signature('\n')
+        assert unsign.remove_signature('\n') == '\n'
 
         assert not unsign.is_signed('sometext\n')
-        assert 'sometext\n' == unsign.remove_signature('sometext\n')
+        assert unsign.remove_signature('sometext\n') == 'sometext\n'
 
     def test_remove_signature_and_is_signed_not_signed(self):
         assert not unsign.is_signed(PLAIN)
-        assert PLAIN == unsign.remove_signature(PLAIN)
+        assert unsign.remove_signature(PLAIN) == PLAIN
 
     def test_remove_signature_and_is_signed_empty_signed(self):
         assert unsign.is_signed(EMPTY)
-        assert '\n' == unsign.remove_signature(EMPTY)
+        assert unsign.remove_signature(EMPTY) == '\n'
 
     def test_remove_signature_and_is_signed_signed(self):
         assert unsign.is_signed(SIGNED)
-        assert EXPECTED_SIGNED == unsign.remove_signature(SIGNED)
+        assert unsign.remove_signature(SIGNED) == EXPECTED_SIGNED
 
     def test_remove_signature_and_is_signed_compact(self):
         assert unsign.is_signed(COMPACT)
-        assert EXPECTED_COMPACT == unsign.remove_signature(COMPACT)
+        assert unsign.remove_signature(COMPACT) == EXPECTED_COMPACT
 
     def test_is_signed1(self):
         text = '''

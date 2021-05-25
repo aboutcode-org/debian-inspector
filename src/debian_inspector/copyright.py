@@ -1,8 +1,11 @@
 #
-# Copyright (c) nexB Inc. and others.
-# http://nexb.com and https://github.com/nexB/debian_inspector/
-
+# Copyright (c) nexB Inc. and others. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
+# See http://www.apache.org/licenses/LICENSE-2.0 for the license text.
+# See https://github.com/nexB/debian-inspector for support or download.
+# See https://aboutcode.org for more information about nexB OSS projects.
+#
+
 
 from email import utils as email_utils
 import itertools
@@ -26,6 +29,8 @@ class LicenseField(debcon.FieldMixin):
 
     @classmethod
     def from_value(cls, value):
+        if isinstance(value, cls):
+            return value
         lic = debcon.DescriptionField.from_value(value)
         return cls(name=lic.synopsis, text=lic.text)
 
@@ -45,8 +50,8 @@ DEBIAN_LICENSE_KEYS = {
     'public-domain': 'public-domain',
     'Apache': '',
     'Artistic': '',
-    'BSD-2-clause': 'bsd-new',
-    'BSD-3-clause': 'bsd-simplified',
+    'BSD-2-clause': 'bsd-simplified',
+    'BSD-3-clause': 'bsd-new',
     'BSD-4-clause': 'bsd-original',
     'ISC': 'isc',
     'CC-BY': 'cc-by-3.0',
@@ -88,6 +93,8 @@ class CopyrightStatementField(debcon.FieldMixin):
 
     @classmethod
     def from_value(cls, value):
+        if isinstance(value, cls):
+            return value
         value = value or ''
         if isinstance(value, bytes):
             value = value.decode('utf-8')
@@ -131,6 +138,8 @@ class CopyrightField(debcon.FieldMixin):
 
     @classmethod
     def from_value(cls, value):
+        if isinstance(value, cls):
+            return value
         statements = []
         if value:
             statements = [
@@ -159,6 +168,8 @@ class MaintainerField(debcon.FieldMixin):
 
     @classmethod
     def from_value(cls, value):
+        if isinstance(value, cls):
+            return value
         name = email_address = None
         if value:
             value = value.strip()
