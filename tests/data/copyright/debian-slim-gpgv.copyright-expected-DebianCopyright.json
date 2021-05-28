@@ -1,0 +1,138 @@
+{
+  "paragraphs": [
+    {
+      "format": "https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/",
+      "upstream_name": "GnuPG - The GNU Privacy Guard (modern version)",
+      "upstream_contact": "GnuPG development mailing list <gnupg-devel@gnupg.org>",
+      "source": "https://gnupg.org/download/",
+      "disclaimer": "",
+      "copyright": "",
+      "license": "",
+      "comment": "",
+      "files_excluded": ""
+    },
+    {
+      "files": "*",
+      "copyright": "1992, 1995-2020, Free Software Foundation, Inc",
+      "license": "GPL-3+",
+      "comment": ""
+    },
+    {
+      "files": "agent/command.c\n agent/command-ssh.c\n agent/gpg-agent.c\n common/homedir.c\n common/sysutils.c\n g10/mainproc.c",
+      "copyright": "1998-2007, 2009, 2012, Free Software Foundation, Inc\n           2013, Werner Koch",
+      "license": "GPL-3+",
+      "comment": ""
+    },
+    {
+      "files": "autogen.sh",
+      "copyright": "2003, g10 Code GmbH",
+      "license": "permissive",
+      "comment": ""
+    },
+    {
+      "files": "common/gc-opt-flags.h\n common/i18n.h\n tools/clean-sat.c\n tools/no-libgcrypt.c",
+      "copyright": "1998-2001, 2003, 2004, 2006, 2007 Free Software Foundation, Inc",
+      "license": "permissive",
+      "comment": ""
+    },
+    {
+      "files": "common/localename.c",
+      "copyright": "1985, 1989-1993, 1995-2003, 2007, 2008 Free Software Foundation, Inc.",
+      "license": "LGPL-2.1+",
+      "comment": ""
+    },
+    {
+      "files": "dirmngr/dns.c\n dirmngr/dns.h",
+      "copyright": "2008-2010, 2012-2016 William Ahern",
+      "license": "Expat",
+      "comment": ""
+    },
+    {
+      "files": "doc/yat2m.c\n scd/app-geldkarte.c",
+      "copyright": "2004, 2005, g10 Code GmbH\n           2006, 2008, 2009, 2011, Free Software Foundation, Inc",
+      "license": "GPL-3+",
+      "comment": ""
+    },
+    {
+      "files": "scd/ccid-driver.h\n scd/ccid-driver.c",
+      "copyright": "2003-2007, Free Software Foundation, Inc",
+      "license": "GPL-3+ or BSD-3-clause",
+      "comment": ""
+    },
+    {
+      "files": "tools/rfc822parse.c\n tools/rfc822parse.h",
+      "copyright": "1999-2000, Werner Koch, Duesseldorf\n           2003-2004, g10 Code GmbH",
+      "license": "LGPL-3+",
+      "comment": ""
+    },
+    {
+      "files": "tools/sockprox.c",
+      "copyright": "2007, g10 Code GmbH",
+      "license": "GPL-3+",
+      "comment": ""
+    },
+    {
+      "files": "doc/OpenPGP",
+      "copyright": "1998-2013 Free Software Foundation, Inc.\n           1997, 1998, 2013 Werner Koch\n           1998 The Internet Society",
+      "license": "RFC-Reference",
+      "comment": ""
+    },
+    {
+      "files": "tests/gpgscm/*",
+      "copyright": "2000, Dimitrios Souflis\n           2016, Justus Winter, Werner Koch",
+      "license": "TinySCHEME",
+      "comment": ""
+    },
+    {
+      "files": "debian/*",
+      "copyright": "1998-2020 Debian GnuPG packagers, including\n           Eric Dorland <eric@debian.org>\n           Daniel Kahn Gillmor <dkg@fifthhorseman.net>\n           NIIBE Yutaka <gniibe@fsij.org>",
+      "license": "GPL-3+",
+      "comment": ""
+    },
+    {
+      "files": "debian/org.gnupg.scdaemon.metainfo.xml",
+      "copyright": "2017 Daniel Kahn Gillmor <dkg@fifthhorseman.net>",
+      "license": "CC0-1.0",
+      "comment": "This file is licensed permissively for the sake of AppStream"
+    },
+    {
+      "license": "TinySCHEME\n Redistribution and use in source and binary forms, with or without\n modification, are permitted provided that the following conditions are\n met:\n .\n Redistributions of source code must retain the above copyright notice,\n this list of conditions and the following disclaimer.\n .\n Redistributions in binary form must reproduce the above copyright\n notice, this list of conditions and the following disclaimer in the\n documentation and/or other materials provided with the distribution.\n .\n Neither the name of Dimitrios Souflis nor the names of the\n contributors may be used to endorse or promote products derived from\n this software without specific prior written permission.\n .\n THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS\n ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT\n LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR\n A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE REGENTS OR\n CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,\n EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,\n PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR\n PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF\n LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING\n NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS\n SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+      "comment": ""
+    },
+    {
+      "license": "permissive\n This file is free software; as a special exception the author gives\n unlimited permission to copy and/or distribute it, with or without\n modifications, as long as this notice is preserved.\n .\n This file is distributed in the hope that it will be useful, but\n WITHOUT ANY WARRANTY, to the extent permitted by law; without even\n the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR\n PURPOSE.",
+      "comment": ""
+    },
+    {
+      "license": "RFC-Reference\n doc/OpenPGP merely cites and references IETF Draft\n draft-ietf-openpgp-formats-07.txt. This is believed to be fair use;\n but if not, it's covered by the source document's license under\n the 'comment on' clause. The license statement follows.\n .\n This document and translations of it may be copied and furnished to\n others, and derivative works that comment on or otherwise explain it\n or assist in its implementation may be prepared, copied, published\n and distributed, in whole or in part, without restriction of any\n kind, provided that the above copyright notice and this paragraph\n are included on all such copies and derivative works.  However, this\n document itself may not be modified in any way, such as by removing\n the copyright notice or references to the Internet Society or other\n Internet organizations, except as needed for the purpose of\n developing Internet standards in which case the procedures for\n copyrights defined in the Internet Standards process must be\n followed, or as required to translate it into languages other than\n English.\n .\n The limited permissions granted above are perpetual and will not be\n revoked by the Internet Society or its successors or assigns.",
+      "comment": ""
+    },
+    {
+      "license": "GPL-3+\n GnuPG is free software; you can redistribute it and/or modify\n it under the terms of the GNU General Public License as published by\n the Free Software Foundation; either version 3 of the License, or\n (at your option) any later version.\n .\n GnuPG is distributed in the hope that it will be useful,\n but WITHOUT ANY WARRANTY; without even the implied warranty of\n MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n GNU General Public License for more details.\n .\n You should have received a copy of the GNU General Public License\n along with this program; if not, see <https://www.gnu.org/licenses/>.\n .\n On Debian systems, the full text of the GNU General Public\n License version 3 can be found in the file\n `/usr/share/common-licenses/GPL-3'.",
+      "comment": ""
+    },
+    {
+      "license": "LGPL-3+\n This program is free software; you can redistribute it and/or modify it\n under the terms of the GNU Lesser General Public License as\n published by the Free Software Foundation; either version 3 of\n the License, or (at your option) any later version.\n .\n This program is distributed in the hope that it will be useful, but\n WITHOUT ANY WARRANTY; without even the implied warranty of\n MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU\n Lesser General Public License for more details.\n .\n You should have received a copy of the GNU Lesser General Public\n License along with this program; if not, see <https://www.gnu.org/licenses/>.\n .\n On Debian systems, the full text of the GNU Lesser General Public\n License version 3 can be found in the file\n `/usr/share/common-licenses/LGPL-3'.",
+      "comment": ""
+    },
+    {
+      "license": "LGPL-2.1+\n This program is free software; you can redistribute it and/or modify it\n under the terms of the GNU Lesser General Public License as\n published by the Free Software Foundation; either version 2.1 of\n the License, or (at your option) any later version.\n .\n This program is distributed in the hope that it will be useful, but\n WITHOUT ANY WARRANTY; without even the implied warranty of\n MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU\n Lesser General Public License for more details.\n .\n You should have received a copy of the GNU Lesser General Public\n License along with this program; if not, see <https://www.gnu.org/licenses/>.\n .\n On Debian systems, the full text of the GNU Lesser General Public\n License version 2.1 can be found in the file\n `/usr/share/common-licenses/LGPL-2.1'.",
+      "comment": ""
+    },
+    {
+      "license": "BSD-3-clause\n Redistribution and use in source and binary forms, with or without\n modification, are permitted provided that the following conditions\n are met:\n 1. Redistributions of source code must retain the above copyright\n    notice, and the entire permission notice in its entirety,\n    including the disclaimer of warranties.\n 2. Redistributions in binary form must reproduce the above copyright\n    notice, this list of conditions and the following disclaimer in the\n    documentation and/or other materials provided with the distribution.\n 3. The name of the author may not be used to endorse or promote\n    products derived from this software without specific prior\n    written permission.\n .\n THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED\n WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES\n OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\n DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,\n INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES\n (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR\n SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)\n HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,\n STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)\n ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED\n OF THE POSSIBILITY OF SUCH DAMAGE.",
+      "comment": ""
+    },
+    {
+      "license": "Expat\n Permission is hereby granted, free of charge, to any person obtaining a\n copy of this software and associated documentation files (the\n \"Software\"), to deal in the Software without restriction, including\n without limitation the rights to use, copy, modify, merge, publish,\n distribute, sublicense, and/or sell copies of the Software, and to permit\n persons to whom the Software is furnished to do so, subject to the\n following conditions:\n .\n The above copyright notice and this permission notice shall be included\n in all copies or substantial portions of the Software.\n .\n THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS\n OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\n MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN\n NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,\n DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR\n OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE\n USE OR OTHER DEALINGS IN THE SOFTWARE.",
+      "comment": ""
+    },
+    {
+      "license": "CC0-1.0\n To the extent possible under law, the author(s) have dedicated all\n copyright and related and neighboring rights to this software to the public\n domain worldwide. This software is distributed without any warranty.\n .\n On Debian systems, the complete text of the CC0 license, version 1.0,\n can be found in /usr/share/common-licenses/CC0-1.0.",
+      "comment": ""
+    },
+    {
+      "unknown": "This is a catchall para."
+    }
+  ]
+}

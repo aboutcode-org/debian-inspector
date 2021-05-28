@@ -107,6 +107,12 @@ class TestDebianCopyright(JsonTester):
         expected_loc = 'copyright/dropbear.copyright-expected.dumps'
         results = copyright.DebianCopyright.from_text(test_data).dumps()
         self.check_file(results, expected_loc, regen=False)
+        
+    def test_DebianCopyright_from_file_split_paragraphs_correctly_multiple_lines(self):
+        test_file = self.get_test_loc('copyright/debian-slim-gpgv.copyright')
+        expected_loc = 'copyright/debian-slim-gpgv.copyright-expected-DebianCopyright.json'
+        results = copyright.DebianCopyright.from_file(test_file)
+        self.check_json(results.to_dict(), expected_loc, regen=False)
 
 
 class TestCopyright(JsonTester):

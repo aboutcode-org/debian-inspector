@@ -106,6 +106,18 @@ class TestGetParagraphData(JsonTester):
         results = list(debcon.split_in_paragraphs(test))
         expected = ['para1: test1', 'para2: test2']
         assert results == expected
+        
+    def test_split_in_paragraphs__splits_paragraphs_with_multiple_lines_correctly(self):
+        results = list(debcon.split_in_paragraphs(test_text_split))
+        expected = [
+            'Upstream-Name: GnuPG',
+            'Files: *\nCopyright: Free Software Foundation, Inc\nLicense: GPL-3+',
+            'License: TinySCHEME\n Redistribution',
+            'License: permissive\n This file is free software.',
+            'License: RFC-Reference\n doc/OpenPGP',
+            'License: GPL-3+\n GnuPG\n',
+        ]
+        assert results == expected   
 
     def test_split_in_paragraphs__handles_more_than_two_empty_lines(self):
         test='para1: test1\n\n\n\n\npara2: test2'
@@ -221,6 +233,27 @@ class TestDebian822(JsonTester):
         }
         assert dict(d822) == expected2
 
+
+test_text_split = """Upstream-Name: GnuPG
+
+Files: *
+Copyright: Free Software Foundation, Inc
+License: GPL-3+
+
+License: TinySCHEME
+ Redistribution
+
+
+License: permissive
+ This file is free software.
+
+License: RFC-Reference
+ doc/OpenPGP
+
+
+License: GPL-3+
+ GnuPG
+"""
 
 class TestDebianFields(JsonTester):
     test_data_dir = path.join(path.dirname(__file__), 'data')
