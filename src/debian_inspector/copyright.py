@@ -6,7 +6,6 @@
 # See https://aboutcode.org for more information about nexB OSS projects.
 #
 
-
 from email import utils as email_utils
 import itertools
 
@@ -34,13 +33,14 @@ class LicenseField(debcon.FieldMixin):
         lic = debcon.DescriptionField.from_value(value)
         return cls(name=lic.synopsis, text=lic.text)
 
-    def dumps(self, sort=False):
+    def dumps(self, **kwargs):
         lic = debcon.DescriptionField(self.name, self.text)
-        return lic.dumps(sort=sort).strip()
+        return lic.dumps(**kwargs).strip()
 
     def has_doc_reference(self):
         """
-        Return True if this license has a reference to the Debian shared license included with the distro.
+        Return True if this license contains a reference to a Debian shared
+        license file in the /usr/share/common-licenses directory.
         """
         return self.text and '/usr/share/common-licenses' in self.text
 
@@ -72,7 +72,7 @@ class CopyrightStatementField(debcon.FieldMixin):
             year_range = None
         return cls(holder=holder, year_range=year_range)
 
-    def dumps(self, sort=False):
+    def dumps(self, **kwargs):
         cop = self.holder
         if self.year_range:
             cop = '{} {}'.format(self.year_range, cop)
@@ -96,7 +96,7 @@ def is_year_range(text):
 @attrs
 class CopyrightField(debcon.FieldMixin):
     """
-    This represnts a single "Copyright: field which is a plain formatted text
+    This represents a single "Copyright: field which is a plain formatted text
     but is conventionally a list of copyrights statements one per line
     """
     statements = attrib(default=Factory(list))
@@ -112,13 +112,11 @@ class CopyrightField(debcon.FieldMixin):
                 for v in debcon.line_separated(value)]
         return cls(statements=statements)
 
-    def dumps(self, sort=False):
+    def dumps(self, **kwargs):
         dumped = [
-            s.dumps() if hasattr(s, 'dumps') else str(s)
+            s.dumps(**kwargs) if hasattr(s, 'dumps') else str(s)
             for s in self.statements
         ]
-        if sort:
-            dumped = sorted(dumped)
         return '\n           '.join(dumped).strip()
 
 
@@ -144,7 +142,7 @@ class MaintainerField(debcon.FieldMixin):
                 email_address = None
             return cls(name=name, email_address=email_address)
 
-    def dumps(self, sort=False):
+    def dumps(self, **kwargs):
         name = self.name
         if self.email_address:
             name = '{} <{}>'.format(name, self.email_address)
@@ -172,10 +170,17 @@ class ParagraphMixin(debcon.FieldMixin):
 
         return cls(**known_data)
 
-    def to_dict(self):
+    def to_dict(self, include_lines=False):
+        """
+        Do not include start and end line attributes unless ``include_lines`` is
+        True.
+        """
         data = {}
+        skipped_fields = []
+        if not include_lines:
+            skipped_fields = ['start_line', 'end_line']
         for field_name in fields_dict(self.__class__):
-            if field_name == 'extra_data':
+            if field_name == 'extra_data' or field_name in skipped_fields:
                 continue
             field_value = getattr(self, field_name)
             if field_value:
@@ -190,15 +195,13 @@ class ParagraphMixin(debcon.FieldMixin):
             data[field_name] = field_value
         return data
 
-    def dumps(self, sort=False):
+    def dumps(self, **kwargs):
         text = []
         for field_name, field_value in self.to_dict().items():
             if field_value:
                 field_name = field_name.replace('_', '-')
                 field_name = debcon.normalize_control_field_name(field_name)
                 text.append('{}: {}'.format(field_name, field_value))
-        if sort:
-            text = sorted(text)
         return '\n'.join(text).strip()
 
     def is_empty(self):
@@ -254,7 +257,9 @@ class CopyrightHeaderParagraph(ParagraphMixin):
 
     https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/#header-paragraph
     """
-    # Default would be https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/')
+    # Default should be:
+    # https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+    # but we do not know yet if this a structure machine-readable format or not
     format = debcon.SingleLineField.attrib(default=None)
     upstream_name = debcon.SingleLineField.attrib(default=None)
     # TODO: each may be a Maintainer
@@ -302,11 +307,11 @@ class CopyrightFilesParagraph(ParagraphMixin):
     # this is an overflow of extra unknown fields for this paragraph
     extra_data = attrib(default=Factory(dict))
 
-    def dumps(self, sort=False):
+    def dumps(self, **kwargs):
         if self.is_empty():
             return 'Files: '
         else:
-            return ParagraphMixin.dumps(self, sort=sort)
+            return ParagraphMixin.dumps(self)
 
     def is_empty(self):
         """
@@ -354,11 +359,11 @@ class CopyrightLicenseParagraph(ParagraphMixin):
             and not self.license.name
             and not self.license.text)
 
-    def dumps(self, sort=False):
+    def dumps(self, **kwargs):
         if self.is_empty():
             return 'License: '
         else:
-            return ParagraphMixin.dumps(self, sort=sort)
+            return ParagraphMixin.dumps(self)
 
     def is_valid(self, strict=False):
         valid = self.license.name or (self.license.name and self.license.text)
@@ -371,7 +376,7 @@ class CopyrightLicenseParagraph(ParagraphMixin):
 class DebianCopyright(object):
     """
     A machine-readable debian copyright file.
-    https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+    See https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
     """
     paragraphs = attrib(default=Factory(list))
 
@@ -408,10 +413,8 @@ class DebianCopyright(object):
             collected_paragraphs.append(cp)
         return cls(collected_paragraphs)
 
-    def dumps(self, sort=False):
-        dumped = [p.dumps(sort=sort) for p in self.paragraphs]
-        if sort:
-            dumped = sorted(dumped)
+    def dumps(self, **kwargs):
+        dumped = [p.dumps(**kwargs) for p in self.paragraphs]
         dumped = '\n\n'.join(dumped)
         return dumped + '\n'
 
