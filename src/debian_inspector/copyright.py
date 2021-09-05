@@ -45,41 +45,6 @@ class LicenseField(debcon.FieldMixin):
         return self.text and '/usr/share/common-licenses' in self.text
 
 
-# map of Debian known license keys to actual ScanCode license keys
-DEBIAN_LICENSE_KEYS = {
-    'public-domain': 'public-domain',
-    'Apache': '',
-    'Artistic': '',
-    'BSD-2-clause': 'bsd-simplified',
-    'BSD-3-clause': 'bsd-new',
-    'BSD-4-clause': 'bsd-original',
-    'ISC': 'isc',
-    'CC-BY': 'cc-by-3.0',
-    'CC-BY-SA': '',
-    'CC-BY-ND': '',
-    'CC-BY-NC': '',
-    'CC-BY-NC-SA': '',
-    'CC-BY-NC-ND': '',
-    'CC0': 'cc0-1.0',
-    'CDDL': '',
-    'CPL': '',
-    'EFL': '',
-    'Expat': 'mit',
-    'GPL': '',
-    'LGPL': '',
-    'GFDL': '',
-    'GFDL-NIV': '',
-    'LPPL': '',
-    'MPL': '',
-    'Perl': '',
-    'Python': 'python',
-    'QPL': '',
-    'W3C': '',
-    'Zlib': 'zlib',
-    'Zope': '',
-    }
-
-
 @attrs
 class CopyrightStatementField(debcon.FieldMixin):
     """
