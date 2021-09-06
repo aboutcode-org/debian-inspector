@@ -496,11 +496,12 @@ def get_paragraphs_data_from_file(location):
 def split_in_paragraphs(text):
     """
     Yield paragraphs from a `text` string that contains one or more paragraph
-    separated by empty lines.
+    separated by empty lines. Each paragraph is a string.
     """
     for p in re.split(r'\n\n(?:[ \t]*\n)*', text or ''):
         if p:
             yield p
+
 
 def get_paragraphs_data(text):
     """
@@ -618,7 +619,7 @@ def space_separated(value):
 
 def read_text_file(location):
     """
-    Return the content of the file at `location` as text.
+    Return the content of the file at `location` as text or None.
     """
     if not location:
         return
