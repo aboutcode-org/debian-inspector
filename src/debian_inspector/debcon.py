@@ -446,42 +446,6 @@ class ParagraphMixin(FieldMixin):
         return getattr(self, 'extra_data', None)
 
 
-@attrs
-class CatchAllParagraph(ParagraphMixin):
-    """
-    A catch-all paragraph: everything is fed to the extra_data. Every field is
-    treated as formatted text.
-    """
-    extra_data = attrib(default=Factory(dict))
-
-    @classmethod
-    def from_dict(cls, data):
-        # Stuff all data in the extra_data mapping as FormattedTextField
-        assert isinstance(data, dict)
-        known_data = {}
-        for key, value in data.items():
-            key = key.replace('-', '_')
-            known_data[key] = FormattedTextField.from_value(value)
-        return cls(extra_data=known_data)
-
-    def to_dict(self):
-        data = {}
-        for field_name, field_value in self.extra_data.items():
-            if field_value:
-                if hasattr(field_value, 'dumps'):
-                    field_value = field_value.dumps()
-                data[field_name] = field_value
-        return data
-
-    def is_all_unknown(self):
-        return all(k == 'unknown' for k in self.to_dict())
-
-    def is_valid(self, strict=False):
-        if strict:
-            return False
-        return not self.is_all_unknown()
-
-
 def get_paragraphs_data_from_file(location):
     """
     Yield paragraph data mappings from the Debian control file at `location`
