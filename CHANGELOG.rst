@@ -7,6 +7,7 @@ vnext
 - Drop sort arguments on debcon objects ``dump/s`` methods. This was not designed
   consistently and not used anywhere.
 
+- Remove deprecated debut module. Use the debian_inspector module instead.
 
 
 
