@@ -18,7 +18,6 @@ import textwrap
 
 from attr import attrs
 from attr import attrib
-from attr import Factory
 from attr import fields_dict
 import chardet
 
