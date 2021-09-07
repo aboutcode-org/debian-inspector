@@ -15,6 +15,7 @@ from attr import Factory
 from attr import fields_dict
 
 from debian_inspector import debcon
+from debian_inspector import deb822
 
 """
 Utilities to parse Debian machine readable copyright files (aka. dep5)
@@ -53,6 +54,7 @@ class CopyrightStatementField(debcon.FieldMixin):
     contains all text.
     This field represents one line, e.g. one statememt.
     """
+    # TODO: add line tracking
     holder = attrib()
     year_range = attrib(default=None)
 
@@ -152,56 +154,74 @@ class MaintainerField(debcon.FieldMixin):
 @attrs
 class ParagraphMixin(debcon.FieldMixin):
 
+    # a mapping of {field_name: (start_line, end_line) for each field
+    line_numbers_by_field = attrib(default=Factory(dict))
+
     @classmethod
-    def from_dict(cls, data):
-        assert isinstance(data, dict)
-        known_names = list(fields_dict(cls))
-        known_data = {}
-        known_data['extra_data'] = extra_data = {}
-        for key, value in data.items():
-            key = key.replace('-', '_')
+    def from_header_fields(cls, header_fields, all_extra=False):
+        """
+        Return a paragraph built from a list of debian_inspector.deb822.Header.
+        If ``all_extra`` is True, treat all data as "extra_data".
+        """
+        if all_extra:
+            # if everything is "extra_data" this means there are no known names.
+            known_names = set()
+        else:
+            known_names = set(fields_dict(cls))
+
+        para_data = {}
+        para_data['extra_data'] = extra_data = {}
+        para_data['line_numbers_by_field'] = line_numbers_by_field = {}
+
+        for header_field in header_fields:
+            value = header_field.text
             if value:
-                if isinstance(value, list):
-                    value = '\n'.join(value)
-                if key in known_names:
-                    known_data[key] = value
+                name = header_field.name.replace('-', '_')
+
+                if name in known_names:
+                    para_data[name] = value
                 else:
-                    extra_data[key] = value
+                    extra_data[name] = value
 
-        return cls(**known_data)
+                line_numbers_by_field[name] = (
+                    header_field.start_line,
+                    header_field.end_line,
+                )
 
-    def to_dict(self, include_lines=False):
-        """
-        Do not include start and end line attributes unless ``include_lines`` is
-        True.
-        """
+        try:
+            return cls(**para_data)
+        except Exception as e:
+            raise Exception(cls, para_data) from e
+
+    def to_dict(self, with_lines=False):
         data = {}
-        skipped_fields = []
-        if not include_lines:
-            skipped_fields = ['start_line', 'end_line']
-        for field_name in fields_dict(self.__class__):
-            if field_name == 'extra_data' or field_name in skipped_fields:
-                continue
-            field_value = getattr(self, field_name)
-            if field_value:
-                if hasattr(field_value, 'dumps'):
-                    field_value = field_value.dumps()
-                data[field_name] = field_value
 
-        for field_name, field_value in getattr(self, 'extra_data', {}).items():
-            if field_value:
+        for name in fields_dict(self.__class__):
+            if name in ('extra_data' , 'line_numbers_by_field'):
+                continue
+
+            value = getattr(self, name)
+            if value:
+                if hasattr(value, 'dumps'):
+                    value = value.dumps()
+                data[name] = value
+
+        for name, value in getattr(self, 'extra_data', {}).items():
+            if value:
                 # always treat these extra values as formatted
-                field_value = field_value and debcon.as_formatted_text(field_value)
-            data[field_name] = field_value
+                value = value and debcon.as_formatted_text(value)
+            data[name] = value
+        if with_lines:
+            data['line_numbers_by_field'] = self.line_numbers_by_field
         return data
 
     def dumps(self, **kwargs):
         text = []
-        for field_name, field_value in self.to_dict().items():
-            if field_value:
-                field_name = field_name.replace('_', '-')
-                field_name = debcon.normalize_control_field_name(field_name)
-                text.append('{}: {}'.format(field_name, field_value))
+        for name, value in self.to_dict().items():
+            if value:
+                name = name.replace('_', '-')
+                name = debcon.normalize_control_field_name(name)
+                text.append('{}: {}'.format(name, value))
         return '\n'.join(text).strip()
 
     def is_empty(self):
@@ -223,25 +243,17 @@ class CatchAllParagraph(ParagraphMixin):
     extra_data = attrib(default=Factory(dict))
 
     @classmethod
-    def from_dict(cls, data):
-        # Stuff all data in the extra_data mapping as FormattedTextField
-        assert isinstance(data, dict)
-        known_data = {}
-        for key, value in data.items():
-            key = key.replace('-', '_')
-            known_data[key] = debcon.FormattedTextField.from_value(value)
-        return cls(extra_data=known_data)
-
-    def to_dict(self):
-        data = {}
-        for field_name, field_value in self.extra_data.items():
-            if field_value:
-                if hasattr(field_value, 'dumps'):
-                    field_value = field_value.dumps()
-                data[field_name] = field_value
-        return data
+    def from_header_fields(cls, header_fields):
+        return super(CatchAllParagraph, cls).from_header_fields(
+            header_fields=header_fields,
+            all_extra=True,
+        )
 
     def is_all_unknown(self):
+        """
+        Return True if this is an "unknown" field.
+        We use the "unknown" field name for things that do not have a name.
+        """
         return all(k == 'unknown' for k in self.to_dict())
 
     def is_valid(self, strict=False):
@@ -259,20 +271,24 @@ class CopyrightHeaderParagraph(ParagraphMixin):
     """
     # Default should be:
     # https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-    # but we do not know yet if this a structured machine-readable format or not
+    # but we do not know yet if this a structured machine-readable format
     format = debcon.SingleLineField.attrib(default=None)
+
     upstream_name = debcon.SingleLineField.attrib(default=None)
     # TODO: each may be a Maintainer
     upstream_contact = debcon.LineSeparatedField.attrib(default=None)
+
     source = debcon.FormattedTextField.attrib(default=None)
     disclaimer = debcon.FormattedTextField.attrib(default=None)
     copyright = CopyrightField.attrib(default=None)
     license = LicenseField.attrib(default=None)
     comment = debcon.FormattedTextField.attrib(default=None)
-    # not yet official but seen in use. See https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=685506
+
+    # This field is not yet official but seen in use. See:
+    # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=685506
     files_excluded = debcon.AnyWhiteSpaceSeparatedField.attrib(default=None)
 
-    # this is an overflow of extra unknown fields for this paragraph
+    # This is an overflow of extra unknown fields for this paragraph
     extra_data = attrib(default=Factory(dict))
 
     def is_valid(self, strict=False):
@@ -317,13 +333,14 @@ class CopyrightFilesParagraph(ParagraphMixin):
         """
         Return True if this is empty.
         """
-        return (
-            not self.files.values
-            and not self.extra_data
-            and not self.comment.text
-            and not self.copyright.statements
-            and not self.license.name
-            and not self.license.text)
+        return not any([
+            self.files.values,
+            self.license.name,
+            self.license.text,
+            self.comment.text,
+            self.copyright.statements,
+            self.extra_data,
+        ])
 
     def is_valid(self, strict=False):
         valid = (
@@ -353,11 +370,12 @@ class CopyrightLicenseParagraph(ParagraphMixin):
         Return True if this is empty (e.g. was crated only because of a
         'License:' empty field.
         """
-        return (
-            not self.extra_data
-            and not self.comment.text
-            and not self.license.name
-            and not self.license.text)
+        return not any([
+            self.extra_data,
+            self.comment.text,
+            self.license.name,
+            self.license.text,
+        ])
 
     def dumps(self, **kwargs):
         if self.is_empty():
@@ -386,34 +404,42 @@ class DebianCopyright(object):
 
     @classmethod
     def from_text(cls, text):
-        paragraphs = iter(debcon.get_paragraphs_data(text))
-        return cls._from_paragraph_data(paragraphs)
+        header_fields_groups = deb822.get_header_fields_groups(text)
+        return cls.from_header_fields_groups(header_fields_groups)
 
     @classmethod
     def from_file(cls, location):
-        paragraphs = iter(debcon.get_paragraphs_data_from_file(location))
-        return cls._from_paragraph_data(paragraphs)
+        header_fields_groups = deb822.get_header_fields_groups_from_file(location)
+        return cls.from_header_fields_groups(header_fields_groups)
 
     @classmethod
-    def _from_paragraph_data(cls, paragraphs):
+    def from_header_fields_groups(cls, header_fields_groups):
         """
-        Return a DebianCopyright built from a ``paragraphs`` list of mappings.
+        Return a DebianCopyright from a ``header_fields_groups`` list of list of
+        HeaderField.
         """
         collected_paragraphs = []
-        for data in paragraphs:
-            if 'format' in data or 'format-specification' in data:
-                # let's be flexible and assume that we have a header if the
+        for header_fields in header_fields_groups:
+            field_names = set([hf.name for hf in header_fields])
+
+            if 'format'in field_names or 'format-specification' in field_names:
+                # let's be flexible and assume that we have a header if some
                 # format field is there
-                cp = CopyrightHeaderParagraph.from_dict(data)
-            elif 'files' in data:
-                # do we have a files? that's enough to say this is a file paragraph
-                cp = CopyrightFilesParagraph.from_dict(data)
-            elif 'license' in data:
-                cp = CopyrightLicenseParagraph.from_dict(data)
+                cp = CopyrightHeaderParagraph.from_header_fields(header_fields)
+
+            elif 'files' in field_names:
+                # do we have a "files"? this is a file header_fields
+                cp = CopyrightFilesParagraph.from_header_fields(header_fields)
+
+            elif 'license' in field_names:
+                cp = CopyrightLicenseParagraph.from_header_fields(header_fields)
+
             else:
                 # we catch all the rest as junk to be flexible and miss nothing
-                cp = CatchAllParagraph.from_dict(data)
+                cp = CatchAllParagraph.from_header_fields(header_fields)
+
             collected_paragraphs.append(cp)
+
         return cls(collected_paragraphs)
 
     def dumps(self, **kwargs):
@@ -421,12 +447,15 @@ class DebianCopyright(object):
         dumped = '\n\n'.join(dumped)
         return dumped + '\n'
 
-    def to_dict(self):
-        data = {}
-        data['paragraphs'] = [p.to_dict() for p in self.paragraphs]
-        return data
+    def to_dict(self, with_lines=False):
+        return {
+            'paragraphs': [p.to_dict(with_lines=with_lines) for p in self.paragraphs]
+        }
 
     def get_header(self):
+        """
+        Return the header paragraph or None.
+        """
         headers = [
             p for p in self.paragraphs
             if isinstance(p, CopyrightHeaderParagraph)]
@@ -435,8 +464,8 @@ class DebianCopyright(object):
 
     def merge_contiguous_unknown_paragraphs(self):
         """
-        Update self.paragraphs, merging contiguous unknown-only Catchall
-        paragraphs in one.
+        Update self.paragraphs, merging contiguous unknown-only
+        CatchAllParagraph paragraphs in one.
         """
         paragraphs = []
         for typ, contigs in itertools.groupby(self.paragraphs, type):
@@ -446,21 +475,34 @@ class DebianCopyright(object):
             else:
                 if all(p.is_all_unknown() for p in contigs):
                     values = []
+                    start_line = -1
+                    end_line = -1
                     for para in contigs:
                         values.extend(k for k in para.to_dict().values())
                         values.append('')
+                        # the new start and end lines are the maximal start and
+                        # end lines of each contiguous paragraph
+                        start_line = min(start_line, para.start_line)
+                        end_line = max(end_line, para.end_line)
+
                     values = debcon.from_formatted_lines(values)
+                    line_numbers_by_field = {'unknown':(start_line, end_line,)}
                     paragraphs.append(
-                        CatchAllParagraph.from_dict(dict(unknown=values)))
+                        CatchAllParagraph(
+                            unknown=values,
+                            line_numbers_by_field=line_numbers_by_field,
+                        )
+                    )
                 else:
                     paragraphs.extend(contigs)
+
         self.paragraphs = paragraphs
 
     def fold_contiguous_empty_license_followed_by_unknown(self):
         """
-        Update self.paragraphs, such that an CatchAllParagraph paragraphs with
-        "unknown" as license text is merged into an empty (e.g. no text)
-        CopyrightLicenseParagraph paragraph.
+        Update self.paragraphs, such that a CatchAllParagraph paragraph with
+        "unknown" as license text is merged into a preceding empty (e.g. without
+        any text) CopyrightLicenseParagraph paragraph.
         """
         if len(self.paragraphs) <= 2:
             return
@@ -480,6 +522,13 @@ class DebianCopyright(object):
             ):
                 para1.license.name = ''
                 para1.license.text = para2.to_dict().get('unknown', '')
+
+                # The updated CopyrightLicenseParagraph paragraph lines extend
+                # from its original start line to the end line of the
+                # CatchAllParagraph
+                start_line, _end_line = para1.line_numbers_by_field['license']
+                _start_line, end_line = para2.line_numbers_by_field['unknown']
+                para1.line_numbers_by_field['license'] = (start_line, end_line,)
                 folded_previous = True
 
             paragraphs.append(para1)
@@ -506,6 +555,7 @@ class DebianCopyright(object):
             if typ == CopyrightHeaderParagraph:
                 if not strict:
                     has_header = True
+
                 elif (len(paras) == 1 and paras[0].is_valid(strict)
                       and paras[0] == first):
                     has_header = True

@@ -9,51 +9,165 @@
       "copyright": "",
       "license": "",
       "comment": "",
-      "files_excluded": "doc/librpm/html/*"
+      "files_excluded": "doc/librpm/html/*",
+      "line_numbers_by_field": {
+        "format": [
+          1,
+          1
+        ],
+        "upstream_contact": [
+          2,
+          2
+        ],
+        "source": [
+          3,
+          3
+        ],
+        "files_excluded": [
+          4,
+          5
+        ]
+      }
     },
     {
       "files": "*",
       "copyright": "1995 - 2009, Erik Troan, Marc Ewing",
       "license": "GPL-2+",
-      "comment": ""
+      "comment": "",
+      "line_numbers_by_field": {
+        "files": [
+          7,
+          7
+        ],
+        "copyright": [
+          8,
+          8
+        ],
+        "license": [
+          9,
+          9
+        ]
+      }
     },
     {
       "files": "lib/*",
       "copyright": "1995 - 2009, Erik Troan, Marc Ewing",
       "license": "GPL-2+ or LGPL-2+",
-      "comment": ""
+      "comment": "",
+      "line_numbers_by_field": {
+        "files": [
+          11,
+          11
+        ],
+        "copyright": [
+          12,
+          12
+        ],
+        "license": [
+          13,
+          13
+        ]
+      }
     },
     {
       "files": "lib/header.*",
       "copyright": "1995-2002 Red Hat Software",
       "license": "LGPL-2+",
-      "comment": ""
+      "comment": "",
+      "line_numbers_by_field": {
+        "files": [
+          15,
+          15
+        ],
+        "copyright": [
+          16,
+          16
+        ],
+        "license": [
+          17,
+          17
+        ]
+      }
     },
     {
       "files": "misc/stpcpy.*\n misc/stpncpy.*\n misc/fnmatch.*",
       "copyright": "1990 - 2001 Free Software Foundation, Inc.",
       "license": "LGPL-2+",
-      "comment": ""
+      "comment": "",
+      "line_numbers_by_field": {
+        "files": [
+          19,
+          19
+        ],
+        "copyright": [
+          20,
+          20
+        ],
+        "license": [
+          21,
+          21
+        ]
+      }
     },
     {
       "files": "misc/fts.*",
       "copyright": "1990, 1993, 1994, The Regents of the University of California",
       "license": "BSD-3-clause\n Redistribution and use in source and binary forms, with or without\n modification, are permitted provided that the following conditions\n are met:\n 1. Redistributions of source code must retain the above copyright\n    notice, this list of conditions and the following disclaimer.\n 2. Redistributions in binary form must reproduce the above copyright\n    notice, this list of conditions and the following disclaimer in the\n    documentation and/or other materials provided with the distribution.\n 4. Neither the name of the University nor the names of its contributors\n    may be used to endorse or promote products derived from this software\n    without specific prior written permission.",
-      "comment": ""
+      "comment": "",
+      "line_numbers_by_field": {
+        "files": [
+          23,
+          23
+        ],
+        "copyright": [
+          24,
+          24
+        ],
+        "license": [
+          25,
+          36
+        ]
+      }
     },
     {
       "files": "debian/*",
       "copyright": "2009-2015, Michal \u010ciha\u0159 <nijel@debian.org>",
       "license": "GPL-2+",
-      "comment": ""
+      "comment": "",
+      "line_numbers_by_field": {
+        "files": [
+          38,
+          38
+        ],
+        "copyright": [
+          39,
+          39
+        ],
+        "license": [
+          40,
+          40
+        ]
+      }
     },
     {
       "license": "GPL-2+\n On Debian systems the full text of the GNU General Public\n License can be found in the `/usr/share/common-licenses/GPL-2'\n file.",
-      "comment": ""
+      "comment": "",
+      "line_numbers_by_field": {
+        "license": [
+          42,
+          45
+        ]
+      }
     },
     {
       "license": "LGPL-2+\n On Debian systems the full text of the GNU Lesser General Public\n License can be found in the `/usr/share/common-licenses/LGPL-2'\n file.",
-      "comment": ""
+      "comment": "",
+      "line_numbers_by_field": {
+        "license": [
+          47,
+          50
+        ]
+      }
     }
   ]
 }

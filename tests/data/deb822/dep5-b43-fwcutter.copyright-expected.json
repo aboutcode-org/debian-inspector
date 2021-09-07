@@ -1,0 +1,245 @@
+[
+  [
+    {
+      "name": "format",
+      "lines": [
+        {
+          "number": 1,
+          "value": "https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/"
+        }
+      ]
+    },
+    {
+      "name": "upstream-name",
+      "lines": [
+        {
+          "number": 2,
+          "value": "b43-fwcutter"
+        }
+      ]
+    },
+    {
+      "name": "source",
+      "lines": [
+        {
+          "number": 3,
+          "value": "http://linuxwireless.org/en/users/Drivers/b43"
+        }
+      ]
+    }
+  ],
+  [
+    {
+      "name": "files",
+      "lines": [
+        {
+          "number": 5,
+          "value": "*"
+        }
+      ]
+    },
+    {
+      "name": "copyright",
+      "lines": [
+        {
+          "number": 6,
+          "value": "2005-2011 Martin Langer <martin-langer@gmx.de>"
+        },
+        {
+          "number": 7,
+          "value": "       2005-2014 Michael Buesch <m@bues.ch>"
+        },
+        {
+          "number": 8,
+          "value": "       2005-2011 Alex Beregszaszi <alex@fsn.hu>"
+        }
+      ]
+    },
+    {
+      "name": "license",
+      "lines": [
+        {
+          "number": 9,
+          "value": "BSD-2-Clause"
+        }
+      ]
+    }
+  ],
+  [
+    {
+      "name": "files",
+      "lines": [
+        {
+          "number": 11,
+          "value": "debian/*"
+        }
+      ]
+    },
+    {
+      "name": "copyright",
+      "lines": [
+        {
+          "number": 12,
+          "value": "2006 Rene Engelhard <rene@debian.org>"
+        },
+        {
+          "number": 13,
+          "value": "           2011 Fabrizio Regalli <fabreg@fabreg.it>"
+        },
+        {
+          "number": 14,
+          "value": "       2013 Daniel Echeverry <epsilon77@gmail.com>"
+        }
+      ]
+    },
+    {
+      "name": "license",
+      "lines": [
+        {
+          "number": 15,
+          "value": "BSD-2-Clause"
+        }
+      ]
+    }
+  ],
+  [
+    {
+      "name": "license",
+      "lines": [
+        {
+          "number": 17,
+          "value": "BSD-2-Clause"
+        },
+        {
+          "number": 18,
+          "value": " Redistribution and use in source and binary forms, with or without"
+        },
+        {
+          "number": 19,
+          "value": " modification, are permitted provided that the following conditions"
+        },
+        {
+          "number": 20,
+          "value": " are met:"
+        },
+        {
+          "number": 21,
+          "value": "  1. Redistributions of source code must retain the above copyright"
+        },
+        {
+          "number": 22,
+          "value": "  notice, this list of conditions and the following disclaimer."
+        },
+        {
+          "number": 23,
+          "value": "  2. Redistributions in binary form must reproduce the above"
+        },
+        {
+          "number": 24,
+          "value": "  copyright notice, this list of conditions and the following"
+        },
+        {
+          "number": 25,
+          "value": "  disclaimer in the documentation and/or other materials provided"
+        },
+        {
+          "number": 26,
+          "value": "  with the distribution."
+        },
+        {
+          "number": 27,
+          "value": " ."
+        },
+        {
+          "number": 28,
+          "value": " THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED"
+        },
+        {
+          "number": 29,
+          "value": " WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES"
+        },
+        {
+          "number": 30,
+          "value": " OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE"
+        },
+        {
+          "number": 31,
+          "value": " DISCLAIMED. IN NO EVENT SHALL THE CONTRIBUTORS BE LIABLE FOR ANY"
+        },
+        {
+          "number": 32,
+          "value": " DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL"
+        },
+        {
+          "number": 33,
+          "value": " DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE"
+        },
+        {
+          "number": 34,
+          "value": " GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS"
+        },
+        {
+          "number": 35,
+          "value": " INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,"
+        },
+        {
+          "number": 36,
+          "value": " WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE"
+        },
+        {
+          "number": 37,
+          "value": " OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,"
+        },
+        {
+          "number": 38,
+          "value": " EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
+        }
+      ]
+    }
+  ],
+  [
+    {
+      "name": "files",
+      "lines": [
+        {
+          "number": 40,
+          "value": "md5.c md5.h"
+        }
+      ]
+    },
+    {
+      "name": "copyright",
+      "lines": [
+        {
+          "number": 41,
+          "value": "1993 Colin Plumb"
+        }
+      ]
+    },
+    {
+      "name": "license",
+      "lines": [
+        {
+          "number": 42,
+          "value": "public-domain"
+        },
+        {
+          "number": 43,
+          "value": " This code implements the MD5 message-digest algorithm."
+        },
+        {
+          "number": 44,
+          "value": " The algorithm is due to Ron Rivest.    This code was"
+        },
+        {
+          "number": 45,
+          "value": " written by Colin Plumb in 1993, no copyright is claimed."
+        },
+        {
+          "number": 46,
+          "value": " This code is in the public domain; do with it what you wish."
+        }
+      ]
+    }
+  ]
+]

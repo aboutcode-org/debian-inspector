@@ -6,7 +6,6 @@
 # See https://aboutcode.org for more information about nexB OSS projects.
 #
 
-
 from os import path
 
 from test_utils import JsonTester  # NOQA
@@ -67,19 +66,19 @@ class TestDebianCopyright(JsonTester):
         test_file = self.get_test_loc('copyright/dep5-b43-fwcutter.copyright')
         expected_loc = 'copyright/dep5-b43-fwcutter.copyright-expected-DebianCopyright.json'
         results = copyright.DebianCopyright.from_file(test_file)
-        self.check_json(results.to_dict(), expected_loc, regen=False)
+        self.check_json(results.to_dict(with_lines=True), expected_loc, regen=False)
 
     def test_DebianCopyright_from_file__from_copyrights_dep5_3(self):
         test_file = self.get_test_loc('copyright/dep5-rpm.copyright')
         expected_loc = 'copyright/dep5-rpm.copyright-expected-DebianCopyright.json'
         results = copyright.DebianCopyright.from_file(test_file)
-        self.check_json(results.to_dict(), expected_loc, regen=False)
+        self.check_json(results.to_dict(with_lines=True), expected_loc, regen=False)
 
     def test_DebianCopyright_from_file__from_copyrights_dep5_dropbear(self):
         test_file = self.get_test_loc('copyright/dropbear.copyright')
         expected_loc = 'copyright/dropbear.copyright-expected-DebianCopyright.json'
         results = copyright.DebianCopyright.from_file(test_file)
-        self.check_json(results.to_dict(), expected_loc, regen=False)
+        self.check_json(results.to_dict(with_lines=True), expected_loc, regen=False)
 
     def test_DebianCopyright_from_file__from_copyrights_dep5_1_dumps(self):
         test_file = self.get_test_loc('copyright/dep5-b43-fwcutter.copyright')
@@ -107,12 +106,12 @@ class TestDebianCopyright(JsonTester):
         expected_loc = 'copyright/dropbear.copyright-expected.dumps'
         results = copyright.DebianCopyright.from_text(test_data).dumps()
         self.check_file(results, expected_loc, regen=False)
-        
+
     def test_DebianCopyright_from_file_split_paragraphs_correctly_multiple_lines(self):
         test_file = self.get_test_loc('copyright/debian-slim-gpgv.copyright')
         expected_loc = 'copyright/debian-slim-gpgv.copyright-expected-DebianCopyright.json'
         results = copyright.DebianCopyright.from_file(test_file)
-        self.check_json(results.to_dict(), expected_loc, regen=False)
+        self.check_json(results.to_dict(with_lines=True), expected_loc, regen=False)
 
 
 class TestCopyright(JsonTester):
