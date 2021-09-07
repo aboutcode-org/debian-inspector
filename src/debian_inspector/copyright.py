@@ -259,7 +259,7 @@ class CopyrightHeaderParagraph(ParagraphMixin):
     """
     # Default should be:
     # https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-    # but we do not know yet if this a structure machine-readable format or not
+    # but we do not know yet if this a structured machine-readable format or not
     format = debcon.SingleLineField.attrib(default=None)
     upstream_name = debcon.SingleLineField.attrib(default=None)
     # TODO: each may be a Maintainer
@@ -396,6 +396,9 @@ class DebianCopyright(object):
 
     @classmethod
     def _from_paragraph_data(cls, paragraphs):
+        """
+        Return a DebianCopyright built from a ``paragraphs`` list of mappings.
+        """
         collected_paragraphs = []
         for data in paragraphs:
             if 'format' in data or 'format-specification' in data:
@@ -455,15 +458,16 @@ class DebianCopyright(object):
 
     def fold_contiguous_empty_license_followed_by_unknown(self):
         """
-        Update self.paragraphs, merging an empty License paragraph followied by
-        unknown-only Catchall paragraphs in one.
+        Update self.paragraphs, such that an CatchAllParagraph paragraphs with
+        "unknown" as license text is merged into an empty (e.g. no text)
+        CopyrightLicenseParagraph paragraph.
         """
         if len(self.paragraphs) <= 2:
             return
 
+        folded_previous = False
         paragraphs = []
         # iterate on (p1,p2), (p2,p3)....
-        folded_previous = False
         for para1, para2 in zip(self.paragraphs, self.paragraphs[1:]):
             if folded_previous:
                 folded_previous = False
@@ -518,7 +522,9 @@ class DebianCopyright(object):
             else:
                 # unknown paragraph type
                 return False
+
+        valid = has_header and has_files or (has_license and has_files)
         if strict:
-            return has_header and (has_files or (has_license and has_files)) and has_unknown
+            return valid and has_unknown
         else:
-            return has_header and (has_files or (has_license and has_files))
+            return valid

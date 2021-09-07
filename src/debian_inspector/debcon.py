@@ -40,9 +40,6 @@ characteristics:
    Changelog and other Debian file types are mostly ignored for now.
  - There is no attention paid to compatibility and support for older formats
    and older Python versions before 3.6.
- - The internal handling is simple (all keys are lowercased) and we reuse the
-   standard library where possible (e.g. parsing with the "email" module).
- - This is usable as a library in GPL and non-GPL apps.
 """
 
 
@@ -54,6 +51,9 @@ class FieldMixin(object):
 
     @classmethod
     def attrib(cls, **kwargs):
+        """
+        Return an attrib class
+        """
         return attrib(converter=cls.from_value, **kwargs)
 
     @classmethod
@@ -278,7 +278,7 @@ class File(object):
 
 
 @attrs
-class FileField(object):
+class FileField(FieldMixin):
     name = attrib(default=None)
     size = attrib(default=None)
     checksum = attrib(default=None)
