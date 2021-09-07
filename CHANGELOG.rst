@@ -1,18 +1,24 @@
 Changelog
 =========
 
-vnext
-----------
+v32.0.0 - 2021-09-07
+------------------------
 
-- Drop sort arguments on debcon objects ``dump/s`` methods. This was not designed
-  consistently and not used anywhere.
+- Switch back to semver
+
+- Add new deb822 parser for tracking line number in copyright files #13
+
+- Track line numbers in copyright files to ensure proper line tracking in
+  license detection in https://github.com/nexB/scancode-toolkit/issues/2643
+
+- Drop sort arguments on debcon objects ``dump/s`` methods. This was not
+  designed consistently and is not used anywhere.
 
 - Remove deprecated debut module. Use the debian_inspector module instead.
 
 
-
-v2021.5.12
-----------
+v21.5.25 - 2021-05-25
+------------------------
 
 - Adopt calendar versioning, latest skeleton and various cosmetic code formatting
 - Fix bug where some content could be dropped from invalid debian file
