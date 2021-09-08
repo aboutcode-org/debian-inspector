@@ -76,18 +76,27 @@
       ]
     },
     {
-      "name": "copyright",
+      "name": "license",
       "lines": [
         {
           "number": 12,
+          "value": "BSD-2-Clause"
+        }
+      ]
+    },
+    {
+      "name": "copyright",
+      "lines": [
+        {
+          "number": 13,
           "value": "2006 Rene Engelhard <rene@debian.org>"
         },
         {
-          "number": 13,
+          "number": 14,
           "value": "           2011 Fabrizio Regalli <fabreg@fabreg.it>"
         },
         {
-          "number": 14,
+          "number": 15,
           "value": "       2013 Daniel Echeverry <epsilon77@gmail.com>"
         }
       ]
@@ -96,7 +105,7 @@
       "name": "license",
       "lines": [
         {
-          "number": 15,
+          "number": 16,
           "value": "BSD-2-Clause"
         }
       ]
@@ -107,91 +116,91 @@
       "name": "license",
       "lines": [
         {
-          "number": 17,
+          "number": 18,
           "value": "BSD-2-Clause"
         },
         {
-          "number": 18,
+          "number": 19,
           "value": " Redistribution and use in source and binary forms, with or without"
         },
         {
-          "number": 19,
+          "number": 20,
           "value": " modification, are permitted provided that the following conditions"
         },
         {
-          "number": 20,
+          "number": 21,
           "value": " are met:"
         },
         {
-          "number": 21,
+          "number": 22,
           "value": "  1. Redistributions of source code must retain the above copyright"
         },
         {
-          "number": 22,
+          "number": 23,
           "value": "  notice, this list of conditions and the following disclaimer."
         },
         {
-          "number": 23,
+          "number": 24,
           "value": "  2. Redistributions in binary form must reproduce the above"
         },
         {
-          "number": 24,
+          "number": 25,
           "value": "  copyright notice, this list of conditions and the following"
         },
         {
-          "number": 25,
+          "number": 26,
           "value": "  disclaimer in the documentation and/or other materials provided"
         },
         {
-          "number": 26,
+          "number": 27,
           "value": "  with the distribution."
         },
         {
-          "number": 27,
+          "number": 28,
           "value": " ."
         },
         {
-          "number": 28,
+          "number": 29,
           "value": " THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED"
         },
         {
-          "number": 29,
+          "number": 30,
           "value": " WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES"
         },
         {
-          "number": 30,
+          "number": 31,
           "value": " OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE"
         },
         {
-          "number": 31,
+          "number": 32,
           "value": " DISCLAIMED. IN NO EVENT SHALL THE CONTRIBUTORS BE LIABLE FOR ANY"
         },
         {
-          "number": 32,
+          "number": 33,
           "value": " DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL"
         },
         {
-          "number": 33,
+          "number": 34,
           "value": " DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE"
         },
         {
-          "number": 34,
+          "number": 35,
           "value": " GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS"
         },
         {
-          "number": 35,
+          "number": 36,
           "value": " INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,"
         },
         {
-          "number": 36,
+          "number": 37,
           "value": " WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE"
         },
         {
-          "number": 37,
+          "number": 38,
           "value": " OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,"
         },
         {
-          "number": 38,
+          "number": 39,
           "value": " EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
         }
       ]
@@ -202,7 +211,7 @@
       "name": "files",
       "lines": [
         {
-          "number": 40,
+          "number": 41,
           "value": "md5.c md5.h"
         }
       ]
@@ -211,7 +220,16 @@
       "name": "copyright",
       "lines": [
         {
-          "number": 41,
+          "number": 42,
+          "value": "1993 Colin Plumb"
+        }
+      ]
+    },
+    {
+      "name": "copyright",
+      "lines": [
+        {
+          "number": 43,
           "value": "1993 Colin Plumb"
         }
       ]
@@ -220,24 +238,33 @@
       "name": "license",
       "lines": [
         {
-          "number": 42,
+          "number": 44,
           "value": "public-domain"
         },
         {
-          "number": 43,
+          "number": 45,
           "value": " This code implements the MD5 message-digest algorithm."
         },
         {
-          "number": 44,
+          "number": 46,
           "value": " The algorithm is due to Ron Rivest.    This code was"
         },
         {
-          "number": 45,
+          "number": 47,
           "value": " written by Colin Plumb in 1993, no copyright is claimed."
         },
         {
-          "number": 46,
+          "number": 48,
           "value": " This code is in the public domain; do with it what you wish."
+        }
+      ]
+    },
+    {
+      "name": "copyright",
+      "lines": [
+        {
+          "number": 49,
+          "value": "1993 Colin Plumb"
         }
       ]
     }

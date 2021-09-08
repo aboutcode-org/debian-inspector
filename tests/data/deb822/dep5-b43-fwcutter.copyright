@@ -9,6 +9,7 @@ Copyright: 2005-2011 Martin Langer <martin-langer@gmx.de>
 License: BSD-2-Clause
 
 Files: debian/*
+License: BSD-2-Clause
 Copyright: 2006 Rene Engelhard <rene@debian.org>
            2011 Fabrizio Regalli <fabreg@fabreg.it>
        2013 Daniel Echeverry <epsilon77@gmail.com>
@@ -39,8 +40,11 @@ License: BSD-2-Clause
 
 Files: md5.c md5.h
 Copyright: 1993 Colin Plumb
+Copyright: 1993 Colin Plumb
 License: public-domain
  This code implements the MD5 message-digest algorithm.
  The algorithm is due to Ron Rivest.    This code was
  written by Colin Plumb in 1993, no copyright is claimed.
  This code is in the public domain; do with it what you wish.
+Copyright: 1993 Colin Plumb
+ 

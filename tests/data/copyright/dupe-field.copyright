@@ -1,0 +1,62 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: GhostPDL
+Upstream-Contact: Ghostscript development and discussion <gs-devel@ghostscript.com>
+Source: https://github.com/ArtifexSoftware/ghostpdl-downloads/releases
+ Repackaged, excluding non-DFSG files and convenience code copies:
+  * non-DFSG fonts
+  * PCL and PX3 files without license
+  * XPS document with embedded potentially non-DFSG odttf font
+  * embedded code copies cluttering authorship/licensing tracking
+    (Arguably custom build of jpeg code is required - see bug#582521)
+Files-Excluded:
+ cups/libs/*
+ toolbin/Acrobat2Tiff/*
+ xps/tools/colorcirc.xps
+ zlib/*
+
+Files:
+ Resource/ColorSpace/*
+ Resource/Decoding/*
+Copyright: 1986, Eric Gisin
+  1989, Berthold K.P. Horn
+  2003-2004, Hewlett-Packard Development Company, LP
+License-Grant:
+ GhostPDL and GPL Ghostscript are free software;
+License: AGPL-3+
+Comments:
+ The file LICENSE in topmost directory of upstream source covers
+ only GPL Ghostscript,
+ whereas the file pcl/LICENSE contains above statement.
+
+Files:
+ contrib/gdevln03.c
+ contrib/gdevxes.c
+Copyright: 1991-1994, Free Software Foundation, Inc.
+License-Grant:
+ This file is part of Ghostscript.
+License-Grant:
+ This code is subject to the GNU General Public License
+License: GPL-2+
+
+Files: cups/gdevcups.c
+Copyright:
+  1993-2006, Easy Software Products
+License-Grant:
+ Distribution and use rights are outlined in the file "LICENSE.txt"
+ which should have been included with this file. [...]
+License: GPL
+Comment:
+ The referenced file LICENSE.txt does not exist
+ in folders belonging to same code.
+
+License: ZLIB
+ This software is provided 'as-is',
+ without any express or implied warranty.
+ In no event will the authors be held liable
+ for any damages arising from the use of this software.
+
+License: AGPL-3+
+ Permission to use, copy, modify, and distribute this software
+ for any purpose with or without fee is hereby granted,
+ provided that the above copyright notice and this permission notice
+ appear in all copies.

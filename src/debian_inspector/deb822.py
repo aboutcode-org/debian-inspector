@@ -96,15 +96,10 @@ def get_header_fields_groups_from_lines(numbered_lines):
 
 def clean_header_fields(header_fields):
     """
-    Clean and validate a list of HeaderField.
+    Clean and return a ``header_fields`` list of HeaderField.
     """
     for hf in (header_fields or []):
         hf.rstrip()
-    headers_by_name = {hf.name for hf in header_fields}
-    if len(headers_by_name) != len(header_fields):
-        raise Exception(
-            f'Invalid duplicated header field in: {header_fields}'
-        )
     return header_fields
 
 

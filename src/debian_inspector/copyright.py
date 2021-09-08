@@ -6,16 +6,17 @@
 # See https://aboutcode.org for more information about nexB OSS projects.
 #
 
-from email import utils as email_utils
 import itertools
+from collections import defaultdict
+from email import utils as email_utils
 
 from attr import attrib
 from attr import attrs
 from attr import Factory
 from attr import fields_dict
 
-from debian_inspector import debcon
 from debian_inspector import deb822
+from debian_inspector import debcon
 
 """
 Utilities to parse Debian machine readable copyright files (aka. dep5)
@@ -154,8 +155,14 @@ class MaintainerField(debcon.FieldMixin):
 @attrs
 class ParagraphMixin(debcon.FieldMixin):
 
-    # a mapping of {field_name: (start_line, end_line) for each field
+    # a mapping of {field_name: (start_line, end_line)} for each field
     line_numbers_by_field = attrib(default=Factory(dict))
+
+    def get_field_line_numbers(self, field_name):
+        """
+        Return a tuple of (start_line, end_line) for the ``field_name`` field.
+        """
+        return self.line_numbers_by_field[field_name]
 
     @classmethod
     def from_header_fields(cls, header_fields, all_extra=False):
@@ -173,20 +180,29 @@ class ParagraphMixin(debcon.FieldMixin):
         para_data['extra_data'] = extra_data = {}
         para_data['line_numbers_by_field'] = line_numbers_by_field = {}
 
+        duplicated_field_name_suffix = 1
+        seen_names = set()
         for header_field in header_fields:
             value = header_field.text
             if value:
                 name = header_field.name.replace('-', '_')
 
-                if name in known_names:
-                    para_data[name] = value
-                else:
-                    extra_data[name] = value
+                # if there are duplicated fields, we keep them all, rename them
+                # and they will go to extra_data
+                if name in seen_names:
+                    name = f'{name}_{duplicated_field_name_suffix}'
+                    duplicated_field_name_suffix += 1
+                seen_names.add(name)
 
-                line_numbers_by_field[name] = (
-                    header_field.start_line,
-                    header_field.end_line,
-                )
+                if name in known_names:
+                    mapping = para_data
+                else:
+                    mapping = extra_data
+                assert name not in mapping
+
+                mapping[name] = value
+
+                line_numbers_by_field[name] = (header_field.start_line, header_field.end_line,)
 
         try:
             return cls(**para_data)

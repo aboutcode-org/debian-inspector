@@ -80,6 +80,12 @@ class TestDebianCopyright(JsonTester):
         results = copyright.DebianCopyright.from_file(test_file)
         self.check_json(results.to_dict(with_lines=True), expected_loc, regen=False)
 
+    def test_DebianCopyright_from_file__from_copyrights_with_duplicated_fields(self):
+        test_file = self.get_test_loc('copyright/dupe-field.copyright')
+        expected_loc = 'copyright/dupe-field.copyright-expected-DebianCopyright.json'
+        results = copyright.DebianCopyright.from_file(test_file)
+        self.check_json(results.to_dict(with_lines=True), expected_loc, regen=True)
+
     def test_DebianCopyright_from_file__from_copyrights_dep5_1_dumps(self):
         test_file = self.get_test_loc('copyright/dep5-b43-fwcutter.copyright')
         expected_loc = 'copyright/dep5-b43-fwcutter.copyright-expected.dumps'
