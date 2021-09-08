@@ -8,7 +8,6 @@
 # Author: Peter Odding <peter@peterodding.com>
 # URL: https://github.com/xolox/python-deb-pkg-tools
 
-
 import os
 
 
