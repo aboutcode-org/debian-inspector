@@ -282,7 +282,7 @@ class TestDebianFields(JsonTester):
  .
 '''
         results = debcon.FormattedTextField.from_value(test)
-        expected = 'complex\nsome\n\n nostrip'
+        expected = 'complex\nsome\n\n nostrip\n'
         assert results.text == expected
         expected = 'complex\n some\n .\n  nostrip'
         assert results.dumps() == expected
@@ -313,7 +313,7 @@ class TestDebianFields(JsonTester):
 '''
         results = debcon.DescriptionField.from_value(test)
         assert results.synopsis == 'complex'
-        assert results.text == 'some\n\n nostrip'
+        assert results.text == 'some\n\n nostrip\n'
         assert results.dumps() == 'complex\n some\n .\n  nostrip'
 
     def test_MaintainerField(self):

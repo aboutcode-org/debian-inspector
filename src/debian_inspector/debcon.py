@@ -174,12 +174,12 @@ def as_formatted_lines(lines):
         return ''
     formatted = []
     for line in lines:
-        stripped = line.strip()
-        if stripped:
-            formatted.append(' ' + line)
+        is_blank = not line.strip()
+        if is_blank:
+            formatted.append('.')
         else:
-            formatted.append(' .')
-    return '\n'.join(formatted).strip()
+            formatted.append(f'{line}')
+    return '\n '.join(formatted)
 
 
 def as_formatted_text(text):
@@ -233,7 +233,7 @@ def from_formatted_lines(lines):
             # this should never happen!!!
             # but we keep it too
             text.append(line.strip())
-    return '\n'.join(text).strip()
+    return '\n'.join(text)
 
 
 @attrs
@@ -260,11 +260,15 @@ class DescriptionField(FieldMixin):
         """
         Return a string representation of self.
         """
-        dump = [self.synopsis or '']
+        syn = self.synopsis or ''
+        syn = syn.strip()
+        dumped = [syn]
         text = self.text or ''
         if text:
-            dump.append(as_formatted_text(text))
-        return '\n '.join(dump)
+            if text.startswith(' '):
+                text = text[1:]
+            dumped.append(as_formatted_text(text))
+        return '\n '.join(dumped)
 
 
 @attrs

@@ -33,7 +33,15 @@ class LicenseField(debcon.FieldMixin):
         if isinstance(value, cls):
             return value
         lic = debcon.DescriptionField.from_value(value)
-        return cls(name=lic.synopsis, text=lic.text)
+        syn = lic.synopsis
+        if syn:
+            syn = syn.lstrip()
+        syn = lic.synopsis
+
+        text = lic.text
+        if text:
+            text = text.lstrip()
+        return cls(name=syn, text=text)
 
     def dumps(self, **kwargs):
         lic = debcon.DescriptionField(self.name, self.text)
@@ -158,6 +166,12 @@ class ParagraphMixin(debcon.FieldMixin):
     # a mapping of {field_name: (start_line, end_line)} for each field
     line_numbers_by_field = attrib(default=Factory(dict))
 
+    def get_field_names(self):
+        """
+        Return a list of field names defined on this paragraph.
+        """
+        return fields_dict(self.__class__)
+
     def get_field_line_numbers(self, field_name):
         """
         Return a tuple of (start_line, end_line) for the ``field_name`` field.
@@ -167,9 +181,10 @@ class ParagraphMixin(debcon.FieldMixin):
     @classmethod
     def from_header_fields(cls, header_fields, all_extra=False):
         """
-        Return a paragraph built from a list of debian_inspector.deb822.Header.
+        Return a paragraph built from a list of HeaderField.
         If ``all_extra`` is True, treat all data as "extra_data".
         """
+
         if all_extra:
             # if everything is "extra_data" this means there are no known names.
             known_names = set()
@@ -184,25 +199,32 @@ class ParagraphMixin(debcon.FieldMixin):
         seen_names = set()
         for header_field in header_fields:
             value = header_field.text
-            if value:
-                name = header_field.name.replace('-', '_')
 
-                # if there are duplicated fields, we keep them all, rename them
-                # and they will go to extra_data
-                if name in seen_names:
-                    name = f'{name}_{duplicated_field_name_suffix}'
-                    duplicated_field_name_suffix += 1
-                seen_names.add(name)
+            if not value and not value.strip():
+                continue
 
-                if name in known_names:
-                    mapping = para_data
-                else:
-                    mapping = extra_data
-                assert name not in mapping
+            name = header_field.name.replace('-', '_')
 
-                mapping[name] = value
+            # If there are duplicated fields, we keep them all, but rename them
+            # with a number suffix; they will go in the extra_data mapping.
+            if name in seen_names:
+                name = f'{name}_{duplicated_field_name_suffix}'
+                duplicated_field_name_suffix += 1
+            seen_names.add(name)
 
-                line_numbers_by_field[name] = (header_field.start_line, header_field.end_line,)
+            if name in known_names:
+                mapping = para_data
+            else:
+                mapping = extra_data
+            assert name not in mapping
+
+            # we only strip leading spaces, including a possible first empty line
+            mapping[name] = value.lstrip()
+
+            start_line = header_field.start_line
+            if value.startswith('\n'):
+                start_line += 1
+            line_numbers_by_field[name] = (start_line, header_field.end_line,)
 
         try:
             return cls(**para_data)
@@ -234,9 +256,11 @@ class ParagraphMixin(debcon.FieldMixin):
     def dumps(self, **kwargs):
         text = []
         for name, value in self.to_dict().items():
-            if value:
+            if value and value.strip():
                 name = name.replace('_', '-')
                 name = debcon.normalize_control_field_name(name)
+                if value.startswith(' '):
+                    value = value[1:]
                 text.append('{}: {}'.format(name, value))
         return '\n'.join(text).strip()
 

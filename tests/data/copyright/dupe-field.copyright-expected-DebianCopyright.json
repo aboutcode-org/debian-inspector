@@ -28,7 +28,7 @@
           10
         ],
         "files_excluded": [
-          11,
+          12,
           15
         ]
       }
@@ -38,11 +38,11 @@
       "copyright": "1986, Eric Gisin\n           1989, Berthold K.P. Horn\n           2003-2004, Hewlett-Packard Development Company, LP",
       "license": "AGPL-3+",
       "comment": "",
-      "license_grant": ".\n  GhostPDL and GPL Ghostscript are free software;",
-      "comments": ".\n  The file LICENSE in topmost directory of upstream source covers\n  only GPL Ghostscript,\n  whereas the file pcl/LICENSE contains above statement.",
+      "license_grant": "GhostPDL and GPL Ghostscript are free software;",
+      "comments": "The file LICENSE in topmost directory of upstream source covers\n  only GPL Ghostscript,\n  whereas the file pcl/LICENSE contains above statement.",
       "line_numbers_by_field": {
         "files": [
-          17,
+          18,
           19
         ],
         "copyright": [
@@ -50,7 +50,7 @@
           22
         ],
         "license_grant": [
-          23,
+          24,
           24
         ],
         "license": [
@@ -58,7 +58,7 @@
           25
         ],
         "comments": [
-          26,
+          27,
           29
         ]
       }
@@ -68,11 +68,11 @@
       "copyright": "1991-1994, Free Software Foundation, Inc.",
       "license": "GPL-2+",
       "comment": "",
-      "license_grant": ".\n  This file is part of Ghostscript.",
-      "license_grant_1": ".\n  This code is subject to the GNU General Public License",
+      "license_grant": "This file is part of Ghostscript.",
+      "license_grant_1": "This code is subject to the GNU General Public License",
       "line_numbers_by_field": {
         "files": [
-          31,
+          32,
           33
         ],
         "copyright": [
@@ -80,11 +80,11 @@
           34
         ],
         "license_grant": [
-          35,
+          36,
           36
         ],
         "license_grant_1": [
-          37,
+          38,
           38
         ],
         "license": [
@@ -98,18 +98,18 @@
       "copyright": "1993-2006, Easy Software Products",
       "license": "GPL",
       "comment": "The referenced file LICENSE.txt does not exist\n in folders belonging to same code.",
-      "license_grant": ".\n  Distribution and use rights are outlined in the file \"LICENSE.txt\"\n  which should have been included with this file. [...]",
+      "license_grant": "Distribution and use rights are outlined in the file \"LICENSE.txt\"\n  which should have been included with this file. [...]",
       "line_numbers_by_field": {
         "files": [
           41,
           41
         ],
         "copyright": [
-          42,
+          43,
           43
         ],
         "license_grant": [
-          44,
+          45,
           46
         ],
         "license": [
@@ -117,7 +117,7 @@
           47
         ],
         "comment": [
-          48,
+          49,
           50
         ]
       }

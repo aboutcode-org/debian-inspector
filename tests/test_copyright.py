@@ -55,7 +55,7 @@ class TestCopyrightFields(JsonTester):
 '''
         results = copyright.LicenseField.from_value(test)
         assert results.name == 'GPL 2.0'
-        assert results.text == 'licensed under the gpl\n\n attribution'
+        assert results.text == 'licensed under the gpl\n\n attribution\n'
         assert results.dumps() == 'GPL 2.0\n licensed under the gpl\n .\n  attribution'
 
 
@@ -84,7 +84,7 @@ class TestDebianCopyright(JsonTester):
         test_file = self.get_test_loc('copyright/dupe-field.copyright')
         expected_loc = 'copyright/dupe-field.copyright-expected-DebianCopyright.json'
         results = copyright.DebianCopyright.from_file(test_file)
-        self.check_json(results.to_dict(with_lines=True), expected_loc, regen=True)
+        self.check_json(results.to_dict(with_lines=True), expected_loc, regen=False)
 
     def test_DebianCopyright_from_file__from_copyrights_dep5_1_dumps(self):
         test_file = self.get_test_loc('copyright/dep5-b43-fwcutter.copyright')
