@@ -6,7 +6,6 @@
 # See https://aboutcode.org for more information about nexB OSS projects.
 #
 
-
 from collections import defaultdict
 import gzip
 

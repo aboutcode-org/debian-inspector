@@ -1,0 +1,272 @@
+[
+  [
+    {
+      "name": "format",
+      "lines": [
+        {
+          "number": 1,
+          "value": "https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/"
+        }
+      ]
+    },
+    {
+      "name": "upstream-name",
+      "lines": [
+        {
+          "number": 2,
+          "value": "b43-fwcutter"
+        }
+      ]
+    },
+    {
+      "name": "source",
+      "lines": [
+        {
+          "number": 3,
+          "value": "http://linuxwireless.org/en/users/Drivers/b43"
+        }
+      ]
+    }
+  ],
+  [
+    {
+      "name": "files",
+      "lines": [
+        {
+          "number": 5,
+          "value": "*"
+        }
+      ]
+    },
+    {
+      "name": "copyright",
+      "lines": [
+        {
+          "number": 6,
+          "value": "2005-2011 Martin Langer <martin-langer@gmx.de>"
+        },
+        {
+          "number": 7,
+          "value": "       2005-2014 Michael Buesch <m@bues.ch>"
+        },
+        {
+          "number": 8,
+          "value": "       2005-2011 Alex Beregszaszi <alex@fsn.hu>"
+        }
+      ]
+    },
+    {
+      "name": "license",
+      "lines": [
+        {
+          "number": 9,
+          "value": "BSD-2-Clause"
+        }
+      ]
+    }
+  ],
+  [
+    {
+      "name": "files",
+      "lines": [
+        {
+          "number": 11,
+          "value": "debian/*"
+        }
+      ]
+    },
+    {
+      "name": "license",
+      "lines": [
+        {
+          "number": 12,
+          "value": "BSD-2-Clause"
+        }
+      ]
+    },
+    {
+      "name": "copyright",
+      "lines": [
+        {
+          "number": 13,
+          "value": "2006 Rene Engelhard <rene@debian.org>"
+        },
+        {
+          "number": 14,
+          "value": "           2011 Fabrizio Regalli <fabreg@fabreg.it>"
+        },
+        {
+          "number": 15,
+          "value": "       2013 Daniel Echeverry <epsilon77@gmail.com>"
+        }
+      ]
+    },
+    {
+      "name": "license",
+      "lines": [
+        {
+          "number": 16,
+          "value": "BSD-2-Clause"
+        }
+      ]
+    }
+  ],
+  [
+    {
+      "name": "license",
+      "lines": [
+        {
+          "number": 18,
+          "value": "BSD-2-Clause"
+        },
+        {
+          "number": 19,
+          "value": " Redistribution and use in source and binary forms, with or without"
+        },
+        {
+          "number": 20,
+          "value": " modification, are permitted provided that the following conditions"
+        },
+        {
+          "number": 21,
+          "value": " are met:"
+        },
+        {
+          "number": 22,
+          "value": "  1. Redistributions of source code must retain the above copyright"
+        },
+        {
+          "number": 23,
+          "value": "  notice, this list of conditions and the following disclaimer."
+        },
+        {
+          "number": 24,
+          "value": "  2. Redistributions in binary form must reproduce the above"
+        },
+        {
+          "number": 25,
+          "value": "  copyright notice, this list of conditions and the following"
+        },
+        {
+          "number": 26,
+          "value": "  disclaimer in the documentation and/or other materials provided"
+        },
+        {
+          "number": 27,
+          "value": "  with the distribution."
+        },
+        {
+          "number": 28,
+          "value": " ."
+        },
+        {
+          "number": 29,
+          "value": " THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED"
+        },
+        {
+          "number": 30,
+          "value": " WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES"
+        },
+        {
+          "number": 31,
+          "value": " OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE"
+        },
+        {
+          "number": 32,
+          "value": " DISCLAIMED. IN NO EVENT SHALL THE CONTRIBUTORS BE LIABLE FOR ANY"
+        },
+        {
+          "number": 33,
+          "value": " DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL"
+        },
+        {
+          "number": 34,
+          "value": " DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE"
+        },
+        {
+          "number": 35,
+          "value": " GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS"
+        },
+        {
+          "number": 36,
+          "value": " INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,"
+        },
+        {
+          "number": 37,
+          "value": " WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE"
+        },
+        {
+          "number": 38,
+          "value": " OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,"
+        },
+        {
+          "number": 39,
+          "value": " EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
+        }
+      ]
+    }
+  ],
+  [
+    {
+      "name": "files",
+      "lines": [
+        {
+          "number": 41,
+          "value": "md5.c md5.h"
+        }
+      ]
+    },
+    {
+      "name": "copyright",
+      "lines": [
+        {
+          "number": 42,
+          "value": "1993 Colin Plumb"
+        }
+      ]
+    },
+    {
+      "name": "copyright",
+      "lines": [
+        {
+          "number": 43,
+          "value": "1993 Colin Plumb"
+        }
+      ]
+    },
+    {
+      "name": "license",
+      "lines": [
+        {
+          "number": 44,
+          "value": "public-domain"
+        },
+        {
+          "number": 45,
+          "value": " This code implements the MD5 message-digest algorithm."
+        },
+        {
+          "number": 46,
+          "value": " The algorithm is due to Ron Rivest.    This code was"
+        },
+        {
+          "number": 47,
+          "value": " written by Colin Plumb in 1993, no copyright is claimed."
+        },
+        {
+          "number": 48,
+          "value": " This code is in the public domain; do with it what you wish."
+        }
+      ]
+    },
+    {
+      "name": "copyright",
+      "lines": [
+        {
+          "number": 49,
+          "value": "1993 Colin Plumb"
+        }
+      ]
+    }
+  ]
+]

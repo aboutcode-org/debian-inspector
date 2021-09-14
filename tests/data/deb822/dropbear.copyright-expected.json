@@ -1,0 +1,684 @@
+[
+  [
+    {
+      "name": "format",
+      "lines": [
+        {
+          "number": 1,
+          "value": "https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/"
+        }
+      ]
+    },
+    {
+      "name": "upstream-contact",
+      "lines": [
+        {
+          "number": 2,
+          "value": "Matt Johnston <matt@ucc.asn.au>"
+        }
+      ]
+    },
+    {
+      "name": "source",
+      "lines": [
+        {
+          "number": 3,
+          "value": "https://matt.ucc.asn.au/dropbear/"
+        }
+      ]
+    }
+  ],
+  [
+    {
+      "name": "files",
+      "lines": [
+        {
+          "number": 5,
+          "value": "*"
+        }
+      ]
+    },
+    {
+      "name": "copyright",
+      "lines": [
+        {
+          "number": 6,
+          "value": "\u00c2\u00a9 2002-2015 Matt Johnston <matt@ucc.asn.au>"
+        },
+        {
+          "number": 7,
+          "value": "           \u00c2\u00a9 2004 Mihnea Stoenescu"
+        }
+      ]
+    },
+    {
+      "name": "license",
+      "lines": [
+        {
+          "number": 8,
+          "value": "MIT"
+        }
+      ]
+    }
+  ],
+  [
+    {
+      "name": "files",
+      "lines": [
+        {
+          "number": 10,
+          "value": "libtomcrypt/* libtommath/*"
+        }
+      ]
+    },
+    {
+      "name": "copyright",
+      "lines": [
+        {
+          "number": 11,
+          "value": "Tom St Denis"
+        }
+      ]
+    },
+    {
+      "name": "license",
+      "lines": [
+        {
+          "number": 12,
+          "value": "public-domain"
+        },
+        {
+          "number": 13,
+          "value": " Tom St Denis's licence is as follows:"
+        },
+        {
+          "number": 14,
+          "value": " ."
+        },
+        {
+          "number": 15,
+          "value": " This software is public domain.  As should all quality software be."
+        }
+      ]
+    }
+  ],
+  [
+    {
+      "name": "files",
+      "lines": [
+        {
+          "number": 17,
+          "value": "sshpty.c sshpty.h"
+        }
+      ]
+    },
+    {
+      "name": "copyright",
+      "lines": [
+        {
+          "number": 18,
+          "value": "\u00c2\u00a9 1995 Tatu Ylonen <ylo@cs.hut.fi>, Espoo, Finland"
+        }
+      ]
+    },
+    {
+      "name": "license",
+      "lines": [
+        {
+          "number": 19,
+          "value": "OpenSSH"
+        }
+      ]
+    }
+  ],
+  [
+    {
+      "name": "files",
+      "lines": [
+        {
+          "number": 21,
+          "value": "atomicio.c atomicio.h loginrec.c loginrec.h progressmeter.c progressmeter.h"
+        }
+      ]
+    },
+    {
+      "name": "copyright",
+      "lines": [
+        {
+          "number": 22,
+          "value": "\u00c2\u00a9 1995,1999 Theo de Raadt"
+        },
+        {
+          "number": 23,
+          "value": "           \u00c2\u00a9 Andre Lucas"
+        },
+        {
+          "number": 24,
+          "value": "           \u00c2\u00a9 2003 Nils Nordman"
+        }
+      ]
+    },
+    {
+      "name": "license",
+      "lines": [
+        {
+          "number": 25,
+          "value": "BSD-2-clause"
+        }
+      ]
+    }
+  ],
+  [
+    {
+      "name": "files",
+      "lines": [
+        {
+          "number": 27,
+          "value": "curve25519-donna.c"
+        }
+      ]
+    },
+    {
+      "name": "copyright",
+      "lines": [
+        {
+          "number": 28,
+          "value": "\u00c2\u00a9 2008, Google Inc."
+        }
+      ]
+    },
+    {
+      "name": "license",
+      "lines": [
+        {
+          "number": 29,
+          "value": "BSD-3-clause"
+        }
+      ]
+    }
+  ],
+  [
+    {
+      "name": "files",
+      "lines": [
+        {
+          "number": 31,
+          "value": "compat.c dbutil.c"
+        }
+      ]
+    },
+    {
+      "name": "copyright",
+      "lines": [
+        {
+          "number": 32,
+          "value": "\u00c2\u00a9 2002,2003 Matt Johnston <matt@ucc.asn.au>"
+        },
+        {
+          "number": 33,
+          "value": "           \u00c2\u00a9 1998 Todd C. Miller <Todd.Miller@courtesan.com>"
+        },
+        {
+          "number": 34,
+          "value": "           \u00c2\u00a9 1990, 1993 The Regents of the University of California"
+        }
+      ]
+    },
+    {
+      "name": "license",
+      "lines": [
+        {
+          "number": 35,
+          "value": "MIT and BSD-3-clause"
+        }
+      ]
+    }
+  ],
+  [
+    {
+      "name": "files",
+      "lines": [
+        {
+          "number": 37,
+          "value": "scp.c scpmisc.c scpmisc.h"
+        }
+      ]
+    },
+    {
+      "name": "copyright",
+      "lines": [
+        {
+          "number": 38,
+          "value": "\u00c2\u00a9 1995 Tatu Ylonen <ylo@cs.hut.fi>, Espoo, Finland"
+        },
+        {
+          "number": 39,
+          "value": "           \u00c2\u00a9 1999 Theo de Raadt"
+        },
+        {
+          "number": 40,
+          "value": "           \u00c2\u00a9 Aaron Campbell"
+        },
+        {
+          "number": 41,
+          "value": "           \u00c2\u00a9 1983, 1990, 1992, 1993, 1995 The Regents of the University of California"
+        }
+      ]
+    },
+    {
+      "name": "license",
+      "lines": [
+        {
+          "number": 42,
+          "value": "OpenSSH and BSD-2-clause and BSD-3-clause"
+        }
+      ]
+    }
+  ],
+  [
+    {
+      "name": "files",
+      "lines": [
+        {
+          "number": 44,
+          "value": "debian/*"
+        }
+      ]
+    },
+    {
+      "name": "copyright",
+      "lines": [
+        {
+          "number": 45,
+          "value": "Grahame Bowland <grahame.angrygoats.net>"
+        },
+        {
+          "number": 46,
+          "value": "           Matt Johnston <matt@ucc.asn.au>"
+        },
+        {
+          "number": 47,
+          "value": "           Gerrit Pape <pape@smarden.org>"
+        },
+        {
+          "number": 48,
+          "value": "           Guilhem Moulin <guilhem@debian.org>"
+        }
+      ]
+    },
+    {
+      "name": "license",
+      "lines": [
+        {
+          "number": 49,
+          "value": "MIT"
+        }
+      ]
+    }
+  ],
+  [
+    {
+      "name": "files",
+      "lines": [
+        {
+          "number": 51,
+          "value": "debian/initramfs/*"
+        }
+      ]
+    },
+    {
+      "name": "copyright",
+      "lines": [
+        {
+          "number": 52,
+          "value": "\u00c2\u00a9 2009  <debian@x.ray.net>"
+        },
+        {
+          "number": 53,
+          "value": "           \u00c2\u00a9 2015  Guilhem Moulin <guilhem@debian.org>"
+        }
+      ]
+    },
+    {
+      "name": "license",
+      "lines": [
+        {
+          "number": 54,
+          "value": "GPL-2+"
+        },
+        {
+          "number": 55,
+          "value": " This package is free software; you can redistribute it and/or modify"
+        },
+        {
+          "number": 56,
+          "value": " it under the terms of the GNU General Public License as published by"
+        },
+        {
+          "number": 57,
+          "value": " the Free Software Foundation; either version 2 of the License, or"
+        },
+        {
+          "number": 58,
+          "value": " (at your option) any later version."
+        },
+        {
+          "number": 59,
+          "value": " ."
+        },
+        {
+          "number": 60,
+          "value": " The full text of version 2 of the GPL is distributed in"
+        },
+        {
+          "number": 61,
+          "value": " /usr/share/common-licenses/GPL-2 on Debian systems."
+        }
+      ]
+    }
+  ],
+  [
+    {
+      "name": "license",
+      "lines": [
+        {
+          "number": 63,
+          "value": "MIT"
+        },
+        {
+          "number": 64,
+          "value": " Permission is hereby granted, free of charge, to any person obtaining a"
+        },
+        {
+          "number": 65,
+          "value": " copy of this software and associated documentation files (the"
+        },
+        {
+          "number": 66,
+          "value": " \"Software\"), to deal in the Software without restriction, including"
+        },
+        {
+          "number": 67,
+          "value": " without limitation the rights to use, copy, modify, merge, publish,"
+        },
+        {
+          "number": 68,
+          "value": " distribute, sublicense, and/or sell copies of the Software, and to"
+        },
+        {
+          "number": 69,
+          "value": " permit persons to whom the Software is furnished to do so, subject to"
+        },
+        {
+          "number": 70,
+          "value": " the following conditions:"
+        },
+        {
+          "number": 71,
+          "value": " ."
+        },
+        {
+          "number": 72,
+          "value": " The above copyright notice and this permission notice shall be included"
+        },
+        {
+          "number": 73,
+          "value": " in all copies or substantial portions of the Software."
+        },
+        {
+          "number": 74,
+          "value": " ."
+        },
+        {
+          "number": 75,
+          "value": " THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS"
+        },
+        {
+          "number": 76,
+          "value": " OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF"
+        },
+        {
+          "number": 77,
+          "value": " MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT."
+        },
+        {
+          "number": 78,
+          "value": " IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY"
+        },
+        {
+          "number": 79,
+          "value": " CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,"
+        },
+        {
+          "number": 80,
+          "value": " TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE"
+        },
+        {
+          "number": 81,
+          "value": " SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
+        }
+      ]
+    }
+  ],
+  [
+    {
+      "name": "license",
+      "lines": [
+        {
+          "number": 83,
+          "value": "BSD-2-clause"
+        },
+        {
+          "number": 84,
+          "value": " Redistribution and use in source and binary forms, with or without"
+        },
+        {
+          "number": 85,
+          "value": " modification, are permitted provided that the following conditions are met:"
+        },
+        {
+          "number": 86,
+          "value": " 1. Redistributions of source code must retain the above copyright notice, this"
+        },
+        {
+          "number": 87,
+          "value": "    list of conditions and the following disclaimer."
+        },
+        {
+          "number": 88,
+          "value": " 2. Redistributions in binary form must reproduce the above copyright notice,"
+        },
+        {
+          "number": 89,
+          "value": "    this list of conditions and the following disclaimer in the documentation"
+        },
+        {
+          "number": 90,
+          "value": "    and/or other materials provided with the distribution."
+        },
+        {
+          "number": 91,
+          "value": " ."
+        },
+        {
+          "number": 92,
+          "value": " THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED"
+        },
+        {
+          "number": 93,
+          "value": " WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF"
+        },
+        {
+          "number": 94,
+          "value": " MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO"
+        },
+        {
+          "number": 95,
+          "value": " EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,"
+        },
+        {
+          "number": 96,
+          "value": " SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,"
+        },
+        {
+          "number": 97,
+          "value": " PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR"
+        },
+        {
+          "number": 98,
+          "value": " BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER"
+        },
+        {
+          "number": 99,
+          "value": " IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)"
+        },
+        {
+          "number": 100,
+          "value": " ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE"
+        },
+        {
+          "number": 101,
+          "value": " POSSIBILITY OF SUCH DAMAGE."
+        }
+      ]
+    }
+  ],
+  [
+    {
+      "name": "license",
+      "lines": [
+        {
+          "number": 103,
+          "value": "BSD-3-clause"
+        },
+        {
+          "number": 104,
+          "value": " Redistribution and use in source and binary forms, with or without"
+        },
+        {
+          "number": 105,
+          "value": " modification, are permitted provided that the following conditions are met:"
+        },
+        {
+          "number": 106,
+          "value": " 1. Redistributions of source code must retain the above copyright notice, this"
+        },
+        {
+          "number": 107,
+          "value": "    list of conditions and the following disclaimer."
+        },
+        {
+          "number": 108,
+          "value": " 2. Redistributions in binary form must reproduce the above copyright notice,"
+        },
+        {
+          "number": 109,
+          "value": "    this list of conditions and the following disclaimer in the documentation"
+        },
+        {
+          "number": 110,
+          "value": "    and/or other materials provided with the distribution."
+        },
+        {
+          "number": 111,
+          "value": " 3. Neither the name of the University nor the names of its contributors may be"
+        },
+        {
+          "number": 112,
+          "value": "    used to endorse or promote products derived from this software without"
+        },
+        {
+          "number": 113,
+          "value": "    specific prior written permission."
+        },
+        {
+          "number": 114,
+          "value": " ."
+        },
+        {
+          "number": 115,
+          "value": " THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS"
+        },
+        {
+          "number": 116,
+          "value": " \"AS IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT"
+        },
+        {
+          "number": 117,
+          "value": " LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR"
+        },
+        {
+          "number": 118,
+          "value": " A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT"
+        },
+        {
+          "number": 119,
+          "value": " OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,"
+        },
+        {
+          "number": 120,
+          "value": " SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT"
+        },
+        {
+          "number": 121,
+          "value": " LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,"
+        },
+        {
+          "number": 122,
+          "value": " DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY"
+        },
+        {
+          "number": 123,
+          "value": " THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT"
+        },
+        {
+          "number": 124,
+          "value": " (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE"
+        },
+        {
+          "number": 125,
+          "value": " OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
+        }
+      ]
+    }
+  ],
+  [
+    {
+      "name": "license",
+      "lines": [
+        {
+          "number": 127,
+          "value": "OpenSSH"
+        },
+        {
+          "number": 128,
+          "value": " Tatu Ylonen's original licence is as follows:"
+        },
+        {
+          "number": 129,
+          "value": " ."
+        },
+        {
+          "number": 130,
+          "value": " As far as I am concerned, the code I have written for this software can be"
+        },
+        {
+          "number": 131,
+          "value": " used freely for any purpose.  Any derived versions of this software must be"
+        },
+        {
+          "number": 132,
+          "value": " clearly marked as such, and if the derived work is incompatible with the"
+        },
+        {
+          "number": 133,
+          "value": " protocol description in the RFC file, it must be called by a name other than"
+        },
+        {
+          "number": 134,
+          "value": " \"ssh\" or \"Secure Shell\"."
+        }
+      ]
+    }
+  ]
+]

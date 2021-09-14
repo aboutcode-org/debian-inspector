@@ -1,0 +1,146 @@
+{
+  "paragraphs": [
+    {
+      "format": "https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/",
+      "upstream_name": "GhostPDL",
+      "upstream_contact": "Ghostscript development and discussion <gs-devel@ghostscript.com>",
+      "source": "https://github.com/ArtifexSoftware/ghostpdl-downloads/releases\n Repackaged, excluding non-DFSG files and convenience code copies:\n  * non-DFSG fonts\n  * PCL and PX3 files without license\n  * XPS document with embedded potentially non-DFSG odttf font\n  * embedded code copies cluttering authorship/licensing tracking\n    (Arguably custom build of jpeg code is required - see bug#582521)",
+      "disclaimer": "",
+      "copyright": "",
+      "license": "",
+      "comment": "",
+      "files_excluded": "cups/libs/*\n toolbin/Acrobat2Tiff/*\n xps/tools/colorcirc.xps\n zlib/*",
+      "line_numbers_by_field": {
+        "format": [
+          1,
+          1
+        ],
+        "upstream_name": [
+          2,
+          2
+        ],
+        "upstream_contact": [
+          3,
+          3
+        ],
+        "source": [
+          4,
+          10
+        ],
+        "files_excluded": [
+          12,
+          15
+        ]
+      }
+    },
+    {
+      "files": "Resource/ColorSpace/*\n Resource/Decoding/*",
+      "copyright": "1986, Eric Gisin\n           1989, Berthold K.P. Horn\n           2003-2004, Hewlett-Packard Development Company, LP",
+      "license": "AGPL-3+",
+      "comment": "",
+      "license_grant": "GhostPDL and GPL Ghostscript are free software;",
+      "comments": "The file LICENSE in topmost directory of upstream source covers\n  only GPL Ghostscript,\n  whereas the file pcl/LICENSE contains above statement.",
+      "line_numbers_by_field": {
+        "files": [
+          18,
+          19
+        ],
+        "copyright": [
+          20,
+          22
+        ],
+        "license_grant": [
+          24,
+          24
+        ],
+        "license": [
+          25,
+          25
+        ],
+        "comments": [
+          27,
+          29
+        ]
+      }
+    },
+    {
+      "files": "contrib/gdevln03.c\n contrib/gdevxes.c",
+      "copyright": "1991-1994, Free Software Foundation, Inc.",
+      "license": "GPL-2+",
+      "comment": "",
+      "license_grant": "This file is part of Ghostscript.",
+      "license_grant_1": "This code is subject to the GNU General Public License",
+      "line_numbers_by_field": {
+        "files": [
+          32,
+          33
+        ],
+        "copyright": [
+          34,
+          34
+        ],
+        "license_grant": [
+          36,
+          36
+        ],
+        "license_grant_1": [
+          38,
+          38
+        ],
+        "license": [
+          39,
+          39
+        ]
+      }
+    },
+    {
+      "files": "cups/gdevcups.c",
+      "copyright": "1993-2006, Easy Software Products",
+      "license": "GPL",
+      "comment": "The referenced file LICENSE.txt does not exist\n in folders belonging to same code.",
+      "license_grant": "Distribution and use rights are outlined in the file \"LICENSE.txt\"\n  which should have been included with this file. [...]",
+      "line_numbers_by_field": {
+        "files": [
+          41,
+          41
+        ],
+        "copyright": [
+          43,
+          43
+        ],
+        "license_grant": [
+          45,
+          46
+        ],
+        "license": [
+          47,
+          47
+        ],
+        "comment": [
+          49,
+          50
+        ]
+      }
+    },
+    {
+      "license": "ZLIB\n This software is provided 'as-is',\n without any express or implied warranty.\n In no event will the authors be held liable\n for any damages arising from the use of this software.",
+      "comment": "",
+      "line_numbers_by_field": {
+        "license": [
+          52,
+          56
+        ]
+      }
+    },
+    {
+      "license": "AGPL-3+\n Permission to use, copy, modify, and distribute this software\n for any purpose with or without fee is hereby granted,\n provided that the above copyright notice and this permission notice\n appear in all copies.",
+      "comment": "",
+      "line_numbers_by_field": {
+        "license": [
+          58,
+          62
+        ]
+      }
+    }
+  ]
+}

@@ -18,30 +18,27 @@ import textwrap
 
 from attr import attrs
 from attr import attrib
-from attr import Factory
-from attr import fields_dict
 import chardet
 
 from debian_inspector import unsign
 
 """
 Utilities to parse Debian-style control files aka. deb822 format.
+
 See https://salsa.debian.org/dpkg-team/dpkg/blob/0c9dc4493715ff3b37262528055943c52fdfb99c/man/deb822.man
+
 https://www.debian.org/doc/debian-policy/ch-controlfields#s-f-Description
 
 This is an alternative to a subset of python-debian library with these
 characteristics:
 
- - lenient parsing accepting things that would not be considered strictly
-   Debian-compliant
- - focus is essentially on reading Debian files and not on writing them.
- - focus is first on copyright and package files (less on changelog and other
-   that are mostly ignored.)
- - no attention to compatibility and support for older formats and older Python
-   versions.
- - simpler (all keys are lowercased) and reuse the standard library where
-   possible (e.g. parsing email)
- - usable as a library in GPL and non-GPL apps.
+ - We use a lenient parsing accepting things that would not be considered
+   strictly Debian-compliant.
+ - The focus is first on reading Debian files and writing them second.
+ - Copyright, package, control and status files are the most interesting formats.
+   Changelog and other Debian file types are mostly ignored for now.
+ - There is no attention paid to compatibility and support for older formats
+   and older Python versions before 3.6.
 """
 
 
@@ -53,6 +50,9 @@ class FieldMixin(object):
 
     @classmethod
     def attrib(cls, **kwargs):
+        """
+        Return an attrib class
+        """
         return attrib(converter=cls.from_value, **kwargs)
 
     @classmethod
@@ -61,7 +61,10 @@ class FieldMixin(object):
             return value
         return cls(value)
 
-    def dumps(self, sort=False):
+    def dumps(self):
+        """
+        Return a string in Debian format for this field.
+        """
         return NotImplementedError
 
     def __str__(self, *args, **kwargs):
@@ -79,7 +82,7 @@ class SingleLineField(FieldMixin):
     def from_value(cls, value):
         return cls(value=value and value.strip())
 
-    def dumps(self, sort=False):
+    def dumps(self):
         return self.value or ''
 
 
@@ -98,7 +101,7 @@ class LineSeparatedField(FieldMixin):
                 values.append(val.strip())
         return cls(values=values)
 
-    def dumps(self, sort=False):
+    def dumps(self, **kwargs):
         return '\n '.join(self.values or [])
 
 
@@ -117,7 +120,7 @@ class LineAndSpaceSeparatedField(FieldMixin):
                 values.append(tuple(space_separated(val)))
         return cls(values=values)
 
-    def dumps(self, sort=False):
+    def dumps(self, **kwargs):
         return '\n '.join(' '.join(v) for v in self.values or [])
 
 
@@ -136,7 +139,7 @@ class AnyWhiteSpaceSeparatedField(FieldMixin):
             values = [val for val in value.split()]
         return cls(values=values)
 
-    def dumps(self, sort=False):
+    def dumps(self, **kwargs):
         return '\n '.join(self.values or [])
 
 
@@ -154,7 +157,7 @@ class FormattedTextField(FieldMixin):
             value = from_formatted_text(value)
         return cls(text=value)
 
-    def dumps(self, sort=False):
+    def dumps(self, **kwargs):
         lines = line_separated(self.text)
         if not lines:
             return ''
@@ -170,12 +173,12 @@ def as_formatted_lines(lines):
         return ''
     formatted = []
     for line in lines:
-        stripped = line.strip()
-        if stripped:
-            formatted.append(' ' + line)
+        is_blank = not line.strip()
+        if is_blank:
+            formatted.append('.')
         else:
-            formatted.append(' .')
-    return '\n'.join(formatted).strip()
+            formatted.append(f'{line}')
+    return '\n '.join(formatted)
 
 
 def as_formatted_text(text):
@@ -229,7 +232,7 @@ def from_formatted_lines(lines):
             # this should never happen!!!
             # but we keep it too
             text.append(line.strip())
-    return '\n'.join(text).strip()
+    return '\n'.join(text)
 
 
 @attrs
@@ -252,15 +255,19 @@ class DescriptionField(FieldMixin):
         else:
             return cls(synopsis='')
 
-    def dumps(self, sort=False):
+    def dumps(self, **kwargs):
         """
         Return a string representation of self.
         """
-        dump = [self.synopsis or '']
+        syn = self.synopsis or ''
+        syn = syn.strip()
+        dumped = [syn]
         text = self.text or ''
         if text:
-            dump.append(as_formatted_text(text))
-        return '\n '.join(dump)
+            if text.startswith(' '):
+                text = text[1:]
+            dumped.append(as_formatted_text(text))
+        return '\n '.join(dumped)
 
 
 @attrs
@@ -274,7 +281,7 @@ class File(object):
 
 
 @attrs
-class FileField(object):
+class FileField(FieldMixin):
     name = attrib(default=None)
     size = attrib(default=None)
     checksum = attrib(default=None)
@@ -286,14 +293,14 @@ class FileField(object):
             checksum, size , name = space_separated(value)
         return cls(checksum=checksum, size=size , name=name)
 
-    def dumps(self, sort=False):
+    def dumps(self, **kwargs):
         return '{} {} {}'.format(self.checksum, self.size , self.name)
 
 
 @attrs
 class FilesField(FieldMixin):
     """
-    This is a list of File
+    This is a list of FileField
     """
     values = attrib()
 
@@ -305,8 +312,8 @@ class FilesField(FieldMixin):
                 values.append(FileField.from_value(val))
         return cls(values=values)
 
-    def dumps(self, sort=False):
-        return '\n '.join(v.dumps(sort=sort) for v in self.values or [])
+    def dumps(self, **kwargs):
+        return '\n '.join(v.dumps(**kwargs) for v in self.values or [])
 
 
 def collect_files(data):
@@ -341,7 +348,8 @@ def collect_files(data):
 
 def collect_file(value):
     """
-    Yield tuples of (name, size, digest) given a Debian Files-like value string.
+    Yield tuples of (name, size, digest) given a Debian "Files" value string
+    which contains digest, size and name.
     """
     for line in line_separated(value):
         digest, size , name = space_separated(line)
@@ -368,112 +376,11 @@ class MaintainerField(FieldMixin):
                 email_address = None
             return cls(name=name, email_address=email_address)
 
-    def dumps(self, sort=False):
+    def dumps(self, **kwargs):
         name = self.name
         if self.email_address:
             name = '{} <{}>'.format(name, self.email_address)
         return name.strip()
-
-
-@attrs
-class ParagraphMixin(FieldMixin):
-    """
-    A mixin for a basic Paragraph with an extra data mapping for unknown fileds
-    overflow.
-    """
-
-    @classmethod
-    def from_dict(cls, data):
-        assert isinstance(data, dict)
-        known_names = list(fields_dict(cls))
-        known_data = {}
-        known_data['extra_data'] = extra_data = {}
-        for key, value in data.items():
-            key = key.replace('-', '_')
-            if value:
-                if isinstance(value, list):
-                    value = '\n'.join(value)
-                if key in known_names:
-                    known_data[key] = value
-                else:
-                    extra_data[key] = value
-
-        return cls(**known_data)
-
-    def to_dict(self):
-        data = {}
-        for field_name in fields_dict(self.__class__):
-            if field_name == 'extra_data':
-                continue
-            field_value = getattr(self, field_name)
-            if field_value:
-                if hasattr(field_value, 'dumps'):
-                    field_value = field_value.dumps()
-                data[field_name] = field_value
-
-        for field_name, field_value in getattr(self, 'extra_data', {}).items():
-            if field_value:
-                # always treat these extra values as formatted
-                field_value = field_value and as_formatted_text(field_value)
-            data[field_name] = field_value
-        return data
-
-    def dumps(self, sort=False):
-        text = []
-        items = self.to_dict().items()
-        if sort:
-            items -= sorted(items)
-        for field_name, field_value in items:
-            if field_value:
-                field_name = field_name.replace('_', '-')
-                field_name = normalize_control_field_name(field_name)
-                text.append('{}: {}'.format(field_name, field_value))
-        return '\n'.join(text).strip()
-
-    def is_empty(self):
-        """
-        Return True if all fields are empty
-        """
-        return not any(self.to_dict().values())
-
-    def has_extra_data(self):
-        return getattr(self, 'extra_data', None)
-
-
-@attrs
-class CatchAllParagraph(ParagraphMixin):
-    """
-    A catch-all paragraph: everything is fed to the extra_data. Every field is
-    treated as formatted text.
-    """
-    extra_data = attrib(default=Factory(dict))
-
-    @classmethod
-    def from_dict(cls, data):
-        # Stuff all data in the extra_data mapping as FormattedTextField
-        assert isinstance(data, dict)
-        known_data = {}
-        for key, value in data.items():
-            key = key.replace('-', '_')
-            known_data[key] = FormattedTextField.from_value(value)
-        return cls(extra_data=known_data)
-
-    def to_dict(self):
-        data = {}
-        for field_name, field_value in self.extra_data.items():
-            if field_value:
-                if hasattr(field_value, 'dumps'):
-                    field_value = field_value.dumps()
-                data[field_name] = field_value
-        return data
-
-    def is_all_unknown(self):
-        return all(k == 'unknown' for k in self.to_dict())
-
-    def is_valid(self, strict=False):
-        if strict:
-            return False
-        return not self.is_all_unknown()
 
 
 def get_paragraphs_data_from_file(location):
@@ -490,18 +397,10 @@ def get_paragraphs_data_from_file(location):
 def split_in_paragraphs(text):
     """
     Yield paragraphs from a `text` string that contains one or more paragraph
-    separated by two empty lines.
-    See https://www.debian.org/doc/debian-policy/ch-controlfields#s-controlsyntax
-
-        "A control file consists of one or more paragraphs of fields.
-        The paragraphs are separated by empty lines.
-        Parsers may accept lines consisting solely of spaces and tabs as
-        paragraph separators, but control files should use empty lines.
+    separated by empty lines. Each paragraph is a string.
     """
-    if text:
-        for p in re.split(r'\n\n(?:[ \t]*\n)*', text):
-            if not p:
-                continue
+    for p in re.split(r'\n\n(?:[ \t]*\n)*', text or ''):
+        if p:
             yield p
 
 
@@ -510,9 +409,8 @@ def get_paragraphs_data(text):
     Yield paragraph data mappings from the Debian control `text` string that
     contains multiple paragraphs (e.g. Package, status, copyright file, etc.).
     """
-    if text:
-        for para in split_in_paragraphs(text) or []:
-            yield get_paragraph_data(para)
+    for para in split_in_paragraphs(text or ''):
+        yield get_paragraph_data(para)
 
 
 def get_paragraph_data_from_file(location, remove_pgp_signature=False):
@@ -622,7 +520,7 @@ def space_separated(value):
 
 def read_text_file(location):
     """
-    Return the content of the file at `location` as text.
+    Return the content of the file at `location` as text or None.
     """
     if not location:
         return
@@ -721,15 +619,14 @@ class Debian822(MutableMapping):
     def __repr__(self):
         return self.dumps()
 
-    def dumps(self, sort=False):
+    def dumps(self, **kwargs):
         """
         Return a text that resembles the original Debian822 format. This is not
         meant to be a high fidelity rendering and not meant to be used as-is in
         control files.
         """
         items = self.items()
-        if sort:
-            items = sorted(items)
+
         lines = []
         for key, value in items:
             key = normalize_control_field_name(key)
@@ -737,8 +634,8 @@ class Debian822(MutableMapping):
         text = '\n'.join(lines) + '\n'
         return text
 
-    def dump(self, file_like=None, sort=False):
-        text = self.dumps(sort=sort)
+    def dump(self, file_like=None, **kwargs):
+        text = self.dumps(**kwargs)
         if file_like:
             file_like.write(text.encode('utf-8'))
         else:
@@ -828,4 +725,6 @@ def normalize_control_field_name(name):
     """
     special_cases = dict(md5sum='MD5sum', sha1='SHA1', sha256='SHA256')
     return '-'.join(special_cases.get(
-        w.lower(), w.capitalize()) for w in name.split('-'))
+        w.lower(), w.capitalize())
+        for w in name.split('-')
+    )

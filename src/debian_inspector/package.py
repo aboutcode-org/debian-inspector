@@ -9,7 +9,6 @@
 # URL: https://github.com/xolox/python-deb-pkg-tools
 #
 
-
 import itertools
 from os import path
 
