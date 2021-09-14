@@ -1,10 +1,10 @@
 Changelog
 =========
 
-v32.0.0 - 2021-09-07
+v30.0.0 - 2021-09-07
 ------------------------
 
-- Switch back to semver
+- Switch back to semver/semantic versioning
 
 - Add new deb822 parser for tracking line number in copyright files #13
 
