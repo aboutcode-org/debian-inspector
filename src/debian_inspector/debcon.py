@@ -18,7 +18,6 @@ import textwrap
 
 from attr import attrs
 from attr import attrib
-from attr import fields_dict
 import chardet
 
 from debian_inspector import unsign
@@ -382,71 +381,6 @@ class MaintainerField(FieldMixin):
         if self.email_address:
             name = '{} <{}>'.format(name, self.email_address)
         return name.strip()
-
-
-@attrs
-class ParagraphMixin(FieldMixin):
-    """
-    A mixin for a basic Paragraph with an extra data mapping for unknown fields
-    overflow.
-    """
-
-    @classmethod
-    def from_dict(cls, data):
-        assert isinstance(data, dict)
-        known_names = list(fields_dict(cls))
-
-        known_data = {}
-        known_data['extra_data'] = extra_data = {}
-
-        for key, value in data.items():
-            key = key.replace('-', '_')
-            if value:
-                if isinstance(value, list):
-                    value = '\n'.join(value)
-                if key in known_names:
-                    known_data[key] = value
-                else:
-                    extra_data[key] = value
-
-        return cls(**known_data)
-
-    def to_dict(self):
-        data = {}
-        for field_name in fields_dict(self.__class__):
-            if field_name == 'extra_data':
-                continue
-            field_value = getattr(self, field_name)
-            if field_value:
-                if hasattr(field_value, 'dumps'):
-                    field_value = field_value.dumps()
-                data[field_name] = field_value
-
-        for field_name, field_value in getattr(self, 'extra_data', {}).items():
-            if field_value:
-                # always treat these extra values as formatted
-                field_value = field_value and as_formatted_text(field_value)
-            data[field_name] = field_value
-        return data
-
-    def dumps(self, **kwargs):
-        text = []
-        items = self.to_dict().items()
-        for field_name, field_value in items:
-            if field_value:
-                field_name = field_name.replace('_', '-')
-                field_name = normalize_control_field_name(field_name)
-                text.append('{}: {}'.format(field_name, field_value))
-        return '\n'.join(text).strip()
-
-    def is_empty(self):
-        """
-        Return True if all fields are empty
-        """
-        return not any(self.to_dict().values())
-
-    def has_extra_data(self):
-        return getattr(self, 'extra_data', None)
 
 
 def get_paragraphs_data_from_file(location):

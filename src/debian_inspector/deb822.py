@@ -7,100 +7,129 @@
 #
 
 """
-A parser for deb822  (RFC822, RFC2822, and similar) data file used by Debian
-control and copyright files, and several similar formats.
+A parser for deb822 data files as used by Debian control and copyright files,
+and several related formats.
 
 For details, see:
 - https://www.debian.org/doc/debian-policy/ch-controlfields
 - https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 - https://datatracker.ietf.org/doc/rfc2822/
 
+Why yet another Debian 822 parser?
 
-Why yet another RFC822/Debian822 parser?
+This module exists because no existing parser module supports some must-have
+features. Neither the standard email module nor the python-debian library, nor
+other existing libraries can do these:
 
-This module exists becausee no other parser module (in particular the stadard
-email module) is able to track the start and end line numbers of each email
-header and we need line number to trace license detection and data collecion in
-Debian manifests, in particular in copyright files.
+- track the start and end line numbers of each field within each paragraph: we
+  need line numbers to trace license detection in copyright files.
+
+- lenient parsing recovering from common errors: this helps handling a larger
+  variety of copyright files even if they are not exactly well-formed
 """
+
+import re
 
 import attr
 
 from debian_inspector.debcon import read_text_file
 
 
-def get_header_fields_groups(text):
+def get_paragraphs_as_field_groups(text):
     """
-    Yield lists of HeaderField for each paragraph in a ``text`` each separated
+    Yield lists of Deb822Field for each paragraph in a ``text`` each separated
     by one or more empty lines. Raise Exceptions on errors.
     """
-    return get_header_fields_groups_from_lines(NumberedLine.lines_from_text(text))
+    return get_paragraphs_as_field_groups_from_lines(NumberedLine.lines_from_text(text))
 
 
-def get_header_fields_groups_from_file(location):
+def get_paragraphs_as_field_groups_from_file(location):
     """
-    Yield lists of HeaderField for each paragraph in a control file at
+    Yield lists of Deb822Field for each paragraph in a control file at
     ``location``. Raise Exceptions on errors.
     """
     if not location:
         return []
-    return get_header_fields_groups(read_text_file(location))
+    return get_paragraphs_as_field_groups(read_text_file(location))
 
 
-def get_header_fields_groups_from_lines(numbered_lines):
+def get_paragraphs_as_field_groups_from_lines(numbered_lines):
     """
-    Yield lists of HeaderField for each paragraph in a ``numbered_lines`` list
+    Yield lists of Deb822Field for each paragraph in a ``numbered_lines`` list
     of NumberedLine. Raise Exceptions on errors.
     """
-    header_fields_group = []
-    current_header_field = None
-    for line in numbered_lines:
+    numbered_lines = list(numbered_lines)
+    last_idx = len(numbered_lines) - 1
+    fields_group = []
+    current_field = None
+    for idx, line in enumerate(numbered_lines):
 
-        # One or more blank line terminates a paragraph of header_fields_group
-        # and starts a new one.
+        # blank line: One or more blank line should terminates paragraph (e.g. a
+        # fields_group) and starts a new one. There is one exception
+        # though which is when the next line is not a new field declaration.
+        # While this is not valid, this is a common mistake in copyright files
+        # and we want to recover from this so we treat that empty line as a
+        # continuation.
         if line.is_blank():
-            if header_fields_group:
-                header_fields_group = clean_header_fields(header_fields_group)
-                yield header_fields_group
-                header_fields_group = []
-                current_header_field = None
+            # peek one line ahead if next is a header field...
+            if (
+                current_field 
+                and idx != last_idx 
+                and not numbered_lines[idx + 1].is_field_declaration()
+                and not numbered_lines[idx + 1].is_blank()
+            ):
+                current_field.add_continuation_line(line)
+                continue
+
+            if fields_group:
+                fields_group = clean_fields(fields_group)
+                yield fields_group
+                fields_group = []
+                current_field = None
             else:
                 # skip empty lines in between paragraphs
                 pass
 
-        # a header field continuation line
-        elif current_header_field and line.is_continuation():
-            current_header_field.add_continuation_line(line)
+        # continuation line: append this to the current field
+        elif current_field and line.is_field_continuation():
+            current_field.add_continuation_line(line)
 
-        # a new header field line
-        elif line.is_header_field():
-            current_header_field = HeaderField.from_line(line)
-            if not current_header_field:
-                raise Exception(f'Invalid header field line: {line}')
-            header_fields_group.append(current_header_field)
+        # new field declaration line: create a new field
+        elif line.is_field_declaration():
+            current_field = Deb822Field.from_line(line)
+            if not current_field:
+                raise Exception(f'Invalid field line: {line}')
+            fields_group.append(current_field)
+
+        # an unknown line: we yield the curremt group and then yield this as
+        # its own group
         else:
-            # an unknown line:  we yield this as its own group
-            if header_fields_group:
-                header_fields_group = clean_header_fields(header_fields_group)
-                yield header_fields_group
+            if fields_group:
+                fields_group = clean_fields(fields_group)
+                yield fields_group
+
             # craft a synthetic header with name "unknown"
-            yield [HeaderField(name='unknown', lines=[line])]
-            header_fields_group = []
-            current_header_field = None
+            yield [Deb822Field(name='unknown', lines=[line])]
+            fields_group = []
+            current_field = None
 
-    # last header fields group if any
-    if header_fields_group:
-        header_fields_group = clean_header_fields(header_fields_group)
-        yield header_fields_group
+    # last header fields group: if any: yield this
+    if fields_group:
+        fields_group = clean_fields(fields_group)
+        yield fields_group
 
 
-def clean_header_fields(header_fields):
+def clean_fields(fields):
     """
-    Clean and return a ``header_fields`` list of HeaderField.
+    Clean and return a ``fields`` list of Deb822Field.
     """
-    for hf in (header_fields or []):
+    for hf in (fields or []):
         hf.rstrip()
-    return header_fields
+    return fields
+
+
+is_field_declaration = re.compile(r'^[a-z]+[a-z0-9\-]*:.*$', re.IGNORECASE).match
+is_field_continuation = re.compile(r'^[ \t]+[\S]+.*$', re.IGNORECASE).match
 
 
 @attr.s(slots=True)
@@ -111,17 +140,64 @@ class NumberedLine:
     number = attr.ib()
     value = attr.ib()
 
-    def is_empty(self):
-        return not self.value
-
     def is_blank(self):
         return not self.value.strip()
 
-    def is_header_field(self):
-        return ':' in self.value and not self.is_continuation()
+    def is_field_declaration(self):
+        """
+        Return True if this is a continuation line.
 
-    def is_continuation(self):
-        return self.value.startswith((' ', '\t'))
+        For example:
+
+        >>> NumberedLine(1, 'foo').is_field_declaration()
+        False
+        >>> NumberedLine(1, '').is_field_declaration()
+        False
+        >>> NumberedLine(1, '   ').is_field_declaration()
+        False
+        >>> NumberedLine(1, '  Some: bar ').is_field_declaration()
+        False
+        >>> NumberedLine(1, 'Some:').is_field_declaration()
+        True
+        >>> NumberedLine(1, 'foo: bar').is_field_declaration()
+        True
+        >>> NumberedLine(1, 'foo:bar').is_field_declaration()
+        True
+        >>> NumberedLine(1, 'foo: ').is_field_declaration()
+        True
+        >>> NumberedLine(1, ' .').is_field_declaration()
+        False
+        >>> NumberedLine(1, '    .').is_field_declaration()
+        False
+        """
+        return bool(is_field_declaration(self.value))
+
+    def is_field_continuation(self):
+        """
+        Return True if this is a field declaration line.
+
+        For example:
+
+        >>> NumberedLine(1, 'foo').is_field_continuation()
+        False
+		>>> NumberedLine(1, '').is_field_continuation()
+		False
+		>>> NumberedLine(1, '   ').is_field_continuation()
+		False
+		>>> NumberedLine(1, '	').is_field_continuation()
+		False
+        >>> NumberedLine(1, '   foo').is_field_continuation()
+        True
+        >>> NumberedLine(1, ' .').is_field_continuation()
+        True
+        >>> NumberedLine(1, '	.').is_field_continuation()
+        True
+        >>> NumberedLine(1, ' "').is_field_continuation()
+        True
+        >>> NumberedLine(1, ' (').is_field_continuation()
+        True
+        """
+        return bool(is_field_continuation(self.value))
 
     @classmethod
     def lines_from_text(cls, text):
@@ -138,11 +214,11 @@ class NumberedLine:
 
 
 @attr.s(slots=True)
-class HeaderField:
+class Deb822Field:
     """
-    A named HeaderField field with a list of NumberedLines.
+    A Deb822Field field with a name and a list of NumberedLines.
     """
-    # header field name, normalized as stripped and lowercase
+    # field name, normalized as stripped and lowercase
     name = attr.ib(default=None)
 
     lines = attr.ib(default=attr.Factory(list))
@@ -173,7 +249,6 @@ class HeaderField:
         return self
 
     def add_continuation_line(self, line):
-        assert line.is_continuation()
         self.lines.append(
             NumberedLine(number=line.number, value=line.value.rstrip())
         )
@@ -181,10 +256,11 @@ class HeaderField:
     @classmethod
     def from_line(cls, line):
         """
-        Parse a ``line`` Line object as a "Name: value" header line and return a
-        HeaderField object. Return None if this is not a HeaderField.
+        Parse a ``line`` Line object as a "Name: value" declaration line and
+        return a Deb822Field object. Return None if this is not a deb822 field
+        declaration line.
         """
-        if not line or not line.is_header_field():
+        if not line or not line.is_field_declaration():
             return
 
         name, _colon, value = line.value.partition(':')

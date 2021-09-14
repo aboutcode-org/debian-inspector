@@ -1,0 +1,177 @@
+[
+  [
+    {
+      "name": "format",
+      "lines": [
+        {
+          "number": 1,
+          "value": "https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/"
+        }
+      ]
+    },
+    {
+      "name": "upstream-name",
+      "lines": [
+        {
+          "number": 2,
+          "value": "linux-firmware"
+        }
+      ]
+    },
+    {
+      "name": "upstream-contact",
+      "lines": [
+        {
+          "number": 3,
+          "value": "linux-firmware@kernel.org"
+        }
+      ]
+    },
+    {
+      "name": "source",
+      "lines": [
+        {
+          "number": 4,
+          "value": "https://git.kernel.org/cgit/linux/kernel/git/firmware/linux-firmware.git"
+        }
+      ]
+    }
+  ],
+  [
+    {
+      "name": "files",
+      "lines": [
+        {
+          "number": 6,
+          "value": "qlogic/1040.bin, qlogic/1280.bin, qlogic/12160.bin"
+        }
+      ]
+    },
+    {
+      "name": "copyright",
+      "lines": [
+        {
+          "number": 7,
+          "value": "1995, 1996, 1997, 1998, 1999, 2000, QLogic, Inc."
+        }
+      ]
+    },
+    {
+      "name": "license",
+      "lines": [
+        {
+          "number": 8,
+          "value": "Binary redistribution (QLogic 1)"
+        },
+        {
+          "number": 9,
+          "value": " Redistribution and use in source and binary forms are permitted provided"
+        },
+        {
+          "number": 10,
+          "value": " that the following conditions are met:"
+        },
+        {
+          "number": 11,
+          "value": ""
+        },
+        {
+          "number": 12,
+          "value": " 1. Redistribution of source code must retain the above copyright"
+        },
+        {
+          "number": 13,
+          "value": "    notice, this list of conditions and the following disclaimer."
+        },
+        {
+          "number": 14,
+          "value": ""
+        },
+        {
+          "number": 15,
+          "value": " THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR"
+        },
+        {
+          "number": 16,
+          "value": " IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES"
+        },
+        {
+          "number": 17,
+          "value": " THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
+        }
+      ]
+    }
+  ],
+  [
+    {
+      "name": "files",
+      "lines": [
+        {
+          "number": 21,
+          "value": "sd7220.fw:"
+        }
+      ]
+    },
+    {
+      "name": "license",
+      "lines": [
+        {
+          "number": 22,
+          "value": "The OpenIB.org BSD license"
+        },
+        {
+          "number": 23,
+          "value": " All rights reserved."
+        },
+        {
+          "number": 24,
+          "value": " ."
+        },
+        {
+          "number": 25,
+          "value": ""
+        },
+        {
+          "number": 26,
+          "value": " Redistribution and use in source and binary forms, with or"
+        },
+        {
+          "number": 27,
+          "value": " without modification, are permitted provided that the following"
+        },
+        {
+          "number": 28,
+          "value": " conditions are met:"
+        },
+        {
+          "number": 29,
+          "value": ""
+        },
+        {
+          "number": 30,
+          "value": "  - Redistributions of source code must retain the above"
+        },
+        {
+          "number": 31,
+          "value": "    copyright notice, this list of conditions and the following"
+        },
+        {
+          "number": 32,
+          "value": "    disclaimer."
+        },
+        {
+          "number": 33,
+          "value": ""
+        },
+        {
+          "number": 34,
+          "value": "  - Redistributions in binary form must reproduce the above"
+        },
+        {
+          "number": 35,
+          "value": "    copyright notice, this list of conditions and the following"
+        }
+      ]
+    }
+  ]
+]
