@@ -4,17 +4,16 @@ Changelog
 v30.0.0 - 2021-09-07
 ------------------------
 
+This is a major incompatible version
+
 - Switch back to semver/semantic versioning
-
 - Add new deb822 parser for tracking line number in copyright files #13
-
 - Track line numbers in copyright files to ensure proper line tracking in
   license detection in https://github.com/nexB/scancode-toolkit/issues/2643
-
 - Drop sort arguments on debcon objects ``dump/s`` methods. This was not
   designed consistently and is not used anywhere.
-
 - Remove deprecated debut module. Use the debian_inspector module instead.
+- Adop latest skeleton: this rename virtual environment directory from ``tmp`` to ``venv``
 
 
 v21.5.25 - 2021-05-25
