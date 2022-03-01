@@ -1,0 +1,4 @@
+Files: ext/xmlrpc/libxmlrpc/base64.h ext/xmlrpc/libxmlrpc/base64.c
+Copyright: John Walker
+Licence: public-domain
+ This program is in the public domain.

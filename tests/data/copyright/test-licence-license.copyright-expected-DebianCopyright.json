@@ -1,0 +1,24 @@
+{
+  "paragraphs": [
+    {
+      "files": "ext/xmlrpc/libxmlrpc/base64.h\n ext/xmlrpc/libxmlrpc/base64.c",
+      "copyright": "John Walker",
+      "license": "public-domain\n This program is in the public domain.",
+      "comment": "",
+      "line_numbers_by_field": {
+        "files": [
+          1,
+          1
+        ],
+        "copyright": [
+          2,
+          2
+        ],
+        "license": [
+          3,
+          4
+        ]
+      }
+    }
+  ]
+}

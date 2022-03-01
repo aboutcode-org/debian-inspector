@@ -119,6 +119,13 @@ class TestDebianCopyright(JsonTester):
         results = copyright.DebianCopyright.from_file(test_file)
         self.check_json(results.to_dict(with_lines=True), expected_loc, regen=False)
 
+    def test_DebianCopyright_from_file_licence_to_license(self):
+        test_file = self.get_test_loc('copyright/test-licence-license.copyright')
+        expected_loc = 'copyright/test-licence-license.copyright-expected-DebianCopyright.json'
+        results = copyright.DebianCopyright.from_file(test_file)
+        self.check_json(results.to_dict(with_lines=True), expected_loc, regen=True)
+
+
 
 class TestCopyright(JsonTester):
     test_data_dir = path.join(path.dirname(__file__), 'data')

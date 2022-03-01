@@ -73,8 +73,8 @@ def get_paragraphs_as_field_groups_from_lines(numbered_lines):
         if line.is_blank():
             # peek one line ahead if next is a header field...
             if (
-                current_field 
-                and idx != last_idx 
+                current_field
+                and idx != last_idx
                 and not numbered_lines[idx + 1].is_field_declaration()
                 and not numbered_lines[idx + 1].is_blank()
             ):
@@ -267,6 +267,13 @@ class Deb822Field:
         name = name.strip().lower()
         if not name:
             return
+
+        # There are some cases where Debian copyright files spells the
+        # license field of a paragraph as "licence". We must correct this
+        # otherwise the license information will be stored under "licence"
+        # instead of "license".
+        if name == 'licence':
+            name = 'license'
 
         value = value.strip()
         first_line = NumberedLine(number=line.number, value=value)
