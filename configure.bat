@@ -49,8 +49,10 @@ set "CFG_BIN_DIR=%CFG_ROOT_DIR%\%VIRTUALENV_DIR%\Scripts"
 
 @rem ################################
 @rem # Thirdparty package locations and index handling
-set "PIP_EXTRA_ARGS=--find-links %CFG_ROOT_DIR%\thirdparty --find-links https://thirdparty.aboutcode.org/pypi" & %INDEX_ARG%
-@rem ################################
+if exist "%CFG_ROOT_DIR%\thirdparty" (
+    set PIP_EXTRA_ARGS=--find-links "%CFG_ROOT_DIR%\thirdparty"
+)
+set "PIP_EXTRA_ARGS=%PIP_EXTRA_ARGS% --find-links https://thirdparty.aboutcode.org/pypi" & %INDEX_ARG%
 
 
 @rem ################################
@@ -90,8 +92,8 @@ set "PIP_EXTRA_ARGS=%PIP_EXTRA_ARGS% %NO_INDEX%"
 @rem # Otherwise the latest Python by default.
 if not defined PYTHON_EXECUTABLE (
     @rem # check for a file named PYTHON_EXECUTABLE
-    if exist ""%CFG_ROOT_DIR%\PYTHON_EXECUTABLE"" (
-        set /p PYTHON_EXECUTABLE=<""%CFG_ROOT_DIR%\PYTHON_EXECUTABLE""
+    if exist "%CFG_ROOT_DIR%\PYTHON_EXECUTABLE" (
+        set /p PYTHON_EXECUTABLE=<"%CFG_ROOT_DIR%\PYTHON_EXECUTABLE"
     ) else (
         set "PYTHON_EXECUTABLE=py"
     )
@@ -103,12 +105,12 @@ if not defined PYTHON_EXECUTABLE (
 @rem # presence is not consistent across Linux distro and sometimes pip is not
 @rem # included either by default. The virtualenv.pyz app cures all these issues.
 
-if not exist ""%CFG_BIN_DIR%\python.exe"" (
+if not exist "%CFG_BIN_DIR%\python.exe" (
     if not exist "%CFG_BIN_DIR%" (
-        mkdir %CFG_BIN_DIR%
+        mkdir "%CFG_BIN_DIR%"
     )
 
-    if exist ""%CFG_ROOT_DIR%\etc\thirdparty\virtualenv.pyz"" (
+    if exist "%CFG_ROOT_DIR%\etc\thirdparty\virtualenv.pyz" (
         %PYTHON_EXECUTABLE% "%CFG_ROOT_DIR%\etc\thirdparty\virtualenv.pyz" ^
             --wheel embed --pip embed --setuptools embed ^
             --seeder pip ^
@@ -116,9 +118,9 @@ if not exist ""%CFG_BIN_DIR%\python.exe"" (
             --no-periodic-update ^
             --no-vcs-ignore ^
             %CFG_QUIET% ^
-            %CFG_ROOT_DIR%\%VIRTUALENV_DIR%
+            "%CFG_ROOT_DIR%\%VIRTUALENV_DIR%"
     ) else (
-        if not exist ""%CFG_ROOT_DIR%\%VIRTUALENV_DIR%\virtualenv.pyz"" (
+        if not exist "%CFG_ROOT_DIR%\%VIRTUALENV_DIR%\virtualenv.pyz" (
             curl -o "%CFG_ROOT_DIR%\%VIRTUALENV_DIR%\virtualenv.pyz" %VIRTUALENV_PYZ_URL%
 
             if %ERRORLEVEL% neq 0 (
@@ -132,7 +134,7 @@ if not exist ""%CFG_BIN_DIR%\python.exe"" (
             --no-periodic-update ^
             --no-vcs-ignore ^
             %CFG_QUIET% ^
-            %CFG_ROOT_DIR%\%VIRTUALENV_DIR%
+            "%CFG_ROOT_DIR%\%VIRTUALENV_DIR%"
     )
 )
 
@@ -148,7 +150,7 @@ if %ERRORLEVEL% neq 0 (
 @rem # speeds up the installation.
 @rem # We always have the PEP517 build dependencies installed already.
 
-%CFG_BIN_DIR%\pip install ^
+"%CFG_BIN_DIR%\pip" install ^
     --upgrade ^
     --no-build-isolation ^
     %CFG_QUIET% ^
@@ -156,7 +158,10 @@ if %ERRORLEVEL% neq 0 (
     %CFG_REQUIREMENTS%
 
 @rem # Create junction to bin to have the same directory between linux and windows
-mklink /J %CFG_ROOT_DIR%\%VIRTUALENV_DIR%\bin %CFG_ROOT_DIR%\%VIRTUALENV_DIR%\Scripts
+if exist "%CFG_ROOT_DIR%\%VIRTUALENV_DIR%\bin" (
+    rmdir /s /q "%CFG_ROOT_DIR%\%VIRTUALENV_DIR%\bin"
+)
+mklink /J "%CFG_ROOT_DIR%\%VIRTUALENV_DIR%\bin" "%CFG_ROOT_DIR%\%VIRTUALENV_DIR%\Scripts"
 
 if %ERRORLEVEL% neq 0 (
     exit /b %ERRORLEVEL%
