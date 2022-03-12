@@ -1,12 +1,12 @@
 #
 # Copyright (c) nexB Inc. and others. All rights reserved.
+# Copyright (c) 2018 Peter Odding
+# Author: Peter Odding <peter@peterodding.com>
+# URL: https://github.com/xolox/python-deb-pkg-tools
 # SPDX-License-Identifier: Apache-2.0 AND MIT
 # See http://www.apache.org/licenses/LICENSE-2.0 for the license text.
 # See https://github.com/nexB/debian-inspector for support or download.
 # See https://aboutcode.org for more information about nexB OSS projects.
-# Copyright (c) 2018 Peter Odding
-# Author: Peter Odding <peter@peterodding.com>
-# URL: https://github.com/xolox/python-deb-pkg-tools
 
 import re
 
@@ -227,12 +227,9 @@ class VersionedRelationship(Relationship):
             return None
 
     def __str__(self, *args, **kwargs):
-
-        s = '{name} ({operator} {version})'.format(
-            name=self.name, operator=self.operator, version=self.version)
+        s = f'{self.name} ({self.operator} {self.version})'
         if self.architectures:
             s += ' [{}]'.format(' '.join(self.architectures))
-
         return s
 
 
