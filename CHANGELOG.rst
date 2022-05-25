@@ -1,7 +1,7 @@
 Changelog
 =========
 
-v30.0.1 - 2022-05-25
+v31.0.0b1 - 2022-05-25
 ------------------------
 
 - Fix error when using ``get_license_detection_from_nameless_paragraph()`` on
