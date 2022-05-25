@@ -1,5 +1,8 @@
-debian_inspector: Utilities to parse Debian package, copyright and control files
-================================================================================
+=================================
+debian_inspector
+=================================
+
+Utilities to parse Debian package, copyright and control files
 
 The Python package `debian_inspector` is a collection of utilities to parse
 various Debian package manifests, machine readable copyright and control files

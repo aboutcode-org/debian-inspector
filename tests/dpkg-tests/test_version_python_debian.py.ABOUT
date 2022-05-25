@@ -1,0 +1,11 @@
+about_resource: test_version_python_debian.py
+name: python-debian
+license_expression: gpl-2.0-plus 
+download_url: https://salsa.debian.org/python-debian-team/python-debian/-/raw/b3e0d0f3b77e5107a5b627faf0c459bd3b47b1f1/lib/debian/tests/test_debian_support.py
+copyright: |
+ Copyright (C) 2005 Florian Weimer <fw@deneb.enyo.de>
+ Copyright (C) 2006-2007 James Westby <jw+debian@jameswestby.net>
+ Copyright (C) 2010 John Wright <jsw@debian.org>
+package_url: pkg:pypi/python-debian@0.1.39#lib/debian/tests/test_debian_support.py
+version: b3e0d0f3b77e5107a5b627faf0c459bd3b47b1f1
+notes: this subset of Python debian tests has been modified to tests version comparison and parsing

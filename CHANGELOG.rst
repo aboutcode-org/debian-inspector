@@ -1,6 +1,13 @@
 Changelog
 =========
 
+v30.0.1 - 2022-05-25
+------------------------
+
+- Fix error when using ``get_license_detection_from_nameless_paragraph()`` on
+  Debian copyright files who named the license field as ``licence`` #25
+
+
 v30.0.0 - 2021-09-07
 ------------------------
 
@@ -57,7 +64,7 @@ v0.9.6 - 2020-07-07
 -------------------
 
 - Support parsing Alpine installed db. This is a debian-like file but the keys
-  are case-sensitive 
+  are case-sensitive
 
 
 v0.9.5 - 2020-06-09

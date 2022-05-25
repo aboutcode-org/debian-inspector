@@ -1,0 +1,8 @@
+about_resource: test_version_dpkg.py
+name: dpkg
+license_expression: gpl-2.0-plus 
+download_url: https://salsa.debian.org/dpkg-team/dpkg/-/blob/55cdc52e9a9bccc7ba59087917f5cf7d88e312e4/lib/dpkg/t/t-version.c
+copyright:Copyright (c) 2009-2014 Guillem Jover <guillem@debian.org>
+package_url: pkg:generic/dpkg@@1.20.7.1#lib/dpkg/t/t-version.c
+notes: this subset of dpkg tests has been heavily modified and ported from C to Python
+ to tests version comparison and parsing
