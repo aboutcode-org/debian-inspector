@@ -7,17 +7,18 @@
 # -- Path setup --------------------------------------------------------------
 
 # If extensions (or modules to document with autodoc) are in another directory,
-# add these directories to sys.path here. If the directory is relative to the
-# documentation root, use os.path.abspath to make it absolute, like shown here.
-#
-# import os
-# import sys
-# sys.path.insert(0, os.path.abspath('.'))
+# add these directories to sys.path here.
+
+import pathlib
+import sys
+
+srcdir = pathlib.Path(__file__).resolve().parents[2].joinpath('src')
+sys.path.insert(0, srcdir.as_posix())
 
 
 # -- Project information -----------------------------------------------------
 
-project = "nexb-skeleton"
+project = "debian_inspector"
 copyright = "nexB Inc. and others."
 author = "AboutCode.org authors and contributors"
 
@@ -28,18 +29,20 @@ author = "AboutCode.org authors and contributors"
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
+    "sphinx.ext.autodoc",
     "sphinx.ext.intersphinx",
+    "sphinxcontrib.apidoc",
 ]
 
-# This points to aboutcode.readthedocs.io
-# In case of "undefined label" ERRORS check docs on intersphinx to troubleshoot
-# Link was created at commit - https://github.com/nexB/aboutcode/commit/faea9fcf3248f8f198844fe34d43833224ac4a83
+# Setting for sphinxcontrib.apidoc to automatically create API documentation.
+apidoc_module_dir = srcdir.joinpath('debian_inspector').as_posix()
+apidoc_separate_modules=True
+apidoc_module_first = True
 
+# Reference to other Sphinx documentations
 intersphinx_mapping = {
-    "aboutcode": ("https://aboutcode.readthedocs.io/en/latest/", None),
-    "scancode-workbench": ("https://scancode-workbench.readthedocs.io/en/develop/", None),
+    "python": ("https://docs.python.org/3", None),
 }
-
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
@@ -67,8 +70,8 @@ master_doc = "index"
 html_context = {
     "display_github": True,
     "github_user": "nexB",
-    "github_repo": "nexb-skeleton",
-    "github_version": "develop",  # branch
+    "github_repo": "debian-inspector",
+    "github_version": "main",  # branch
     "conf_py_path": "/docs/source/",  # path in the checkout to the docs root
 }
 

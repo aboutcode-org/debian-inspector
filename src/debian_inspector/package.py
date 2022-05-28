@@ -71,6 +71,7 @@ class CodeArchive(object):
     A Debian .orig or .debian package archive.
     These are not architecture-specific.
     For instance in ./pool/main/a/apr-util there are files such as:
+
     - apr-util_1.5.4.orig.tar.bz2 that contains the original upstream code
     - apr-util_1.6.1-4.debian.tar.xz that contains the Debian patches and
       control files

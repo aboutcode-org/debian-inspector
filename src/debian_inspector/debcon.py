@@ -692,8 +692,7 @@ def parse_control_fields(input_fields, deps_fields=DEPS_FIELDS):
       into Python data structures.
 
     - The value of some fields such as `Installed-Size` from a string to a
-    native type (here an integer).
-
+      native type (here an integer).
     """
     from debian_inspector import deps
     output_fields = {}
