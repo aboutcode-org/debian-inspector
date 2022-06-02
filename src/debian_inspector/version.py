@@ -235,6 +235,7 @@ def compare_strings(version1, version2):
     """
     Compare two version strings (upstream or revision) using Debain semantics
     and return one of the following integer numbers:
+
         - -1 means version1 sorts before version2
         - 0 means version1 and version2 are equal
         - 1 means version1 sorts after version2
