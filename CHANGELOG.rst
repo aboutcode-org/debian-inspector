@@ -7,8 +7,9 @@ v31.0.0 - 2022-08-24
 
 - Fix error when using ``get_license_detection_from_nameless_paragraph()`` on
   Debian copyright files who named the license field as ``licence`` #25
-
+- Use latest skeleton
 - Bump dependencies
+- Drop Python 3.6 support
 
 
 v30.0.0 - 2021-09-07
