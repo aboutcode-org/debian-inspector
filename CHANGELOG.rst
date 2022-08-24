@@ -1,11 +1,14 @@
 Changelog
 =========
 
-v31.0.0b1 - 2022-05-25
+
+v31.0.0 - 2022-08-24
 ------------------------
 
 - Fix error when using ``get_license_detection_from_nameless_paragraph()`` on
   Debian copyright files who named the license field as ``licence`` #25
+
+- Bump dependencies
 
 
 v30.0.0 - 2021-09-07
