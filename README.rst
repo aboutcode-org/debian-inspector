@@ -1,5 +1,5 @@
 =================================
-debian_inspector
+debian-inspector
 =================================
 
 Utilities to parse Debian package, copyright and control files
