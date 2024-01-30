@@ -93,7 +93,8 @@ class CodeArchive(object):
         return cls(
             name=name,
             version=version,
-            original_filename=filename)
+            original_filename=filename
+        )
 
     def to_dict(self):
         data = {}
@@ -110,14 +111,34 @@ class CodeArchive(object):
         return tuple(v for v in self.to_dict().values() if v != 'original_filename')
 
 
+@attrs
+class CodeMetadata(CodeArchive):
+    """
+    A .dsc, copyright or changelog file present in the debian
+    package/metadata archive and contains package information
+    on the filename or as file contents.
+
+    For example in ./changelogs/main/d/diffutils/ there are
+    files such as:
+    - diffutils_3.7-5_copyright
+    - diffutils_3.7-5_changelog
+    And in .pool/main/b/base-files/ there are files such as:
+    - base-files_11.1+deb11u8.dsc
+    """
+
+
 def get_nva(filename):
     """
     Return a tuple of (name string, Version object, archictecture string or
     None) parsed from the `filename` of .deb, .udeb, .orig or .debian archive..
     """
     is_known = False
-    if filename.endswith(('.deb', '.udeb')):
+    if filename.endswith(('.deb', '.udeb', '.dsc')):
         basename, _extension = path.splitext(filename)
+        is_known = True
+
+    elif filename.endswith(('_changelog', '_copyright')):
+        basename, _, _ = filename.rpartition("_")
         is_known = True
 
     elif filename.endswith(('.tar.gz', '.tar.xz', '.tar.bz2', '.tar.lzma')):

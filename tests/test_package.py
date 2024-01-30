@@ -121,6 +121,24 @@ class DebArchiveTestCase(unittest.TestCase):
             original_filename=fn)
         assert debarch == expected
 
+    def test_CodeMetadata_from_filename_dsc(self):
+        fn = 'base-files_11.1+deb11u8.dsc'
+        debarch = package.CodeMetadata.from_filename(fn)
+        expected = package.CodeMetadata(
+            name='base-files',
+            version=version.Version(epoch=0, upstream='11.1+deb11u8', revision='0'),
+            original_filename=fn)
+        assert debarch == expected
+
+    def test_CodeMetadata_from_filename_copyright(self):
+        fn = 'bash_4.1-3+deb6u2_copyright'
+        debarch = package.CodeMetadata.from_filename(fn)
+        expected = package.CodeMetadata(
+            name='bash',
+            version=version.Version(epoch=0, upstream='4.1', revision='3+deb6u2'),
+            original_filename=fn)
+        assert debarch == expected
+
     def test_CodeArchive_from_filename_supports_tar_gz_bz2_and_xz(self):
         package.CodeArchive.from_filename('python2.7_2.7.3-0ubuntu3.4.orig.tar.gz')
         package.CodeArchive.from_filename('python2.7_2.7.3-0ubuntu3.4.debian.tar.gz')
