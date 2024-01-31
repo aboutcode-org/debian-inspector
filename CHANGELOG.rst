@@ -2,6 +2,12 @@ Changelog
 =========
 
 
+v31.1.0 - 2024-02-01
+------------------------
+
+- Support parsing metadata filenames for purls #36
+- Use latest skeleton #37
+
 v31.0.0 - 2022-08-24
 ------------------------
 
