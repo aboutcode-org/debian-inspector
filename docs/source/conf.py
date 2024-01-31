@@ -32,16 +32,36 @@ extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.intersphinx",
     "sphinxcontrib.apidoc",
+    "sphinx_reredirects",
+    "sphinx_rtd_theme",
+    "sphinx_rtd_dark_mode",
+    "sphinx.ext.extlinks",
+    "sphinx_copybutton"
 ]
+
 
 # Setting for sphinxcontrib.apidoc to automatically create API documentation.
 apidoc_module_dir = srcdir.joinpath('debian_inspector').as_posix()
 apidoc_separate_modules=True
 apidoc_module_first = True
 
+
+# Redirects for olds pages
+# See https://documatt.gitlab.io/sphinx-reredirects/usage.html
+redirects = {}
+
+# This points to aboutcode.readthedocs.io
+# In case of "undefined label" ERRORS check docs on intersphinx to troubleshoot
+# Link was created at commit - https://github.com/nexB/aboutcode/commit/faea9fcf3248f8f198844fe34d43833224ac4a83
+
 # Reference to other Sphinx documentations
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3", None),
+    "aboutcode": ("https://aboutcode.readthedocs.io/en/latest/", None),
+    "scancode-workbench": (
+        "https://scancode-workbench.readthedocs.io/en/develop/",
+        None,
+    ),
 }
 
 # Add any paths that contain templates here, relative to this directory.
@@ -75,7 +95,9 @@ html_context = {
     "conf_py_path": "/docs/source/",  # path in the checkout to the docs root
 }
 
-html_css_files = ["_static/theme_overrides.css"]
+html_css_files = [
+    "theme_overrides.css",
+]
 
 
 # If true, "Created using Sphinx" is shown in the HTML footer. Default is True.
@@ -98,3 +120,7 @@ rst_prolog = """
 .. role:: img-title-para
 
 """
+
+# -- Options for LaTeX output -------------------------------------------------
+
+latex_elements = {"classoptions": ",openany,oneside"}
