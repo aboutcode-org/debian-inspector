@@ -177,7 +177,7 @@ _is_valid_version = re.compile(
     r'|'
       # If there is no debian_revision then hyphens are not allowed.
       # we are adding the extra check that it must end with alphanum
-      r'[A-Za-z0-9\.\+\~]*[A-Za-z0-9]-[A-Za-z0-9\+\.\~]*[A-Za-z0-9]'
+      r'[A-Za-z0-9\.\+\~]*[A-Za-z0-9]-[A-Za-z0-9\+\.\~]*[A-Za-z0-9\~]'
     r')?'
     r'$').match
 
