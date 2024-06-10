@@ -54,6 +54,9 @@ class DebianVersionTest(TestCase):
         assert (0, '0.0', '0') == Version.from_string('0:0.0-0').tuple()
         assert (0, '0.0', '00') == Version.from_string('0:0.0-00').tuple()
 
+    def test_Version_from_string_tilde(self):
+        assert '0~' == Version.from_string('0.0.0+dfsg-0~').revision
+
     def test_get_non_digit_prefix(self):
         assert '' == get_non_digit_prefix('')
         assert '' == get_non_digit_prefix('0')
