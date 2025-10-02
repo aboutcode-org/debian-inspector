@@ -12,7 +12,7 @@
 import pathlib
 import sys
 
-srcdir = pathlib.Path(__file__).resolve().parents[2].joinpath('src')
+srcdir = pathlib.Path(__file__).resolve().parents[2].joinpath("src")
 sys.path.insert(0, srcdir.as_posix())
 
 
@@ -36,13 +36,13 @@ extensions = [
     "sphinx_rtd_theme",
     "sphinx_rtd_dark_mode",
     "sphinx.ext.extlinks",
-    "sphinx_copybutton"
+    "sphinx_copybutton",
 ]
 
 
 # Setting for sphinxcontrib.apidoc to automatically create API documentation.
-apidoc_module_dir = srcdir.joinpath('debian_inspector').as_posix()
-apidoc_separate_modules=True
+apidoc_module_dir = srcdir.joinpath("debian_inspector").as_posix()
+apidoc_separate_modules = True
 apidoc_module_first = True
 
 
@@ -52,7 +52,7 @@ redirects = {}
 
 # This points to aboutcode.readthedocs.io
 # In case of "undefined label" ERRORS check docs on intersphinx to troubleshoot
-# Link was created at commit - https://github.com/nexB/aboutcode/commit/faea9fcf3248f8f198844fe34d43833224ac4a83
+# Link was created at commit - https://github.com/aboutcode-org/aboutcode/commit/faea9fcf3248f8f198844fe34d43833224ac4a83
 
 # Reference to other Sphinx documentations
 intersphinx_mapping = {
@@ -104,7 +104,8 @@ html_css_files = [
 html_show_sphinx = True
 
 # Define CSS and HTML abbreviations used in .rst files.  These are examples.
-# .. role:: is used to refer to styles defined in _static/theme_overrides.css and is used like this: :red:`text`
+# .. role:: is used to refer to styles defined in _static/theme_overrides.css
+# and is used like this: :red:`text`
 rst_prolog = """
 .. |psf| replace:: Python Software Foundation
 

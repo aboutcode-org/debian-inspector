@@ -37,10 +37,10 @@ def parse_contents(location, has_header=True):
     See https://wiki.debian.org/DebianRepository/Format#A.22Contents.22_indices
     for format details.
     """
-    if location.endswith('.gz'):
-        opener, mode = gzip.GzipFile, 'rb'
+    if location.endswith(".gz"):
+        opener, mode = gzip.GzipFile, "rb"
     else:
-        opener, mode = open, 'r'
+        opener, mode = open, "r"
 
     packages_by_path = defaultdict(list)
     paths_by_package = defaultdict(list)
@@ -56,15 +56,15 @@ def parse_contents(location, has_header=True):
 
         for line in lines:
             if isinstance(line, bytes):
-                line = line.decode('utf-8')
-            left, _, right = line.strip().rpartition(' ')
+                line = line.decode("utf-8")
+            left, _, right = line.strip().rpartition(" ")
             left = left.strip()
             right = right.strip()
-            if left == 'FILE' and right == 'LOCATION':
+            if left == "FILE" and right == "LOCATION":
                 if not has_header:
                     raise Exception(
-                        'Invalid Contents file with a FILE/LOCATION header: '
-                        'call with has_header=True.'
+                        "Invalid Contents file with a FILE/LOCATION header: "
+                        "call with has_header=True."
                     )
 
                 if not in_table:
@@ -77,7 +77,7 @@ def parse_contents(location, has_header=True):
                     continue
                 path = left
                 packages = right
-                package_names = packages.split(',')
+                package_names = packages.split(",")
                 for archsec_name in package_names:
                     # "A list of qualified package names, separated by comma. A
                     # qualified package name has the form
@@ -86,33 +86,34 @@ def parse_contents(location, has_header=True):
                     # package."
 
                     # NOTE: we ignore the arch and section for now
-                    archsec, _, package_name = archsec_name.rpartition('/')
-                    arch, _, section = archsec.rpartition('/')
+                    archsec, _, package_name = archsec_name.rpartition("/")
+                    arch, _, section = archsec.rpartition("/")
                     packages_by_path[path].append(package_name)
                     paths_by_package[package_name].append(path)
 
     if not in_table:
-        raise Exception('Invalid Content files without FILE/LOCATION header.')
+        raise Exception("Invalid Content files without FILE/LOCATION header.")
     return packages_by_path, paths_by_package
 
 
-if __name__ == '__main__':
-
+if __name__ == "__main__":
     import sys
     import time
+
     try:
         location = sys.argv[1]
         start = time.time()
         packages_by_path, paths_by_package = parse_contents(location, has_header=False)
         duration = time.time() - start
-        print(f'Parsing completed in {duration} seconds.')
+        print(f"Parsing completed in {duration} seconds.")
         names_count = len(paths_by_package)
         paths_count = len(packages_by_path)
-        print(f'Found {names_count} package names with {paths_count} paths.')
+        print(f"Found {names_count} package names with {paths_count} paths.")
 
     except Exception as e:
-        print('Parse a Debian Contents files and print stats.')
-        print('Usage: contents <path to a Gzipped Debian Contents index>')
-        print('For example, download this file: http://ftp.de.debian.org/debian/dists/Debian10.6/main/Contents-amd64.gz')
+        print("Parse a Debian Contents files and print stats.")
+        print("Usage: contents <path to a Gzipped Debian Contents index>")
+        print(
+            "For example, download this file: http://ftp.de.debian.org/debian/dists/Debian10.6/main/Contents-amd64.gz"
+        )
         raise
-

@@ -27,7 +27,8 @@ http://www.debian.org/doc/debian-policy/ch-relationships.html#s-depsyntax
 # Define a compiled regular expression pattern that we will use to match
 # package relationship expressions consisting of a package name followed by
 # optional version and architecture restrictions.
-parse_package_relationship_expression = re.compile(r'''
+parse_package_relationship_expression = re.compile(
+    r"""
     # Capture all leading characters up to (but not including)
     # the first parenthesis, bracket or space.
     (?P<name> [^\(\[ ]+ )
@@ -39,7 +40,9 @@ parse_package_relationship_expression = re.compile(r'''
     \s*
     # Optionally capture architecture restriction inside brackets.
     ( \[ (?P<architectures> [^\]]+ ) \] )?
-''', re.VERBOSE).match
+""",
+    re.VERBOSE,
+).match
 
 ARCHITECTURE_RESTRICTIONS_MESSAGE = "Architecture constraint is not implemented."
 
@@ -60,7 +63,7 @@ def parse_depends(relationships):
     """
 
     if isinstance(relationships, str):
-        relationships = (r.strip() for r in relationships.split(',') if r.strip())
+        relationships = (r.strip() for r in relationships.split(",") if r.strip())
 
     return AndRelationships.from_relationships(*(map(parse_alternatives, relationships)))
 
@@ -76,8 +79,8 @@ def parse_alternatives(expression):
 
     Each pipe-separated sub-expression is parsed with `parse_relationship()`
     """
-    if '|' in expression:
-        alternatives = (a.strip() for a in expression.split('|') if a.strip())
+    if "|" in expression:
+        alternatives = (a.strip() for a in expression.split("|") if a.strip())
         alternatives = (parse_relationship(a) for a in alternatives)
         return OrRelationships.from_relationships(*alternatives)
     else:
@@ -85,7 +88,7 @@ def parse_alternatives(expression):
 
 
 # split on operators
-split_on_ops = re.compile('([<>=]+)').split
+split_on_ops = re.compile("([<>=]+)").split
 
 
 def parse_relationship(expression):
@@ -105,15 +108,15 @@ def parse_relationship(expression):
     """
     try:
         pre = parse_package_relationship_expression(expression)
-        name = pre.group('name')
-        version = pre.group('version')
+        name = pre.group("name")
+        version = pre.group("version")
     except AttributeError:
-        print('gd:', pre.groupdict())
-        print('this:', repr(expression))
+        print("gd:", pre.groupdict())
+        print("this:", repr(expression))
         raise
 
     # Split the architecture restrictions into a tuple of strings.
-    architectures = tuple((pre.group('architectures') or '').split())
+    architectures = tuple((pre.group("architectures") or "").split())
 
     if name and not version:
         # A package name (and optional architecture restrictions) without
@@ -127,20 +130,17 @@ def parse_relationship(expression):
         if len(tokens) != 2:
             # Encountered something unexpected!
             raise ValueError(
-                'Corrupt package relationship expression: Splitting operator '
-                'from version resulted in more than two tokens! '
-                '(expression: {e}, tokens: {t})'.format(e=expression, t=tokens)
+                "Corrupt package relationship expression: Splitting operator "
+                "from version resulted in more than two tokens! "
+                "(expression: {e}, tokens: {t})".format(e=expression, t=tokens)
             )
         return VersionedRelationship(
-            name=name,
-            architectures=architectures,
-            operator=tokens[0],
-            version=tokens[1])
+            name=name, architectures=architectures, operator=tokens[0], version=tokens[1]
+        )
 
 
 @attrs
 class AbstractRelationship(object):
-
     @property
     def names(self):
         """
@@ -190,9 +190,8 @@ class Relationship(AbstractRelationship):
         if not self.architectures:
             return self.name
 
-        return '{name} {arches}'.format(
-            name=self.name,
-            arches='[{}]'.format(' '.join(self.architectures))
+        return "{name} {arches}".format(
+            name=self.name, arches="[{}]".format(" ".join(self.architectures))
         )
 
     def to_dict(self):
@@ -227,15 +226,14 @@ class VersionedRelationship(Relationship):
             return None
 
     def __str__(self, *args, **kwargs):
-        s = f'{self.name} ({self.operator} {self.version})'
+        s = f"{self.name} ({self.operator} {self.version})"
         if self.architectures:
-            s += ' [{}]'.format(' '.join(self.architectures))
+            s += " [{}]".format(" ".join(self.architectures))
         return s
 
 
 @attrs
 class MultipleRelationship(AbstractRelationship):
-
     relationships = attrib(default=tuple())
 
     @classmethod
@@ -282,7 +280,7 @@ class OrRelationships(MultipleRelationship):
         return matches
 
     def __str__(self, *args, **kwargs):
-        return ' | '.join(str(r) for r in self.relationships)
+        return " | ".join(str(r) for r in self.relationships)
 
 
 @attrs
@@ -307,5 +305,4 @@ class AndRelationships(MultipleRelationship):
             return None
 
     def __str__(self, *args, **kwargs):
-        return ', '.join(str(r) for r in self.relationships)
-
+        return ", ".join(str(r) for r in self.relationships)

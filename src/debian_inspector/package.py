@@ -28,6 +28,7 @@ class DebArchive(object):
     """
     A .deb binary package archive.
     """
+
     name = attrib()
     version = attrib()
     architecture = attrib()
@@ -44,17 +45,15 @@ class DebArchive(object):
 
         name, version, architecture = get_nva(path.basename(filename))
         return cls(
-            name=name,
-            version=version,
-            architecture=architecture,
-            original_filename=filename)
+            name=name, version=version, architecture=architecture, original_filename=filename
+        )
 
     def to_dict(self):
         data = {}
-        data['name'] = self.name
-        data['version'] = self.version
-        data['architecture'] = self.architecture
-        data['original_filename'] = self.original_filename
+        data["name"] = self.name
+        data["version"] = self.version
+        data["architecture"] = self.architecture
+        data["original_filename"] = self.original_filename
         return data
 
     def to_tuple(self):
@@ -62,7 +61,7 @@ class DebArchive(object):
         Return a tuple of name, Version, architecture suitable for sorting.
         This tuple does not contain the original_filename value.
         """
-        return tuple(v for v in self.to_dict().values() if v != 'original_filename')
+        return tuple(v for v in self.to_dict().values() if v != "original_filename")
 
 
 @attrs
@@ -76,6 +75,7 @@ class CodeArchive(object):
     - apr-util_1.6.1-4.debian.tar.xz that contains the Debian patches and
       control files
     """
+
     name = attrib()
     version = attrib()
     original_filename = attrib(default=None)
@@ -90,17 +90,13 @@ class CodeArchive(object):
             return filename
 
         name, version, _architecture = get_nva(path.basename(filename))
-        return cls(
-            name=name,
-            version=version,
-            original_filename=filename
-        )
+        return cls(name=name, version=version, original_filename=filename)
 
     def to_dict(self):
         data = {}
-        data['name'] = self.name
-        data['version'] = self.version
-        data['original_filename'] = self.original_filename
+        data["name"] = self.name
+        data["version"] = self.version
+        data["original_filename"] = self.original_filename
         return data
 
     def to_tuple(self):
@@ -108,7 +104,7 @@ class CodeArchive(object):
         Return a tuple of name, Vresion, architecture suitable for sorting.
         This tuple does not contain the original_filename values.
         """
-        return tuple(v for v in self.to_dict().values() if v != 'original_filename')
+        return tuple(v for v in self.to_dict().values() if v != "original_filename")
 
 
 @attrs
@@ -133,38 +129,36 @@ def get_nva(filename):
     None) parsed from the `filename` of .deb, .udeb, .orig or .debian archive..
     """
     is_known = False
-    if filename.endswith(('.deb', '.udeb', '.dsc')):
+    if filename.endswith((".deb", ".udeb", ".dsc")):
         basename, _extension = path.splitext(filename)
         is_known = True
 
-    elif filename.endswith(('_changelog', '_copyright')):
+    elif filename.endswith(("_changelog", "_copyright")):
         basename, _, _ = filename.rpartition("_")
         is_known = True
 
-    elif filename.endswith(('.tar.gz', '.tar.xz', '.tar.bz2', '.tar.lzma')):
+    elif filename.endswith((".tar.gz", ".tar.xz", ".tar.bz2", ".tar.lzma")):
         # A Format: 3.0 archive.
         # Note that we ignore the legacy .diff.gz files for Format: 1.0
-        basename, _, _ = filename.rpartition('.tar.')
+        basename, _, _ = filename.rpartition(".tar.")
         # remove the .orig or .debian
         basename, pkgtype = path.splitext(basename)
-        if pkgtype in ('.orig', '.debian'):
+        if pkgtype in (".orig", ".debian"):
             is_known = True
 
     if not is_known:
-        raise ValueError(
-            'Unknown Debian archive filename format: {}'.format(filename))
+        raise ValueError("Unknown Debian archive filename format: {}".format(filename))
 
-    parts = basename.split('_')
+    parts = basename.split("_")
     if len(parts) == 2:
         arch = None
         name, evr = parts
 
     elif len(parts) == 3:
-        name, evr , arch = parts
+        name, evr, arch = parts
 
     else:
-        raise ValueError(
-            'Unknown Debian archive filename format: {}'.format(filename))
+        raise ValueError("Unknown Debian archive filename format: {}".format(filename))
 
     return name, Version.from_string(evr), arch
 
@@ -205,8 +199,8 @@ def find_latest_version(packages):
     packages = sorted(packages, key=lambda p: p.to_tuple())
     names = set(p.name for p in packages)
     if len(names) > 1:
-        msg = 'Cannot compare versions of different package names'
-        raise ValueError(msg.format(' '.join(sorted(names))))
+        msg = "Cannot compare versions of different package names"
+        raise ValueError(msg.format(" ".join(sorted(names))))
     return packages[-1]
 
 
