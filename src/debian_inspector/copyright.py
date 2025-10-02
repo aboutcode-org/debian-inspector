@@ -350,7 +350,7 @@ class CopyrightHeaderParagraph(BaseParagraph):
     """
     The header paragraph.
 
-    https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/#header-paragraph
+    https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/#header-stanza
     """
 
     # Default should be:
@@ -399,7 +399,7 @@ class CopyrightFilesParagraph(BaseParagraph):
     """
     A "files" paragraph with files, copyright, license and comment fields.
 
-    https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/#files-paragraph
+    https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/#files-stanza
     """
 
     files = debcon.AnyWhiteSpaceSeparatedField.attrib(default=None)
@@ -448,7 +448,7 @@ class CopyrightLicenseParagraph(BaseParagraph):
     """
     A standalone license paragraph with license and comment fields, but no files.
 
-    https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/#stand-alone-license-paragraph
+    https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/#stand-alone-license-stanza
     """
 
     license = LicenseField.attrib(default=None)
