@@ -26,7 +26,7 @@ Parse, compare and sort Debian package versions.
 
 This module is an implementation of the version comparison and sorting algorithm
 described at
-https://www.debian.org/doc/debian-policy/ch-controlfields.html#s-f-Version
+https://www.debian.org/doc/debian-policy/ch-controlfields.html#version
 
 This has been substantially modified and enhanced from the original python-dpkg
 Dpkg class by Nathan J. Meh and team from The Climate Corporation and

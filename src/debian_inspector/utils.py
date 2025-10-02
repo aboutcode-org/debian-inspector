@@ -44,7 +44,7 @@ def find_debian_architecture():
              ``dpkg-architecture`` program is not available or reports an
              error.
 
-    .. _machine architecture labels: https://www.debian.org/doc/debian-policy/ch-controlfields.html#s-f-Architecture
+    .. _machine architecture labels: https://www.debian.org/doc/debian-policy/ch-controlfields.html#architecture
     .. _more architectures: https://www.debian.org/ports/index.en.html#portlist-released
     """
     _sysname, _nodename, _release, _version, machine = os.uname()
