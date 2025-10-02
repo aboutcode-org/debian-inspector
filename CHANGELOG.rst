@@ -5,6 +5,7 @@ v31.1.1 - 2025-10-01
 ------------------------
 
 - Add ~ to valid characters in ``_is_valid_version``
+- Use latest skeleton files
 
 v31.1.0 - 2024-02-01
 ------------------------
