@@ -63,7 +63,6 @@ def get_paragraphs_as_field_groups_from_lines(numbered_lines):
     fields_group = []
     current_field = None
     for idx, line in enumerate(numbered_lines):
-
         # blank line: One or more blank line should terminates paragraph (e.g. a
         # fields_group) and starts a new one. There is one exception
         # though which is when the next line is not a new field declaration.
@@ -98,7 +97,7 @@ def get_paragraphs_as_field_groups_from_lines(numbered_lines):
         elif line.is_field_declaration():
             current_field = Deb822Field.from_line(line)
             if not current_field:
-                raise Exception(f'Invalid field line: {line}')
+                raise Exception(f"Invalid field line: {line}")
             fields_group.append(current_field)
 
         # an unknown line: we yield the curremt group and then yield this as
@@ -109,7 +108,7 @@ def get_paragraphs_as_field_groups_from_lines(numbered_lines):
                 yield fields_group
 
             # craft a synthetic header with name "unknown"
-            yield [Deb822Field(name='unknown', lines=[line])]
+            yield [Deb822Field(name="unknown", lines=[line])]
             fields_group = []
             current_field = None
 
@@ -123,13 +122,13 @@ def clean_fields(fields):
     """
     Clean and return a ``fields`` list of Deb822Field.
     """
-    for hf in (fields or []):
+    for hf in fields or []:
         hf.rstrip()
     return fields
 
 
-is_field_declaration = re.compile(r'^[a-z]+[a-z0-9\-]*:.*$', re.IGNORECASE).match
-is_field_continuation = re.compile(r'^[ \t]+[\S]+.*$', re.IGNORECASE).match
+is_field_declaration = re.compile(r"^[a-z]+[a-z0-9\-]*:.*$", re.IGNORECASE).match
+is_field_continuation = re.compile(r"^[ \t]+[\S]+.*$", re.IGNORECASE).match
 
 
 @attr.s(slots=True)
@@ -137,6 +136,7 @@ class NumberedLine:
     """
     A text line that tracks its absolute line number. Numbers start at 1.
     """
+
     number = attr.ib()
     value = attr.ib()
 
@@ -180,12 +180,12 @@ class NumberedLine:
 
         >>> NumberedLine(1, 'foo').is_field_continuation()
         False
-		>>> NumberedLine(1, '').is_field_continuation()
-		False
-		>>> NumberedLine(1, '   ').is_field_continuation()
-		False
-		>>> NumberedLine(1, '	').is_field_continuation()
-		False
+                >>> NumberedLine(1, '').is_field_continuation()
+                False
+                >>> NumberedLine(1, '   ').is_field_continuation()
+                False
+                >>> NumberedLine(1, '	').is_field_continuation()
+                False
         >>> NumberedLine(1, '   foo').is_field_continuation()
         True
         >>> NumberedLine(1, ' .').is_field_continuation()
@@ -218,6 +218,7 @@ class Deb822Field:
     """
     A Deb822Field field with a name and a list of NumberedLines.
     """
+
     # field name, normalized as stripped and lowercase
     name = attr.ib(default=None)
 
@@ -225,7 +226,7 @@ class Deb822Field:
 
     @property
     def text(self):
-        return '\n'.join(l.value for l in self.lines)
+        return "\n".join(l.value for l in self.lines)
 
     @property
     def start_line(self):
@@ -249,9 +250,7 @@ class Deb822Field:
         return self
 
     def add_continuation_line(self, line):
-        self.lines.append(
-            NumberedLine(number=line.number, value=line.value.rstrip())
-        )
+        self.lines.append(NumberedLine(number=line.number, value=line.value.rstrip()))
 
     @classmethod
     def from_line(cls, line):
@@ -263,7 +262,7 @@ class Deb822Field:
         if not line or not line.is_field_declaration():
             return
 
-        name, _colon, value = line.value.partition(':')
+        name, _colon, value = line.value.partition(":")
         name = name.strip().lower()
         if not name:
             return
@@ -272,8 +271,8 @@ class Deb822Field:
         # license field of a paragraph as "licence". We must correct this
         # otherwise the license information will be stored under "licence"
         # instead of "license".
-        if name == 'licence':
-            name = 'license'
+        if name == "licence":
+            name = "license"
 
         value = value.strip()
         first_line = NumberedLine(number=line.number, value=value)

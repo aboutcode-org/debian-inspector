@@ -23,8 +23,10 @@ def is_signed(text):
     """
     if text and isinstance(text, str):
         text = text.strip()
-        return text and (text.startswith('-----BEGIN PGP SIGNED MESSAGE-----')
-                    and text.endswith('-----END PGP SIGNATURE-----'))
+        return text and (
+            text.startswith("-----BEGIN PGP SIGNED MESSAGE-----")
+            and text.endswith("-----END PGP SIGNATURE-----")
+        )
     return False
 
 
@@ -39,8 +41,9 @@ def remove_signature(text):
     signed = pgp_signed(text)
     if not signed:
         return text
-    unsigned = signed.groupdict().get('cleartext')
+    unsigned = signed.groupdict().get("cleartext")
     return unsigned
+
 
 # A re.VERBOSE regular expression to parse a PGP signed message in its parts.
 # the re.VERBOSE flag allows for:
@@ -49,7 +52,8 @@ def remove_signature(text):
 #  ignored, allowing for comments
 
 
-pgp_signed = re.compile(r"""
+pgp_signed = re.compile(
+    r"""
     # This capture group is optional because it will only be present in signed
     # cleartext messages
 
@@ -81,4 +85,6 @@ pgp_signed = re.compile(r"""
 
     ^-{5}END\ PGP\ (?P=magic)-{5}(?:\r?\n)?
 
-     """, flags=re.MULTILINE | re.VERBOSE).search  # NOQA
+     """,
+    flags=re.MULTILINE | re.VERBOSE,
+).search  # NOQA

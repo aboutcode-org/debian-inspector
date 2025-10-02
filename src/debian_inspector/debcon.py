@@ -76,6 +76,7 @@ class SingleLineField(FieldMixin):
     """
     https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/#single-line
     """
+
     value = attrib()
 
     @classmethod
@@ -83,7 +84,7 @@ class SingleLineField(FieldMixin):
         return cls(value=value and value.strip())
 
     def dumps(self):
-        return self.value or ''
+        return self.value or ""
 
 
 @attrs
@@ -91,6 +92,7 @@ class LineSeparatedField(FieldMixin):
     """
     https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/#line-based-lists
     """
+
     values = attrib()
 
     @classmethod
@@ -102,14 +104,15 @@ class LineSeparatedField(FieldMixin):
         return cls(values=values)
 
     def dumps(self, **kwargs):
-        return '\n '.join(self.values or [])
+        return "\n ".join(self.values or [])
 
 
 @attrs
 class LineAndSpaceSeparatedField(FieldMixin):
     """
-    This is a list of values where each item is itself a space-separated list.
+    LineAndSpaceSeparatedField is a list of values where each item is itself a space-separated list.
     """
+
     values = attrib()
 
     @classmethod
@@ -121,7 +124,7 @@ class LineAndSpaceSeparatedField(FieldMixin):
         return cls(values=values)
 
     def dumps(self, **kwargs):
-        return '\n '.join(' '.join(v) for v in self.values or [])
+        return "\n ".join(" ".join(v) for v in self.values or [])
 
 
 @attrs
@@ -130,6 +133,7 @@ class AnyWhiteSpaceSeparatedField(FieldMixin):
     https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/#white-space-lists
     This is a list of values where each item is itself a space-separated list.
     """
+
     values = attrib()
 
     @classmethod
@@ -140,7 +144,7 @@ class AnyWhiteSpaceSeparatedField(FieldMixin):
         return cls(values=values)
 
     def dumps(self, **kwargs):
-        return '\n '.join(self.values or [])
+        return "\n ".join(self.values or [])
 
 
 @attrs
@@ -149,6 +153,7 @@ class FormattedTextField(FieldMixin):
     https://www.debian.org/doc/debian-policy/ch-controlfields#description
     Like Description, but there is no special meaning for the first line.
     """
+
     text = attrib()
 
     @classmethod
@@ -160,7 +165,7 @@ class FormattedTextField(FieldMixin):
     def dumps(self, **kwargs):
         lines = line_separated(self.text)
         if not lines:
-            return ''
+            return ""
         return as_formatted_lines(lines)
 
 
@@ -170,15 +175,15 @@ def as_formatted_lines(lines):
     continuation for multilines.
     """
     if not lines:
-        return ''
+        return ""
     formatted = []
     for line in lines:
         is_blank = not line.strip()
         if is_blank:
-            formatted.append('.')
+            formatted.append(".")
         else:
-            formatted.append(f'{line}')
-    return '\n '.join(formatted)
+            formatted.append(f"{line}")
+    return "\n ".join(formatted)
 
 
 def as_formatted_text(text):
@@ -214,25 +219,25 @@ def from_formatted_lines(lines):
     text = [lines[0].strip()]
     for line in lines[1:]:
         line = line.rstrip()
-        if line.startswith('  '):
+        if line.startswith("  "):
             # starting with two or more spaces: displayed verbatim.
             text.append(line[1:])
-        elif line == (' .'):
+        elif line == (" ."):
             # containing a single space followed by a single full stop
             # character: rendered as blank lines.
-            text.append('')
-        elif line.startswith(' .'):
+            text.append("")
+        elif line.startswith(" ."):
             # containing a space, a full stop and some more characters:  for
             # future expansion.... but we keep them for now
             text.append(line[2:])
-        elif line.startswith(' '):
+        elif line.startswith(" "):
             # starting with a single space. kept stripped
             text.append(line.strip())
         else:
             # this should never happen!!!
             # but we keep it too
             text.append(line.strip())
-    return '\n'.join(text)
+    return "\n".join(text)
 
 
 @attrs
@@ -241,33 +246,34 @@ class DescriptionField(FieldMixin):
     https://www.debian.org/doc/debian-policy/ch-controlfields#description
     5.6.13. Description
     """
+
     synopsis = attrib(default=None)
     text = attrib(default=None)
 
     @classmethod
     def from_value(cls, value):
-        value = value or ''
+        value = value or ""
         lines = line_separated(value)
         if lines:
             synopsis = lines[0].strip()
             text = from_formatted_lines(lines[1:])
             return cls(synopsis=synopsis, text=text)
         else:
-            return cls(synopsis='')
+            return cls(synopsis="")
 
     def dumps(self, **kwargs):
         """
         Return a string representation of self.
         """
-        syn = self.synopsis or ''
+        syn = self.synopsis or ""
         syn = syn.strip()
         dumped = [syn]
-        text = self.text or ''
+        text = self.text or ""
         if text:
-            if text.startswith(' '):
+            if text.startswith(" "):
                 text = text[1:]
             dumped.append(as_formatted_text(text))
-        return '\n '.join(dumped)
+        return "\n ".join(dumped)
 
 
 @attrs
@@ -290,18 +296,19 @@ class FileField(FieldMixin):
     def from_value(cls, value):
         checksum = size = name = None
         if value:
-            checksum, size , name = space_separated(value)
-        return cls(checksum=checksum, size=size , name=name)
+            checksum, size, name = space_separated(value)
+        return cls(checksum=checksum, size=size, name=name)
 
     def dumps(self, **kwargs):
-        return '{} {} {}'.format(self.checksum, self.size , self.name)
+        return "{} {} {}".format(self.checksum, self.size, self.name)
 
 
 @attrs
 class FilesField(FieldMixin):
     """
-    This is a list of FileField
+    FilesField is a list of FileField
     """
+
     values = attrib()
 
     @classmethod
@@ -313,7 +320,7 @@ class FilesField(FieldMixin):
         return cls(values=values)
 
     def dumps(self, **kwargs):
-        return '\n '.join(v.dumps(**kwargs) for v in self.values or [])
+        return "\n ".join(v.dumps(**kwargs) for v in self.values or [])
 
 
 def collect_files(data):
@@ -324,21 +331,21 @@ def collect_files(data):
     contain redundant data.
     """
     files = {}
-    for name, size, md5 in collect_file(data.get('files', [])):
-        f = File(md5, size , name)
+    for name, size, md5 in collect_file(data.get("files", [])):
+        f = File(md5, size, name)
         files[name] = f
 
-    for name, size, sha1 in collect_file(data.get('checksums-sha1', [])):
+    for name, size, sha1 in collect_file(data.get("checksums-sha1", [])):
         f = files[name]
         assert f.size == size
         f.sha1 = sha1
 
-    for name, size, sha256 in collect_file(data.get('checksums-sha256', [])):
+    for name, size, sha256 in collect_file(data.get("checksums-sha256", [])):
         f = files[name]
         assert f.size == size
         f.sha256 = sha256
 
-    for name, size, sha512 in collect_file(data.get('checksums-v', [])):
+    for name, size, sha512 in collect_file(data.get("checksums-v", [])):
         f = files[name]
         assert f.size == size
         f.sha512 = sha512
@@ -352,7 +359,7 @@ def collect_file(value):
     which contains digest, size and name.
     """
     for line in line_separated(value):
-        digest, size , name = space_separated(line)
+        digest, size, name = space_separated(line)
         yield name, size, digest
 
 
@@ -362,6 +369,7 @@ class MaintainerField(FieldMixin):
     https://www.debian.org/doc/debian-policy/ch-controlfields#s-f-maintainer
     5.6.2. Maintainer
     """
+
     name = attrib()
     email_address = attrib(default=None)
 
@@ -379,7 +387,7 @@ class MaintainerField(FieldMixin):
     def dumps(self, **kwargs):
         name = self.name
         if self.email_address:
-            name = '{} <{}>'.format(name, self.email_address)
+            name = "{} <{}>".format(name, self.email_address)
         return name.strip()
 
 
@@ -399,7 +407,7 @@ def split_in_paragraphs(text):
     Yield paragraphs from a `text` string that contains one or more paragraph
     separated by empty lines. Each paragraph is a string.
     """
-    for p in re.split(r'\n\n(?:[ \t]*\n)*', text or ''):
+    for p in re.split(r"\n\n(?:[ \t]*\n)*", text or ""):
         if p:
             yield p
 
@@ -409,7 +417,7 @@ def get_paragraphs_data(text):
     Yield paragraph data mappings from the Debian control `text` string that
     contains multiple paragraphs (e.g. Package, status, copyright file, etc.).
     """
-    for para in split_in_paragraphs(text or ''):
+    for para in split_in_paragraphs(text or ""):
         yield get_paragraph_data(para)
 
 
@@ -444,7 +452,7 @@ def get_paragraph_data(text, remove_pgp_signature=False):
     True.
     """
     if not text:
-        return {'unknown': text}
+        return {"unknown": text}
 
     if remove_pgp_signature:
         text = unsign.remove_signature(text)
@@ -452,19 +460,19 @@ def get_paragraph_data(text, remove_pgp_signature=False):
     try:
         mls = email.message_from_string(text)
     except UnicodeEncodeError:
-        t = text.encode('utf-8')
+        t = text.encode("utf-8")
         mls = email.message_from_string(t)
 
     items = list(mls.items())
 
     if not items or mls.defects:
-        return {'unknown': text}
+        return {"unknown": text}
 
     # in a header-only email we should not have a payload. Yet when this happens
     # we should no ignore it either, so let's treat this as "unknown"
     payload = mls.get_payload()
     if payload:
-        items.append(('unknown', payload))
+        items.append(("unknown", payload))
 
     data = {}
     for name, value in items:
@@ -473,9 +481,9 @@ def get_paragraph_data(text, remove_pgp_signature=False):
         name = name.lower().strip()
         value = value.strip()
         if name in data:
-            existing_values = data.get(name, '').splitlines()
+            existing_values = data.get(name, "").splitlines()
             if value not in existing_values:
-                value = '\n'.join(existing_values + [value])
+                value = "\n".join(existing_values + [value])
         data[name] = value
 
     return data
@@ -501,11 +509,11 @@ def _splitter(value, separator):
 
 
 def comma_separated(value):
-    return _splitter(value, ',')
+    return _splitter(value, ",")
 
 
 def comma_space_separated(value):
-    return _splitter(value, ', ')
+    return _splitter(value, ", ")
 
 
 def space_separated(value):
@@ -525,12 +533,12 @@ def read_text_file(location):
     if not location:
         return
     try:
-        with io.open(location, 'r', encoding='utf-8') as tc:
+        with io.open(location, "r", encoding="utf-8") as tc:
             return tc.read()
     except UnicodeDecodeError:
-        with open(location, 'rb') as tc:
+        with open(location, "rb") as tc:
             content = tc.read()
-        enc = chardet.detect(content)['encoding']
+        enc = chardet.detect(content)["encoding"]
         return content.decode(enc)
 
 
@@ -554,7 +562,7 @@ class Debian822(MutableMapping):
             elif isinstance(data, str):
                 text = data
 
-            elif hasattr(data, 'read'):
+            elif hasattr(data, "read"):
                 text = data.read()
 
             elif isinstance(data, Sequence):
@@ -563,7 +571,7 @@ class Debian822(MutableMapping):
                 seq = list(data)
                 first = seq[0]
                 if isinstance(first, str):
-                    seq = (s.partition(': ') for s in seq)
+                    seq = (s.partition(": ") for s in seq)
                     paragraph = {k.lower(): v for k, _, v in seq}
                 else:
                     # seq of (k, v) items
@@ -571,9 +579,10 @@ class Debian822(MutableMapping):
 
             else:
                 raise TypeError(
-                    'Invalid argument type. Should be one of a file-like object, '
-                    'a text string, a sequence of items or a mapping but is '
-                    'instead:'.format(type(data)))
+                    "Invalid argument type. Should be one of a file-like object, "
+                    "a text string, a sequence of items or a mapping but is "
+                    "instead:".format(type(data))
+                )
             if text:
                 # we parse in a sequence of items
                 paragraph = get_paragraph_data(text, remove_pgp_signature=True)
@@ -600,9 +609,10 @@ class Debian822(MutableMapping):
     @classmethod
     def from_file(cls, location, remove_pgp_signature=True):
         data = get_paragraph_data_from_file(
-            location=location, remove_pgp_signature=remove_pgp_signature)
+            location=location, remove_pgp_signature=remove_pgp_signature
+        )
         if not data:
-            raise ValueError('Location has no parsable data: {}'.format(location))
+            raise ValueError("Location has no parsable data: {}".format(location))
         return Debian822(data)
 
     @classmethod
@@ -611,8 +621,7 @@ class Debian822(MutableMapping):
 
     def to_dict(self, normalize_names=False):
         if normalize_names:
-            return {normalize_control_field_name(key): value
-                for key, value in self.data.items()}
+            return {normalize_control_field_name(key): value for key, value in self.data.items()}
         else:
             return dict(self.data)
 
@@ -630,22 +639,22 @@ class Debian822(MutableMapping):
         lines = []
         for key, value in items:
             key = normalize_control_field_name(key)
-            lines.append('{}: {}'.format(key, value))
-        text = '\n'.join(lines) + '\n'
+            lines.append("{}: {}".format(key, value))
+        text = "\n".join(lines) + "\n"
         return text
 
     def dump(self, file_like=None, **kwargs):
         text = self.dumps(**kwargs)
         if file_like:
-            file_like.write(text.encode('utf-8'))
+            file_like.write(text.encode("utf-8"))
         else:
             return text
 
 
 DEFAULT_CONTROL_FIELDS = {
-    'Architecture': 'all',
-    'Priority': 'optional',
-    'Section': 'misc',
+    "Architecture": "all",
+    "Priority": "optional",
+    "Section": "misc",
 }
 
 
@@ -660,27 +669,28 @@ def load_control_file(control_file):
         return parse_control_fields(Debian822(inp))
 
 
-DEPS_FIELDS = frozenset([
-    # Binary control file fields.
-    'Breaks',
-    'Conflicts',
-    'Depends',
-    'Enhances',
-    'Pre-Depends',
-    'Provides',
-    'Recommends',
-    'Replaces',
-    'Suggests',
-
-    # Source control file fields.
-    'Build-Conflicts',
-    'Build-Conflicts-Arch',
-    'Build-Conflicts-Indep',
-    'Build-Depends',
-    'Build-Depends-Arch',
-    'Build-Depends-Indep',
-    'Built-Using',
-])
+DEPS_FIELDS = frozenset(
+    [
+        # Binary control file fields.
+        "Breaks",
+        "Conflicts",
+        "Depends",
+        "Enhances",
+        "Pre-Depends",
+        "Provides",
+        "Recommends",
+        "Replaces",
+        "Suggests",
+        # Source control file fields.
+        "Build-Conflicts",
+        "Build-Conflicts-Arch",
+        "Build-Conflicts-Indep",
+        "Build-Depends",
+        "Build-Depends-Arch",
+        "Build-Depends-Indep",
+        "Built-Using",
+    ]
+)
 
 
 def parse_control_fields(input_fields, deps_fields=DEPS_FIELDS):
@@ -695,12 +705,13 @@ def parse_control_fields(input_fields, deps_fields=DEPS_FIELDS):
       native type (here an integer).
     """
     from debian_inspector import deps
+
     output_fields = {}
     for name, unparsed_value in input_fields.items():
         name = normalize_control_field_name(name)
         if name in deps_fields:
             parsed_value = deps.parse_depends(unparsed_value)
-        elif name == 'Installed-Size':
+        elif name == "Installed-Size":
             parsed_value = int(unparsed_value)
         else:
             parsed_value = unparsed_value
@@ -722,8 +733,5 @@ def normalize_control_field_name(name):
 
     http://www.debian.org/doc/debian-policy/ch-controlfields.html#s-controlsyntax
     """
-    special_cases = dict(md5sum='MD5sum', sha1='SHA1', sha256='SHA256')
-    return '-'.join(special_cases.get(
-        w.lower(), w.capitalize())
-        for w in name.split('-')
-    )
+    special_cases = dict(md5sum="MD5sum", sha1="SHA1", sha256="SHA256")
+    return "-".join(special_cases.get(w.lower(), w.capitalize()) for w in name.split("-"))

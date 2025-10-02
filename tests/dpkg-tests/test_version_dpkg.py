@@ -34,7 +34,6 @@ parseversion = version.Version.from_string
 
 
 class VersionTests(TestCase):
-
     def test_version_compare(self):
         a = DPKG_VERSION_OBJECT(0, "1", "1")
         b = DPKG_VERSION_OBJECT(0, "2", "1")
@@ -76,30 +75,29 @@ class VersionTests(TestCase):
         #  FIXME: Complete.
 
     def test_version_relate(self):
-
         a = DPKG_VERSION_OBJECT(0, "1", "1")
         b = DPKG_VERSION_OBJECT(0, "1", "1")
-        assert dpkg_version_relate(a, '=', b)
-        assert not dpkg_version_relate(a, '<<', b)
-        assert dpkg_version_relate(a, '<=', b)
-        assert not dpkg_version_relate(a, '>>', b)
-        assert dpkg_version_relate(a, '>=', b)
+        assert dpkg_version_relate(a, "=", b)
+        assert not dpkg_version_relate(a, "<<", b)
+        assert dpkg_version_relate(a, "<=", b)
+        assert not dpkg_version_relate(a, ">>", b)
+        assert dpkg_version_relate(a, ">=", b)
 
         a = DPKG_VERSION_OBJECT(0, "1", "1")
         b = DPKG_VERSION_OBJECT(0, "2", "1")
-        assert not dpkg_version_relate(a, '=', b)
-        assert dpkg_version_relate(a, '<<', b)
-        assert dpkg_version_relate(a, '<=', b)
-        assert not dpkg_version_relate(a, '>>', b)
-        assert not dpkg_version_relate(a, '>=', b)
+        assert not dpkg_version_relate(a, "=", b)
+        assert dpkg_version_relate(a, "<<", b)
+        assert dpkg_version_relate(a, "<=", b)
+        assert not dpkg_version_relate(a, ">>", b)
+        assert not dpkg_version_relate(a, ">=", b)
 
         a = DPKG_VERSION_OBJECT(0, "2", "1")
         b = DPKG_VERSION_OBJECT(0, "1", "1")
-        assert not dpkg_version_relate(a, '=', b)
-        assert not dpkg_version_relate(a, '<<', b)
-        assert not dpkg_version_relate(a, '<=', b)
-        assert dpkg_version_relate(a, '>>', b)
-        assert dpkg_version_relate(a, '>=', b)
+        assert not dpkg_version_relate(a, "=", b)
+        assert not dpkg_version_relate(a, "<<", b)
+        assert not dpkg_version_relate(a, "<=", b)
+        assert dpkg_version_relate(a, ">>", b)
+        assert dpkg_version_relate(a, ">=", b)
 
     def test_version_parse(self):
         b = DPKG_VERSION_OBJECT(0, "0", "")
@@ -201,7 +199,6 @@ class VersionTests(TestCase):
         self.assertRaises(ValueError, parseversion, "0:0-azAZ09.+~")
 
     def test_version_parse_exceptions(self):
-
         #  Test empty version.
         self.assertRaises(ValueError, parseversion, "")
         self.assertRaises(ValueError, parseversion, " ")
@@ -237,12 +234,12 @@ class VersionTests(TestCase):
 
         #  Test invalid characters in upstream version.
         for p in "!#@$%&/|\\<>()[]{},_=*^'":
-            verstr = '0:0a' + p + '-0'
+            verstr = "0:0a" + p + "-0"
             self.assertRaises(ValueError, parseversion, verstr)
 
         #  Test invalid characters in revision.
         self.assertRaises(ValueError, parseversion, "0:0-0:0")
 
         for p in "!#@$%&/|\\<>()[]{}:,_=*^'":
-            verstr = '0:0-0' + p
+            verstr = "0:0-0" + p
             self.assertRaises(ValueError, parseversion, verstr)

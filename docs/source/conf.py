@@ -12,7 +12,7 @@
 import pathlib
 import sys
 
-srcdir = pathlib.Path(__file__).resolve().parents[2].joinpath('src')
+srcdir = pathlib.Path(__file__).resolve().parents[2].joinpath("src")
 sys.path.insert(0, srcdir.as_posix())
 
 
@@ -36,13 +36,13 @@ extensions = [
     "sphinx_rtd_theme",
     "sphinx_rtd_dark_mode",
     "sphinx.ext.extlinks",
-    "sphinx_copybutton"
+    "sphinx_copybutton",
 ]
 
 
 # Setting for sphinxcontrib.apidoc to automatically create API documentation.
-apidoc_module_dir = srcdir.joinpath('debian_inspector').as_posix()
-apidoc_separate_modules=True
+apidoc_module_dir = srcdir.joinpath("debian_inspector").as_posix()
+apidoc_separate_modules = True
 apidoc_module_first = True
 
 

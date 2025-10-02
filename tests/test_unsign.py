@@ -13,19 +13,18 @@ from debian_inspector import unsign
 
 
 class Testunsign(TestCase):
-
     def test_remove_signature_and_is_signed_corner_cases(self):
         assert not unsign.is_signed(None)
         assert unsign.remove_signature(None) == None
 
-        assert not unsign.is_signed('')
-        assert unsign.remove_signature('') == ''
+        assert not unsign.is_signed("")
+        assert unsign.remove_signature("") == ""
 
-        assert not unsign.is_signed('\n')
-        assert unsign.remove_signature('\n') == '\n'
+        assert not unsign.is_signed("\n")
+        assert unsign.remove_signature("\n") == "\n"
 
-        assert not unsign.is_signed('sometext\n')
-        assert unsign.remove_signature('sometext\n') == 'sometext\n'
+        assert not unsign.is_signed("sometext\n")
+        assert unsign.remove_signature("sometext\n") == "sometext\n"
 
     def test_remove_signature_and_is_signed_not_signed(self):
         assert not unsign.is_signed(PLAIN)
@@ -33,7 +32,7 @@ class Testunsign(TestCase):
 
     def test_remove_signature_and_is_signed_empty_signed(self):
         assert unsign.is_signed(EMPTY)
-        assert unsign.remove_signature(EMPTY) == '\n'
+        assert unsign.remove_signature(EMPTY) == "\n"
 
     def test_remove_signature_and_is_signed_signed(self):
         assert unsign.is_signed(SIGNED)
@@ -44,27 +43,27 @@ class Testunsign(TestCase):
         assert unsign.remove_signature(COMPACT) == EXPECTED_COMPACT
 
     def test_is_signed1(self):
-        text = '''
+        text = """
         -----BEGIN PGP SIGNED MESSAGE-----
         -----END PGP SIGNATURE-----
-        '''
+        """
         assert unsign.is_signed(text)
 
     def test_is_signed2(self):
-        text = '''-----BEGIN PGP SIGNED MESSAGE-----
-        -----END PGP SIGNATURE-----'''
+        text = """-----BEGIN PGP SIGNED MESSAGE-----
+        -----END PGP SIGNATURE-----"""
         assert unsign.is_signed(text)
 
     def test_is_signed3(self):
-        text = '''-----BEGIN PGP SIGNED MESSAGE-----'''
+        text = """-----BEGIN PGP SIGNED MESSAGE-----"""
         assert not unsign.is_signed(text)
 
     def test_is_signed4(self):
-        text = '''-----END PGP SIGNATURE-----'''
+        text = """-----END PGP SIGNATURE-----"""
         assert not unsign.is_signed(text)
 
 
-PLAIN = '''Format: 3.0 (quilt)
+PLAIN = """Format: 3.0 (quilt)
 Source: zlib
 Binary: zlib1g, zlib1g-dev, zlib1g-dbg, zlib1g-udeb, lib64z1, lib64z1-dev, lib32z1, lib32z1-dev, libn32z1, libn32z1-dev
 Architecture: any
@@ -72,9 +71,9 @@ Version: 1:1.2.11.dfsg-1
 Maintainer: Mark Brown <broonie@debian.org>
 Homepage: http://zlib.net/
 Standards-Version: 3.9.8
-'''
+"""
 
-SIGNED = '''-----BEGIN PGP SIGNED MESSAGE-----
+SIGNED = """-----BEGIN PGP SIGNED MESSAGE-----
 Hash: SHA512
 
 Format: 3.0 (quilt)
@@ -118,9 +117,9 @@ qwfP8hx7pnR4CV1rFfmmDmtwORv4edwfgS6mmbdpKClWS2k4ft7AFEjmBPL+vqKc
 6DzauiRhm79p2HZPGWyLvZ0rMUaVvIGYeNjO2n4Lpkc+snZAEX/3LFVQ
 =BVVn
 -----END PGP SIGNATURE-----
-'''
+"""
 
-EXPECTED_SIGNED = '''Format: 3.0 (quilt)
+EXPECTED_SIGNED = """Format: 3.0 (quilt)
 Source: zlib
 Binary: zlib1g, zlib1g-dev, zlib1g-dbg, zlib1g-udeb, lib64z1, lib64z1-dev, lib32z1, lib32z1-dev, libn32z1, libn32z1-dev
 Architecture: any
@@ -149,9 +148,9 @@ Checksums-Sha256:
 Files:
  2950b229ed4a5e556ad6581580e4ab2c 370248 zlib_1.2.11.dfsg.orig.tar.gz
  fd4b8f37a845569734dfa2e0fe8a08dc 18956 zlib_1.2.11.dfsg-1.debian.tar.xz
-'''
+"""
 
-EMPTY = '''-----BEGIN PGP SIGNED MESSAGE-----
+EMPTY = """-----BEGIN PGP SIGNED MESSAGE-----
 Hash: SHA512
 
 
@@ -167,9 +166,9 @@ qwfP8hx7pnR4CV1rFfmmDmtwORv4edwfgS6mmbdpKClWS2k4ft7AFEjmBPL+vqKc
 6DzauiRhm79p2HZPGWyLvZ0rMUaVvIGYeNjO2n4Lpkc+snZAEX/3LFVQ
 =BVVn
 -----END PGP SIGNATURE-----
-'''
+"""
 
-COMPACT = '''-----BEGIN PGP SIGNED MESSAGE-----
+COMPACT = """-----BEGIN PGP SIGNED MESSAGE-----
 Hash: SHA512
 Format: 3.0 (quilt)
 Source: zlib
@@ -210,9 +209,9 @@ qwfP8hx7pnR4CV1rFfmmDmtwORv4edwfgS6mmbdpKClWS2k4ft7AFEjmBPL+vqKc
 6DzauiRhm79p2HZPGWyLvZ0rMUaVvIGYeNjO2n4Lpkc+snZAEX/3LFVQ
 =BVVn
 -----END PGP SIGNATURE-----
-'''
+"""
 
-EXPECTED_COMPACT = '''Hash: SHA512
+EXPECTED_COMPACT = """Hash: SHA512
 Format: 3.0 (quilt)
 Source: zlib
 Binary: zlib1g, zlib1g-dev, zlib1g-dbg, zlib1g-udeb, lib64z1, lib64z1-dev, lib32z1, lib32z1-dev, libn32z1, libn32z1-dev
@@ -241,4 +240,4 @@ Checksums-Sha256:
  00b95b629fbe9a5181f8ba1ceddedf627aba1ab42e47f5916be8a41deb54098a 18956 zlib_1.2.11.dfsg-1.debian.tar.xz
 Files:
  2950b229ed4a5e556ad6581580e4ab2c 370248 zlib_1.2.11.dfsg.orig.tar.gz
- fd4b8f37a845569734dfa2e0fe8a08dc 18956 zlib_1.2.11.dfsg-1.debian.tar.xz'''
+ fd4b8f37a845569734dfa2e0fe8a08dc 18956 zlib_1.2.11.dfsg-1.debian.tar.xz"""
